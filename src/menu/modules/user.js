@@ -4,7 +4,7 @@ export default {
     path: '/user',
     title: '用户管理',
     header: 'home',
-    icon: 'md-speedometer',
+    icon: 'md-person',
     children: [
         {
             path: `${pre}list`,

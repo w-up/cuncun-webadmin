@@ -19,14 +19,14 @@ export default [
         path: '/classificationOfGoods',
         title: '物品分类管理',
         header: 'home',
-        icon: 'md-speedometer',
+        icon: 'ios-keypad',
     },
     boxType,
     {
         path: '/setUp',
         title: '设置',
         header: 'home',
-        icon: 'md-speedometer',
+        icon: 'md-settings',
     },
     log
 ];

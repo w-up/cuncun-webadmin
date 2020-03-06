@@ -4,7 +4,7 @@ export default {
     path: '/depositReceipt',
     title: '存单管理',
     header: 'home',
-    icon: 'md-speedometer',
+    icon: 'ios-paper',
     children: [
         {
             path: `${pre}list`,
