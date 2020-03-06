@@ -13,19 +13,19 @@
             <Login @on-submit="handleSubmit">
                 <UserName name="username" value="admin" />
                 <Password name="password" value="admin" enter-to-submit />
-                <div class="page-account-auto-login">
+                <!-- <div class="page-account-auto-login">
                     <Checkbox v-model="autoLogin" size="large">{{ $t('page.login.remember') }}</Checkbox>
                     <a href="">{{ $t('page.login.forgot') }}</a>
-                </div>
+                </div> -->
                 <Submit>{{ $t('page.login.submit') }}</Submit>
             </Login>
-            <div class="page-account-other">
+            <!-- <div class="page-account-other">
                 <span>{{ $t('page.login.other') }}</span>
                 <img src="@/assets/svg/icon-social-wechat.svg" alt="wechat">
                 <img src="@/assets/svg/icon-social-qq.svg" alt="qq">
                 <img src="@/assets/svg/icon-social-weibo.svg" alt="weibo">
                 <router-link class="page-account-register" :to="{ name: 'register' }">{{ $t('page.login.signup') }}</router-link>
-            </div>
+            </div> -->
         </div>
         <i-copyright />
     </div>

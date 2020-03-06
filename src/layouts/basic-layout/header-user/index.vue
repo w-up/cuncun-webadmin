@@ -4,7 +4,7 @@
             <Avatar size="small" :src="info.avatar" v-if="info.avatar" />
             <span class="i-layout-header-user-name" v-if="!isMobile">{{ info.name }}</span>
             <DropdownMenu slot="list">
-                <i-link to="/setting/user">
+                <!-- <i-link to="/setting/user">
                     <DropdownItem>
                         <Icon type="ios-contact-outline" />
                         <span>{{ $t('basicLayout.user.center') }}</span>
@@ -15,7 +15,7 @@
                         <Icon type="ios-settings-outline" />
                         <span>{{ $t('basicLayout.user.setting') }}</span>
                     </DropdownItem>
-                </i-link>
+                </i-link> -->
                 <DropdownItem divided name="logout">
                     <Icon type="ios-log-out" />
                     <span>{{ $t('basicLayout.user.logOut') }}</span>

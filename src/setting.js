@@ -89,11 +89,11 @@ const Setting = {
         // 全局面包屑是否显示图标，开启 showBreadcrumb 时有效
         showBreadcrumbIcon: false,
         // 是否显示日志入口，开启与否，不影响日志记录，如不希望用户看到可关闭
-        showLog: true,
+        showLog: false,
         // 是否显示多语言
-        showI18n: true,
+        showI18n: false,
         // 是否支持动态修改布局配置，移动端下会自动强制关闭
-        enableSetting: true,
+        enableSetting: false,
         // 退出登录时，是否二次确认
         logoutConfirm: true
     },
