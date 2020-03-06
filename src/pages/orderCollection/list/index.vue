@@ -1,7 +1,7 @@
 <template>
   <div>
     <Card>
-      <p slot="title">存单列表</p>
+      <p slot="title">取单列表</p>
       <Form inline :label-width="80" >
           <FormItem label="订单号" >
             <Input  placeholder="请输入" style="width:200px"></Input>
@@ -65,9 +65,9 @@
       </div>
       <div class="page" style="margin-top:20px;display:flex;justify-content:space-between">
         <div class="operationBtn">
-          <Button type="success">接单</Button>
-          <Button type="info">导出取件单</Button>
-          <Button type="info">导出上架单</Button>
+          <!-- <Button type="success">接单</Button> -->
+          <Button type="success">导出拣货单</Button>
+          <Button type="info">导出配送单</Button>
           <Button type="warning" @click="assignRidersClick">分配骑手</Button>
         </div>
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
@@ -135,25 +135,25 @@ export default {
           align: 'center'
         },
         {
-          title: '取件地址',
+          title: '返送地址',
           key: 'address',
           minWidth: 240,
           align: 'center'
         },
         {
-          title: '取件日期',
+          title: '返送日期',
           key: 'date',
           width: 120,
           align: 'center'
         },
         {
-          title: '取件时间',
+          title: '返送时间',
           key: 'time',
           width: 100,
           align: 'center'
         },
         {
-          title: '预估数量',
+          title: '返送数量',
           key: 'num',
           width: 100,
           align: 'center'
@@ -324,7 +324,7 @@ export default {
     },
     detailsClick(id){
       this.$router.push({
-        path: '/depositReceipt/details',
+        path: '/orderCollection/details',
         query: {
           id: id
         }

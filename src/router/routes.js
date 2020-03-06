@@ -1,5 +1,10 @@
 // import dashboard from './modules/dashboard';
 import depositReceipt from './modules/depositReceipt';
+import orderCollection from './modules/orderCollection';
+import warehouseOrder from './modules/warehouseOrder';
+import user from './modules/user';
+import dataStatistics from './modules/dataStatistics';
+import boxType from './modules/boxType';
 import BasicLayout from '@/layouts/basic-layout';
 
 /**
@@ -53,11 +58,35 @@ const frameIn = [
                     },
                     render: h => h()
                 }
-            }
+            },
+            {
+                path: 'classificationOfGoods',
+                name: 'classificationOfGoods',
+                meta: {
+                    title: '物品分类管理',
+                    auth: true
+                },
+                component: () => import('@/pages/classificationOfGoods')
+            },
+            {
+                path: 'setUp',
+                name: 'setUp',
+                meta: {
+                    title: '设置',
+                    auth: true
+                },
+                component: () => import('@/pages/setUp')
+            },
         ]
     },
     // dashboard,
-    depositReceipt
+    depositReceipt,
+    orderCollection,
+    warehouseOrder,
+    user,
+    dataStatistics,
+    boxType,
+    // setUp
 ];
 
 /**
