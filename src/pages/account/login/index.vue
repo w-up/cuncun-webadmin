@@ -8,7 +8,7 @@
                 <div class="page-account-top-logo">
                     <img src="@/assets/images/logo.png" alt="logo">
                 </div>
-                <div class="page-account-top-desc">iView Admin Pro 企业级中台前端/设计解决方案</div>
+                <div class="page-account-top-desc">存存管理系统</div>
             </div>
             <Login @on-submit="handleSubmit">
                 <UserName name="username" value="admin" />

@@ -1,6 +1,6 @@
 <template>
     <div>
-        欢迎使用 iView Admin Pro
+        存存管理系统
     </div>
 </template>
 <script>
