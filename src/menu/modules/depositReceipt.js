@@ -8,6 +8,7 @@ export default {
     children: [
         {
             path: `${pre}list`,
+            icon: 'ios-paper',
             title: '存单列表'
         }
     ]

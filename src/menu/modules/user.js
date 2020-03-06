@@ -8,6 +8,7 @@ export default {
     children: [
         {
             path: `${pre}list`,
+            icon: 'md-person',
             title: '用户列表'
         }
     ]

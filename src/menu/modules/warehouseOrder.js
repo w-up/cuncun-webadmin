@@ -8,6 +8,7 @@ export default {
     children: [
         {
             path: `${pre}list`,
+            icon: 'md-cube',
             title: '仓储订单列表'
         }
     ]

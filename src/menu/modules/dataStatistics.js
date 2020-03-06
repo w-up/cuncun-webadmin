@@ -8,6 +8,7 @@ export default {
     children: [
         {
             path: `${pre}list`,
+            icon: 'md-options',
             title: '用户数据统计'
         }
     ]
