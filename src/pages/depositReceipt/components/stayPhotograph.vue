@@ -1,72 +1,167 @@
 <template>
   <div>
-    <Button type="primary" style="margin:0 8px 5px 0" >保存信息</Button>
-    <Button type="success" style="margin:0 8px 5px 0">保存并发布</Button>
-    <!-- <Button type="error" style="margin:0 8px 5px 0">拒单</Button> -->
-    <div style="margin:12px 0">
-      <Table border :columns="columns" :data="data">
-        <template slot-scope="{ row, index }" slot="type">
-          <Select transfer>
-            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-          </Select>
-        </template>
-        <template slot-scope="{ row, index }" slot="num">
-          <Input  placeholder="请输入" ></Input>
-        </template>
-        <template slot-scope="{ row, index }" slot="SKU">
-          <Input  placeholder="请输入" ></Input>
-        </template>
-        <template slot-scope="{ row, index }" slot="name">
-          <Input  placeholder="请输入" ></Input>
-        </template>
-        <template slot-scope="{ row, index }" slot="exhibition">
-          <Select transfer>
-            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-          </Select>
-        </template>
-        <template slot-scope="{ row, index }" slot="attribute">
-          <Select transfer>
-            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-          </Select>
-        </template>
-        <template slot-scope="{ row, index }" slot="remarks">
-          <Input  placeholder="请输入" ></Input>
-        </template>
-        <template slot-scope="{ row, index }" slot="operation">
-          <Poptip
-            confirm
-            transfer
-            title="您确定删除这条内容吗"
-          >
-              <Button type="text" size="small" icon="md-close" style="color:#ed3f14;" >删除</Button>
-          </Poptip>
-        </template>
-        <template slot-scope="{ row, index }" slot="img">
-            <Button type="primary" size="small" style="margin-right: 5px">拍照</Button>
-        </template>
-      </Table>
-      <div class="page" style="margin-top:20px;display:flex;justify-content:space-between">
-        <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
-        <div>
-          <Button type="info" @click="addClick">添加</Button>
+    <div style="display:flex;flex-wrap: wrap;"> 
+      <Card style="width:550px;margin-right:5px;margin-top:10px">
+        <p slot="title">纸箱列表</p>
+        <Table border :columns="columns" :data="data">
+          <template slot-scope="{ row, index }" slot="inspectType">
+            <Icon type="md-checkmark-circle" v-show="row.type=='1'" size='26px'/>
+            <Icon type="md-close-circle" v-show="row.type=='2'" size='26px'/>
+          </template>
+          <template slot-scope="{ row, index }" slot="remarks">
+            <Button type="primary">查看</Button>
+          </template>
+          <template slot-scope="{ row, index }" slot="operation">
+            <Poptip
+              confirm
+              transfer
+              title="您确认删除这条内容吗？"
+            >
+            <Button type="text" size="small" icon="md-trash" style="margin-right: 5px;color:#ff9900;">删除</Button>
+            </Poptip>
+          </template>
+        </Table>
+        <div style="margin-top:20px">
+          <Button type="success" style="margin:0 8px 5px 0">编辑</Button>
+          <Button type="info" style="margin:0 8px 5px 0" @click="addClick">添加一行</Button>
         </div>
-      </div>
+      </Card>
+      <Card style="width:100%;margin-right:5px;margin-top:10px">
+        <p slot="title">物品列表</p>
+        <Table border :columns="caseColumns" :data="data">
+          <template slot-scope="{ row, index }" slot="num">
+            <Input  placeholder="请输入" ></Input>
+          </template>
+          <template slot-scope="{ row, index }" slot="name">
+            <Input  placeholder="请输入" ></Input>
+          </template>
+          <template slot-scope="{ row, index }" slot="exhibition">
+            <Select transfer>
+              <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            </Select>
+          </template>
+          <template slot-scope="{ row, index }" slot="classification">
+            <Select transfer>
+              <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            </Select>
+          </template>
+          <template slot-scope="{ row, index }" slot="label">
+            <Input  placeholder="请输入" ></Input>
+          </template>
+          <template slot-scope="{ row, index }" slot="img">
+            <Button type="success" v-show="row.type=='1'" @click="imgClick">查看</Button>
+            <Button type="primary" v-show="row.type=='2'" @click="imgClick">上传</Button>
+          </template>
+          <template slot-scope="{ row, index }" slot="kg">
+            <Input  placeholder="请输入" ></Input>
+          </template>
+          <template slot-scope="{ row, index }" slot="imgRemarks">
+            <Input  placeholder="请输入" ></Input>
+          </template>
+          <template slot-scope="{ row, index }" slot="operation">
+            <Poptip
+              confirm
+              transfer
+              title="您确认删除这条内容吗？"
+            >
+            <Button type="text" size="small" icon="md-trash" style="margin-right: 5px;color:#ff9900;">删除</Button>
+            </Poptip>
+          </template>
+        </Table>
+        <div style="margin-top:20px">
+         
+          <Button type="info" style="margin:0 8px 5px 0" @click="addClick">添加一行</Button>
+          <Button type="success" style="margin:0 8px 5px 0">保存</Button>
+          <Button type="warning" style="margin:0 8px 5px 0">发布信息</Button>
+        </div>
+      </Card>
     </div>
+    <Modal v-model="refusalOfOrdersModal"  title="照片上传">
+      <p style="color:red">注：建议添加 100*100px的照片；</p>
+      <Button type="success" >上传</Button>
+      <div slot="footer">
+        <div style="">
+          <Button type="text" style="margin-right:10px;">取消</Button>
+          <Button type="primary" style="margin-right:10px">保存</Button>
+        </div>
+        
+      </div>
+    </Modal>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'stayPhotograph',
+  name: 'pendingDisposal',
   data () {
     return {
-      total: 0,
-      pageSize: 10,
-      pageNumber: 0,
-      cityList: [
+      refusalOfOrdersModal:false,
+      caseColumns:[
         {
-            value: '条目一',
-            label: '条目一'
+          title: '序号',
+          align:'center',
+          width:75,
+          key: 'key'
+        },
+        {
+          title: '物品编号',
+          align:'center',
+          width:140,
+          slot: 'num'
+        },
+        {
+          title: '名称',
+          align:'center',
+          width:140,
+          slot: 'name'
+        },
+        {
+          title: '展示区域',
+          align:'center',
+          width:140,
+          slot: 'exhibition'
+        },
+        {
+          title: '分类',
+          align:'center',
+          width:140,
+          slot: 'classification'
+        },
+        {
+          title: '标签',
+          align:'center',
+          width:140,
+          slot: 'label'
+        },
+        {
+          title: '照片',
+          align:'center',
+          width:90,
+          slot: 'img'
+        },
+        {
+          title: '重量',
+          align:'center',
+          width:120,
+          slot: 'kg'
+        },
+        {
+          title: '拍照员备注',
+          align:'center',
+          minWidth:140,
+          slot: 'imgRemarks'
+        },
+        {
+          title: '发布时间',
+          align:'center',
+          width:140,
+          key: 'time'
+        },
+        {
+          title: '操作',
+          align:'center',
+          width:100,
+          slot: 'operation'
         },
       ],
       columns: [
@@ -77,77 +172,51 @@ export default {
           key: 'key'
         },
         {
-          title: '箱子类型',
+          title: '纸箱编号',
           align:'center',
-          width:160,
-          slot: 'type'
-        },
-        {
-          title: '箱子编号',
-          align:'center',
-          width:120,
-          slot: 'num'
-        },
-        {
-          title: 'Item SKU',
-          align:'center',
-          width:120,
-          slot: 'SKU'
-        },
-        {
-          title: '拍照',
           width:100,
-          slot: 'img'
+          key: 'name'
         },
         {
-          title: '物品名称',
+          title: '安检状态',
+          width:70,
           align:'center',
-          width:150,
-          slot: 'name'
-        },
-        {
-          title: '展示区域',
-          align:'center',
-          width:150,
-          slot: 'exhibition'
-        },
-        {
-          title: '产品属性',
-          align:'center',
-          width:150,
-          slot: 'attribute'
-        },
-        {
-          title: '使用场景',
-          align:'center',
-          width:150,
-          key: 'useCase'
-        },
-        {
-          title: '库位',
-          align:'center',
-          width:150,
-          key: 'storehouse'
+          slot: 'inspectType'
         },
         {
           title: '备注',
-          minWidth:150,
           align:'center',
           slot: 'remarks'
         },
         {
-          title: '操作',
-          minWidth:150,
+          title: '物品数量',
           align:'center',
-          fixed: 'right',
+          width:70,
+          key: 'name'
+        },
+        {
+          title: '操作',
+          align:'center',
+          width:100,
           slot: 'operation'
         },
       ],
       data: [
-          {
-            name:'1'
-          }
-      ]
+        {
+          name:'1',
+          type:'1'
+        },
+        {
+          name:'1',
+          type:'2'
+        }
+      ],
+      cityList: [
+        {
+            value: '已通过',
+            label: '已通过'
+        },
+      ],
     }
   },
   mounted () {
@@ -157,13 +226,8 @@ export default {
     addClick(){
       this.data.push({})
     },
-    changePage (page) {
-      this.pageNumber = page - 1
-      // this.getList()
-    },
-    pageSizeChange(pageSize){
-      this.pageSize=pageSize
-      // this.getList()
+    imgClick(){
+      this.refusalOfOrdersModal = true
     },
   }
 }

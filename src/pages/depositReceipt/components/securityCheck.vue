@@ -1,16 +1,49 @@
 <template>
   <div>
-    <!-- <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button> -->
-    <Button type="success" style="margin:0 8px 5px 0">安检完成</Button>
-    <!-- <Button type="error" style="margin:0 8px 5px 0">拒单</Button> -->
+    <div style="margin:15px 0">
+      <Select  style="width:200px">
+        <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+      </Select>
+    </div>
     <div style="margin:12px 0">
       <Table border :columns="columns" :data="data">
-        <!-- <template slot-scope="{ row, index }" slot="center">
-            <Button type="primary" size="small" style="margin-right: 5px">拍照</Button>
-        </template> -->
+        <template slot-scope="{ row, index }" slot="caseNum">
+          <Input  placeholder="请输入" v-model="row.num" @on-change="caseNumCange(row.id,row.num)"></Input>
+        </template>
+        <template slot-scope="{ row, index }" slot="caseType">
+          <Select transfer>
+            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
+        </template>
+        <template slot-scope="{ row, index }" slot="caseName">
+          <Select transfer>
+            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
+        </template>
+        <template slot-scope="{ row, index }" slot="caseKg">
+          <Input  placeholder="请输入" ></Input>
+        </template>
+        <template slot-scope="{ row, index }" slot="securityType">
+          <Select transfer>
+            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
+        </template>
+        <template slot-scope="{ row, index }" slot="securityRemark">
+          <Input  placeholder="请输入" ></Input>
+        </template>
+        <template slot-scope="{ row, index }" slot="operation">
+         <Poptip
+            confirm
+            transfer
+            title="您确认删除这条内容吗？"
+          >
+          <Button type="text" size="small" icon="md-trash" style="margin-right: 5px;color:#ff9900;">删除</Button>
+          </Poptip>
+        </template>
       </Table>
       <div style="margin-top:20px">
-        <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
+        <Button type="info" style="margin:0 8px 5px 0" @click="addClick">添加一行</Button>
+        <Button type="success" style="margin:0 8px 5px 0">安检完成</Button>
       </div>
     </div>
   </div>
@@ -21,9 +54,6 @@ export default {
   name: 'waitingForDelivery',
   data () {
     return {
-      total: 0,
-      pageSize: 10,
-      pageNumber: 0,
       columns: [
         {
           title: '序号',
@@ -32,83 +62,77 @@ export default {
           key: 'key'
         },
         {
-          title: '箱子类型',
+          title: '纸箱编号',
+          align:'center',
+          width:200,
+          slot: 'caseNum'
+        },
+        {
+          title: '纸箱类型',
           align:'center',
           width:160,
-          key: 'type'
+          slot: 'caseType'
         },
         {
-          title: '箱子编号',
+          title: '纸箱名称',
           align:'center',
-          width:120,
-          key: 'num'
+          width:160,
+          slot: 'caseName'
         },
         {
-          title: 'Item SKU',
-          align:'center',
-          width:120,
-          key: 'SKU'
+          title: '纸箱重量',
+          width:150,
+          slot: 'caseKg'
         },
         {
-          title: '拍照',
-          width:100,
-          key: 'img'
-        },
-        {
-          title: '物品名称',
+          title: '安检状态',
           align:'center',
           width:150,
-          key: 'name'
+          slot: 'securityType'
         },
         {
-          title: '展示区域',
+          title: '安检员备注',
           align:'center',
-          width:150,
-          key: 'exhibition'
-        },
-        {
-          title: '产品属性',
-          align:'center',
-          width:150,
-          key: 'attribute'
-        },
-        {
-          title: '使用场景',
-          align:'center',
-          width:150,
-          key: 'useCase'
-        },
-        {
-          title: '库位',
-          align:'center',
-          width:150,
-          key: 'storehouse'
+          width:250,
+          slot: 'securityRemark'
         },
         {
           title: '备注',
-          minWidth:150,
+          minWidth:200,
           align:'center',
           key: 'remarks'
+        },
+        {
+          title: '操作',
+          align:'center',
+          width:100,
+          slot: 'operation'
         },
       ],
       data: [
           {
-            name:'1'
+            name:'1',
+            id:'111'
           }
-      ]
+      ],
+      cityList: [
+        {
+            value: '已通过',
+            label: '已通过'
+        },
+      ],
     }
   },
   mounted () {
     //
   },
   methods:{
-    changePage (page) {
-      this.pageNumber = page - 1
-      // this.getList()
+    caseNumCange(id,num){
+      // console.log(event,id,num);
+      
     },
-    pageSizeChange(pageSize){
-      this.pageSize=pageSize
-      // this.getList()
+    addClick(){
+      this.data.push({})
     },
   }
 }

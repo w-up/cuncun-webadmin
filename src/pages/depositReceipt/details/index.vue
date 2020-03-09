@@ -3,83 +3,107 @@
     <Card>
       <p slot="title">存单详情</p>
       <Button  slot="extra" icon="ios-arrow-back" @click="backPage" >返回上一页</Button>
-      <Card>
-        <p slot="title">基本信息</p>
+      <div style="display:flex;flex-wrap: wrap;"> 
+        <Card style="width:350px;margin-right:5px;margin-top:10px">
+          <p slot="title">订单信息</p>
+          <Form  :label-width="90">
+            <FormItem label="订单号：">
+                <span>{{orderList.orderNumber}}</span>
+            </FormItem>
+            <FormItem label="用户姓名：">
+                <span>{{orderList.name}}</span>
+            </FormItem>
+            <FormItem label="手机号：">
+                <span>{{orderList.phone}}</span>
+            </FormItem>
+            <FormItem label="骑手：">
+                <span>{{orderList.rider}}</span>
+                <Button type="success" style="margin-left:10px">分配骑手</Button>
+            </FormItem>
+            <FormItem label="联系人：">
+                <span>{{orderList.contacts}}</span>
+            </FormItem>
+            <FormItem label="联系电话：">
+                <span>{{orderList.telephone}}</span>
+            </FormItem>
+            <FormItem label="取件地址：">
+                <span>{{orderList.address}}</span>
+            </FormItem>
+            <FormItem label="取件时间：">
+                <span>{{orderList.time}}</span>
+            </FormItem>
+          </Form>
+        </Card>
+        <Card style="width:350px;margin-right:5px;margin-top:10px">
+          <p slot="title">费用明细</p>
+          <Button slot="extra" v-show='type=="拍照中"?true:type=="待上架"?true:type=="已完成"?true:type=="已取消"?true:false' @click="adjustmentClick">调整费用</Button>
+          <div v-show='type=="待处理"?true:type=="待分配骑手"?true:type=="待取货"?true:type=="回库中"?true:type=="安检中"?true:false'>
+            <Form  :label-width="110">
+              <FormItem label="运输费用：">
+                  <span style="margin-left:120px">￥{{costList.transport}}</span>
+              </FormItem>
+              <FormItem label="打包费用：">
+                  <span style="margin-left:120px">￥{{costList.pack}}</span>
+              </FormItem>
+              <FormItem label="纸箱费用：">
+                  <span style="margin-left:120px">￥{{costList.case}}</span>
+              </FormItem>
+              <FormItem label="订单总价：" style="margin-bottom:45px" class="size20">
+                  <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.total}}</span>
+              </FormItem>
+              <FormItem label="实付定金：" class="size20">
+                  <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.actualPayment}}</span>
+              </FormItem>
+            </Form>
+          </div>
+          <div v-show='type=="拍照中"?true:type=="待上架"?true:type=="已完成"?true:type=="已取消"?true:false' >
+            <Form  :label-width="110">
+              <FormItem label="运输费用：">
+                  <span style="margin-left:120px">￥{{costList.transport}}</span>
+              </FormItem>
+              <FormItem label="打包费用：">
+                  <span style="margin-left:120px">￥{{costList.pack}}</span>
+              </FormItem>
+              <FormItem label="纸箱费用：">
+                  <span style="margin-left:120px">￥{{costList.case}}</span>
+              </FormItem>
+              <FormItem label="调整费用：">
+                  <span style="margin-left:120px">￥{{costList.case}}</span>
+              </FormItem>
+              <FormItem label="订单总价：" style="margin-bottom:20px" class="size20">
+                  <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.total}}</span>
+              </FormItem>
+              <FormItem label="已付定金：" class="size20">
+                  <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.actualPayment}}</span>
+              </FormItem>
+              <FormItem label="实付定金：" class="size20">
+                  <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.actualPayment}}</span>
+              </FormItem>
+              <FormItem label="未结算">
+                <Button type="success" style="margin-left:120px">发起结算</Button>
+              </FormItem>
+            </Form>
+          </div>
+        </Card>
+        <Card style="width:500px;margin-top:10px">
+          <p slot="title">备注信息</p>
+          <Form  :label-width="90" label-position='top'>
+            <FormItem label="订单号：">
+              <Input  maxlength="200" show-word-limit type="textarea" :rows="5" />
+            </FormItem>
+            <FormItem label="用户姓名：">
+              <Input  maxlength="200" show-word-limit type="textarea" :rows="5" />
+              <Button type="success" style="margin-top:10px">保存</Button>
+            </FormItem>
+          </Form>
+        </Card>
+      </div>
+      <div style="margin:20px 0">
+        <div style="margin:20px 0"> 测试切换状态</div>
         <Select  slot="extra"  style="width:200px;" v-model="type">
           <Option v-for="item in stateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
-        <Form>
-          <FormItem >
-            <Form  :label-width="100" inline style="">
-              <FormItem label="订单号:" style="width:250px">
-                <span>Q14223223</span>
-              </FormItem>
-              <FormItem label="联系人:" style="width:300px">
-                <span>老司机</span>
-              </FormItem>
-              <FormItem label="预估物流费用:" style="width:200px">
-                <span>15</span>
-              </FormItem>
-            </Form>
-          </FormItem>
-          <FormItem >
-            <Form  :label-width="100" inline style="">
-              <FormItem label="用户姓名:" style="width:250px">
-                <span>老司机</span>
-              </FormItem>
-              <FormItem label="联系电话:" style="width:300px">
-                <span>1334433443</span>
-              </FormItem>
-              <FormItem label="实际物流费用:" style="width:300px">
-                <span>1233</span>
-                <Button type="info" style="margin-left:20px">修改物流费用</Button>
-              </FormItem>
-            </Form>
-          </FormItem>
-          <FormItem >
-            <Form  :label-width="100" inline style="">
-              <FormItem label="手机号:" style="width:250px">
-                <span>1334433443</span>
-              </FormItem>
-              <FormItem label="取件地址:" style="width:300px">
-                <span>老司机</span>
-              </FormItem>
-              <FormItem label="已收物流费用:" style="width:200px">
-                <span>15</span>
-              </FormItem>
-            </Form>
-          </FormItem>
-          <FormItem >
-            <Form  :label-width="100" inline style="">
-              <FormItem label="预估数量:" style="width:250px">
-                <span>22</span>
-              </FormItem>
-              <FormItem label="取件日期:" style="width:300px">
-                <span>2019-12-12</span>
-              </FormItem>
-            </Form>
-          </FormItem>
-          <FormItem >
-            <Form  :label-width="100" inline style="">
-              <FormItem label="骑手:" style="width:250px">
-                <span>待分配</span>
-                <Button type="info" style="margin-left:20px">分配骑手</Button>
-              </FormItem>
-              <FormItem label="取件时间:" style="width:300px">
-                <span>15:00:30</span>
-              </FormItem>
-            </Form>
-          </FormItem>
-          <FormItem >
-            <Form  :label-width="100"  style="">
-              <FormItem label="备注" style="">
-                <Input  type="textarea" :rows="4" style="width:400px" placeholder="请输入" />
-                <Button type="success" style="margin-left:20px">保存</Button>
-              </FormItem>
-            </Form>
-          </FormItem>
-        </Form>
-      </Card>
+      </div>
       <div style="margin:20px 0">
         <Button :disabled='type=="待处理"?true:type=="待分配骑手"?true:type=="待取货"?true:type=="回库中"?true:type=="安检中"?true:type=="拍照中"?true:type=="待上架"?true:type=="已完成"?true:type=="已取消"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='待付款'?'primary':'dashed'">待付款<Icon type="ios-arrow-forward" /></Button>
@@ -119,6 +143,45 @@
           <span style="line-height:51px">11111</span>
         </div>
       </div> -->
+      <Modal v-model="adjustmentModel"  title="照片上传">
+        <Form  :label-width="110">
+          <FormItem label="运输费用：">
+              <span style="margin-left:120px">￥{{costList.transport}}</span>
+          </FormItem>
+          <FormItem label="打包费用：">
+              <span style="margin-left:120px">￥{{costList.pack}}</span>
+          </FormItem>
+          <FormItem label="纸箱费用：">
+              <span style="margin-left:120px">￥{{costList.case}}</span>
+          </FormItem>
+          <FormItem label="调整费用：">
+              <span style="margin-left:120px">￥{{costList.case}}</span>
+          </FormItem>
+          <FormItem label="订单总价：" style="margin-bottom:20px" class="size20">
+              <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.total}}</span>
+          </FormItem>
+          <FormItem label="费用调整：" >
+            <div style="display:flex">
+              <Select style="width:120px">
+                <Option value="增加" >增加</Option>
+                <Option value="减少" >减少</Option>
+              </Select>
+              <Input style="width:90px;margin-left:5px">
+                <span slot="append" >元</span>
+              </Input>
+            </div>
+          </FormItem>
+          <FormItem label="调整备注：">
+            <Input  type="textarea" :rows="4"  />
+          </FormItem>
+        </Form>
+        <div slot="footer">
+          <div style="">
+            <Button type="text" style="margin-right:10px;">取消</Button>
+            <Button type="primary" style="margin-right:10px">保存</Button>
+          </div>
+        </div>
+      </Modal>
     </Card>
   </div>
 </template>
@@ -148,7 +211,25 @@ export default {
   },
   data () {
     return {
-      type:'待处理',
+      adjustmentModel:false,
+      type:'已完成',
+      orderList:{
+        orderNumber:'Q14223223',
+        name:'老司机',
+        phone:'1334433443',
+        rider:'小司机',
+        contacts:'老司机',
+        telephone:'14423232323',
+        address:'上海市浦东新区九江路666号8楼C',
+        time:'2020年2月20日   9:00~11:00',
+      },
+      costList:{
+        transport:'20',
+        pack:'20',
+        case:'20',
+        total:'50',
+        actualPayment:'50',
+      },
       stateList:[
         {
           value:'待付款',
@@ -197,6 +278,9 @@ export default {
     //
   },
   methods:{
+    adjustmentClick(){
+      this.adjustmentModel = true
+    },
     backPage () {
       this.$router.go(-1)
     }
@@ -205,6 +289,12 @@ export default {
 </script>
 
 <style lang="less">
+  .ivu-form-item{
+    margin-bottom: 10px;
+  }
+  .size20  .ivu-form-item-label{
+    font-size: 15px;
+  }
   .operationBtn button{
     margin-right: 20px;
   }

@@ -1,20 +1,53 @@
 <template>
-  <div>
-    <Button type="info" style="margin:0 8px 5px 0">编辑信息</Button>
-    <Button type="success" style="margin:0 8px 5px 0">发布信息</Button>
-    <Button type="warning" style="margin:0 8px 5px 0">录入库位信息</Button>
-    <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出上架单</Button>
-    <!-- <Button type="error" style="margin:0 8px 5px 0">拒单</Button> -->
-    <div style="margin:12px 0">
+  <div style="display:flex;flex-wrap: wrap;"> 
+    <Card style="width:550px;margin-right:5px;margin-top:10px">
+      <p slot="title">纸箱列表</p>
       <Table border :columns="columns" :data="data">
-        <!-- <template slot-scope="{ row, index }" slot="center">
-            <Button type="primary" size="small" style="margin-right: 5px">拍照</Button>
-        </template> -->
+        <template slot-scope="{ row, index }" slot="inspectType">
+          <Icon type="md-checkmark-circle" v-show="row.type=='1'" size='26px'/>
+          <Icon type="md-close-circle" v-show="row.type=='2'" size='26px'/>
+        </template>
+        <template slot-scope="{ row, index }" slot="remarks">
+          <Button type="primary">查看</Button>
+        </template>
+        <template slot-scope="{ row, index }" slot="operation">
+          <Input  placeholder="请输入" ></Input>
+        </template>
       </Table>
       <div style="margin-top:20px">
-        <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
+        <Button type="success" style="margin:0 8px 5px 0">保存库位</Button>
       </div>
+    </Card>
+    <Card style="width:900px;margin-right:5px;margin-top:10px">
+      <p slot="title">物品列表</p>
+      <Table border :columns="columnsGoods" :data="data">
+        <template slot-scope="{ row, index }" slot="storehouse">
+          <Input  placeholder="请输入" ></Input>
+        </template>
+        <template slot-scope="{ row, index }" slot="img">
+          <Button type="success" v-show="row.type=='1'" @click="imgClick">查看</Button>
+          <Button type="primary" v-show="row.type=='2'" @click="imgClick">上传</Button>
+        </template>
+      </Table>
+      <div style="margin-top:20px">
+        <Button type="success" style="margin:0 8px 5px 0">保存库位</Button>
+        <Button type="warning" style="margin:0 8px 5px 0">保存信息</Button>
+      </div>
+    </Card>
+    <div style="margin:20px 0">
+      <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
+      <Button type="success" style="margin:0 8px 5px 0">该步骤已完成</Button>
     </div>
+    <Modal v-model="refusalOfOrdersModal"  title="照片上传">
+      <p style="color:red">注：建议添加 100*100px的照片；</p>
+      <Button type="success" >上传</Button>
+      <div slot="footer">
+        <div style="">
+          <Button type="text" style="margin-right:10px;">取消</Button>
+          <Button type="primary" style="margin-right:10px">保存</Button>
+        </div>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -23,9 +56,63 @@ export default {
   name: 'pendingPayment',
   data () {
     return {
-      total: 0,
-      pageSize: 10,
-      pageNumber: 0,
+      refusalOfOrdersModal:false,
+      columnsGoods:[
+        {
+          title: '序号',
+          align:'center',
+          width:75,
+          key: 'key'
+        },
+        {
+          title: '物品编号',
+          align:'center',
+          width:110,
+          key: 'goodsNum'
+        },
+        {
+          title: '物品名称',
+          align:'center',
+          width:110,
+          key: 'goodsName'
+        },
+        {
+          title: '库位',
+          align:'center',
+          width:110,
+          slot: 'storehouse'
+        },
+        {
+          title: '照片',
+          align:'center',
+          width:90,
+          slot: 'img'
+        },
+        {
+          title: '展示区域',
+          align:'center',
+          width:110,
+          key: 'goodsName'
+        },
+        {
+          title: '分类',
+          align:'center',
+          width:70,
+          key: 'goodsName'
+        },
+        {
+          title: '标签',
+          align:'center',
+          width:70,
+          key: 'goodsName'
+        },
+        {
+          title: '备注',
+          align:'center',
+          minWidth:100,
+          key: 'remarks'
+        },
+      ],
       columns: [
         {
           title: '序号',
@@ -34,83 +121,53 @@ export default {
           key: 'key'
         },
         {
-          title: '箱子类型',
+          title: '纸箱编号',
           align:'center',
-          width:160,
-          key: 'type'
-        },
-        {
-          title: '箱子编号',
-          align:'center',
-          width:120,
-          key: 'num'
-        },
-        {
-          title: 'Item SKU',
-          align:'center',
-          width:120,
-          key: 'SKU'
-        },
-        {
-          title: '拍照',
           width:100,
-          key: 'img'
-        },
-        {
-          title: '物品名称',
-          align:'center',
-          width:150,
           key: 'name'
         },
         {
-          title: '展示区域',
+          title: '安检状态',
+          width:70,
           align:'center',
-          width:150,
-          key: 'exhibition'
+          slot: 'inspectType'
         },
         {
-          title: '产品属性',
+          title: '备注',
           align:'center',
-          width:150,
-          key: 'attribute'
+          slot: 'remarks'
         },
         {
-          title: '使用场景',
+          title: '物品数量',
           align:'center',
-          width:150,
-          key: 'useCase'
+          width:70,
+          key: 'name'
         },
         {
           title: '库位',
           align:'center',
-          width:150,
-          key: 'storehouse'
-        },
-        {
-          title: '备注',
-          minWidth:150,
-          align:'center',
-          key: 'remarks'
+          width:100,
+          slot: 'operation'
         },
       ],
       data: [
-          {
-            name:'1'
-          }
-      ]
+        {
+          name:'1',
+          type:'1'
+        },
+        {
+          name:'1',
+          type:'2'
+        }
+      ],
     }
   },
   mounted () {
     //
   },
   methods:{
-    changePage (page) {
-      this.pageNumber = page - 1
-      // this.getList()
-    },
-    pageSizeChange(pageSize){
-      this.pageSize=pageSize
-      // this.getList()
+    imgClick(){
+      this.refusalOfOrdersModal = true
     },
   }
 }
