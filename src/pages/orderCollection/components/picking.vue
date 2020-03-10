@@ -1,17 +1,21 @@
 <template>
   <div>
-    <!-- <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button> -->
-    <Button type="success" style="margin:0 8px 5px 0">拣货完成</Button>
+   
     <!-- <Button type="error" style="margin:0 8px 5px 0">拒单</Button> -->
     <div style="margin:12px 0">
       <Table border :columns="columns" :data="data">
-        <!-- <template slot-scope="{ row, index }" slot="center">
-            <Button type="primary" size="small" style="margin-right: 5px">拍照</Button>
-        </template> -->
+       <template slot-scope="{ row, index }" slot="img">
+            <Button type="primary" size="small" >查看</Button>
+        </template>
       </Table>
       <div style="margin-top:20px">
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
       </div>
+    </div>
+    <div>
+      <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
+      <Button type="warning" style="margin:0 8px 5px 0">分配拣货员</Button>
+      <Button type="success" style="margin:0 8px 5px 0">拣货完成</Button>
     </div>
   </div>
 </template>
@@ -38,7 +42,7 @@ export default {
           key: 'storehouse'
         },
         {
-          title: '箱子类型',
+          title: '备注信息',
           align:'center',
           width:160,
           key: 'type'
@@ -62,7 +66,7 @@ export default {
           key: 'name'
         },
         {
-          title: '产品属性',
+          title: '物品重量',
           align:'center',
           width:150,
           key: 'attribute'
@@ -70,19 +74,8 @@ export default {
         {
           title: '照片',
           width:150,
-          key: 'img'
-        },
-        {
-          title: '使用场景',
           align:'center',
-          width:150,
-          key: 'useCase'
-        },
-        {
-          title: '展示区域',
-          align:'center',
-          width:150,
-          key: 'exhibition'
+          slot: 'img'
         },
       ],
       data: [

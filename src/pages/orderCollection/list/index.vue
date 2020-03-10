@@ -102,6 +102,7 @@ export default {
         {
           type: 'selection',
           width: 60,
+          fixed: 'left',
           align: 'center'
         },
         {
@@ -180,7 +181,7 @@ export default {
           title: '操作',
           slot: 'operation',
           width: 100,
-          fixed: 'right',
+          fixed: 'left',
           align: 'center'
         },
       ],

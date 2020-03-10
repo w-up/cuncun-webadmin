@@ -37,12 +37,9 @@
           </template>
         </Table>
       </div>
-      <div class="page" style="margin-top:20px;display:flex;justify-content:space-between">
+      <div class="page" style="margin:20px 0;display:flex;justify-content:space-between">
         <div class="operationBtn">
-          <!-- <Button type="success">接单</Button> -->
-          <!-- <Button type="success">导出拣货单</Button>
-          <Button type="info">导出配送单</Button>
-          <Button type="warning" @click="assignRidersClick">分配骑手</Button> -->
+          <Button type="success">审查</Button>
         </div>
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
       </div>
@@ -62,6 +59,7 @@ export default {
         {
           type: 'selection',
           width: 60,
+          fixed: 'left',
           align: 'center'
         },
         {
@@ -121,6 +119,7 @@ export default {
         {
           title: '操作',
           slot: 'operation',
+          fixed: 'left',
           width: 180,
           align: 'center'
         },

@@ -137,6 +137,7 @@ export default {
         {
           title: '操作',
           slot: 'operation',
+          fixed: 'left',
           width: 250,
           align: 'center'
         },

@@ -115,7 +115,7 @@ export default {
           title: '操作',
           slot: 'operation',
           width: 250,
-          fixed: 'right',
+          fixed: 'left',
           align: 'center'
         },
       ],
