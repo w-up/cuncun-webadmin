@@ -3,7 +3,7 @@
  * */
 import util from '@/libs/util';
 import router from '@/router';
-import { AccountLogin, AccountRegister } from '@api/account';
+import { AccountLogin } from '@api/account';
 
 import { Modal } from 'view-design';
 
@@ -23,21 +23,24 @@ export default {
         } = {}) {
             return new Promise((resolve, reject) => {
                 // 开始请求登录接口
-                AccountLogin({
-                    username,
-                    password
-                })
+                var data  ={
+                    account:username,
+                    password:password,
+                }
+                AccountLogin(data)
                     .then(async res => {
+                        console.log(res.data);
+                        
                         // 设置 cookie 一定要存 uuid 和 token 两个 cookie
                         // 整个系统依赖这两个数据进行校验和存储
                         // uuid 是用户身份唯一标识 用户注册的时候确定 并且不可改变 不可重复
                         // token 代表用户当前登录状态 建议在网络请求中携带 token
                         // 如有必要 token 需要定时更新，默认保存一天，可在 setting.js 中修改
                         // 如果你的 token 不是通过 cookie 携带，而是普通字段，也可视情况存储在 localStorage
-                        util.cookies.set('uuid', res.uuid);
-                        util.cookies.set('token', res.token);
+                        // util.cookies.set('uuid', res.uuid);
+                        util.cookies.set('token','Bearer ' +res.data.token);
                         // 设置 vuex 用户信息
-                        await dispatch('admin/user/set', res.info, { root: true });
+                        // await dispatch('admin/user/set', res.info, { root: true });
                         // 用户登录后从持久化数据加载一系列的设置
                         await dispatch('load');
                         // 结束
@@ -93,28 +96,28 @@ export default {
         } = {}) {
             return new Promise((resolve, reject) => {
                 // 开始请求登录接口
-                AccountRegister({
-                    mail,
-                    password,
-                    mobile,
-                    captcha
-                })
-                    .then(async res => {
-                        // 注册成功后，完成与登录一致的操作
-                        // 注册也可视情况不返还 uuid、token 等数据，在注册完成后，由前端自动执行一次登录逻辑
-                        util.cookies.set('uuid', res.uuid);
-                        util.cookies.set('token', res.token);
-                        // 设置 vuex 用户信息
-                        await dispatch('admin/user/set', res.info, { root: true });
-                        // 用户登录后从持久化数据加载一系列的设置
-                        await dispatch('load');
-                        // 结束
-                        resolve();
-                    })
-                    .catch(err => {
-                        // console.log('err: ', err);
-                        reject(err);
-                    })
+                // AccountRegister({
+                //     mail,
+                //     password,
+                //     mobile,
+                //     captcha
+                // })
+                //     .then(async res => {
+                //         // 注册成功后，完成与登录一致的操作
+                //         // 注册也可视情况不返还 uuid、token 等数据，在注册完成后，由前端自动执行一次登录逻辑
+                //         util.cookies.set('uuid', res.uuid);
+                //         util.cookies.set('token', res.token);
+                //         // 设置 vuex 用户信息
+                //         await dispatch('admin/user/set', res.info, { root: true });
+                //         // 用户登录后从持久化数据加载一系列的设置
+                //         await dispatch('load');
+                //         // 结束
+                //         resolve();
+                //     })
+                //     .catch(err => {
+                //         // console.log('err: ', err);
+                //         reject(err);
+                //     })
             })
         },
         /**

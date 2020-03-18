@@ -9,7 +9,7 @@
           <div style="margin-top:20px">
             <Table border ref="selection" :columns="columnsListOne" :data="dataListOne" @on-row-dblclick="oneOnRowClick">
               <template slot-scope="{ row, index }" slot="operation">
-                <Button type="text" size="small" icon="md-create" style="margin-right: 5px;color:#19be6b;" @click="oneClick(row.id)">编辑</Button>
+                <Button type="text" size="small" icon="md-create" style="margin-right: 5px;color:#19be6b;" @click="oneClick(row)">编辑</Button>
                 <Poptip
                   confirm
                   transfer
@@ -27,7 +27,7 @@
           <div style="margin-top:20px">
             <Table border ref="selection" :columns="columnsListTwo" :data="dataListTwo">
               <template slot-scope="{ row, index }" slot="operation">
-                <Button type="text" size="small" icon="md-create" style="margin-right: 5px;color:#19be6b;" @click="twoClick(row.id)">编辑</Button>
+                <Button type="text" size="small" icon="md-create" style="margin-right: 5px;color:#19be6b;" @click="twoClick(row)">编辑</Button>
                 <Poptip
                   confirm
                   transfer
@@ -46,9 +46,6 @@
         <FormItem label="分类名称" prop="name">
             <Input v-model="list.name" placeholder="请输入" style="width:200px"></Input>
         </FormItem>
-        <FormItem label="下级数量" prop="type">
-          <Input v-model="list.type" placeholder="请输入" style="width:200px"></Input>
-        </FormItem>
       </Form>
       <div slot="footer">
         <div style="">
@@ -62,9 +59,9 @@
         <FormItem label="分类名称" prop="name">
             <Input v-model="listTwo.name" placeholder="请输入" style="width:200px"></Input>
         </FormItem>
-        <FormItem label="上级分类" prop="type"  >
-          <Select style="width:200px" v-model="listTwo.type">
-            <Option v-for="item in dataListOne" :value="item.id" :key="item.id">{{ item.orderNumber }}</Option>
+        <FormItem label="上级分类" prop="parentId"  >
+          <Select style="width:200px" v-model="listTwo.parentId">
+            <Option v-for="item in dataListOne" :value="item.id" :key="item.id">{{ item.name }}</Option>
           </Select>
         </FormItem>
       </Form>
@@ -79,6 +76,7 @@
 </template>
 
 <script>
+import { getGoodsList,getGoodsSave } from "@api/account";
 export default {
   // name: 'home',
   data () {
@@ -87,44 +85,40 @@ export default {
       oneModal:false,
       list:{
         name:'', 
-        type:'', 
       },
       listTwo:{
         name:'', 
-        type:'', 
+        parentId:'', 
       },
       ruleValidate: {
         name: [
           { required: true, message: '分类名称不能为空', trigger: 'blur' }
-        ],
-        type: [
-          { required: true, message: '下级数量不能为空', trigger: 'blur' }
         ],
       },
       ruleValidate1: {
         name: [
           { required: true, message: '分类名称不能为空', trigger: 'blur' }
         ],
-        type: [
+        parentId: [
           { required: true, message: '请选择', trigger: 'blur' }
         ],
       },
       columnsListOne:[
         {
           title: '序号',
-          key: 'serialNumber',
+          key: 'num',
           width: 70,
           align: 'center'
         },
         {
           title: '分类名称',
-          key: 'orderNumber',
+          key: 'name',
           minWidth: 170,
           align: 'center'
         },
         {
           title: '下级数量',
-          key: 'contacts',
+          key: 'subAmount',
           width: 170,
           align: 'center'
         },
@@ -136,29 +130,17 @@ export default {
         },
       ],
       dataListOne:[
-        {
-          id:'1',
-          serialNumber:'1',
-          orderNumber:'服装',
-          contacts:'14',
-        },
-        {
-          id:'2',
-          serialNumber:'1',
-          orderNumber:'家具',
-          contacts:'14',
-        }
       ],
       columnsListTwo:[
         {
           title: '序号',
-          key: 'serialNumber',
+          key: 'num',
           width: 70,
           align: 'center'
         },
         {
           title: '分类名称',
-          key: 'orderNumber',
+          key: 'name',
           minWidth: 170,
           align: 'center'
         },
@@ -176,63 +158,76 @@ export default {
         },
       ],
       dataListTwo:[
-        {
-          id:'1',
-          serialNumber:'1',
-          orderNumber:'上衣',
-          contacts:'服装',
-        },
-        {
-          id:'2',
-          serialNumber:'2',
-          orderNumber:'茶几',
-          contacts:'家具',
-        }
+
       ],
       dataListTwo1:[
-        {
-          id:'1',
-          serialNumber:'1',
-          orderNumber:'上衣',
-          contacts:'服装',
-        },
-        {
-          id:'2',
-          serialNumber:'2',
-          orderNumber:'茶几',
-          contacts:'家具',
-        }
+
       ],
     }
   },
   mounted () {
     //
+    this.getList()
   },
   methods:{
     getList(){
-
+      let data = {
+        parentId:0
+      }
+      getGoodsList({parentId:0}).then(res=>{
+        var arr = res.data
+        var num = 0
+        arr.forEach(v => {
+          num=num+1
+          v.num = num
+        });
+        this.dataListOne = arr
+      })
+      getGoodsList({nodeLevel:2}).then(res=>{
+        var arr = res.data
+        var num = 0
+        arr.forEach(v => {
+          num=num+1
+          v.num = num
+        });
+        this.dataListTwo = arr
+      })
     },
-    oneClick(){
-      this.oneModal = true
+    oneClick(id){
+      if (id=='') {
+        this.oneModal = true
+      }else{
+        this.list.id = id.id
+        this.list.name = id.name
+        this.oneModal = true
+      }
+     
     },
     twoClick(){
       this.twoModal = true
     },
     oneOnRowClick(data){
-      var arr = []
-      for (const item of this.dataListTwo1) {
-        if (item.id == data.id) {
-          arr.push(item)
-        }
-      }
-      this.dataListTwo = arr
-
+      getGoodsList({parentId:data.id}).then(res=>{
+        var arr = res.data
+        var num = 0
+        arr.forEach(v => {
+          num=num+1
+          v.num = num
+        });
+        this.dataListTwo = arr
+      })
     },
     confirm(){
       this.$refs['formValidate'].validate((valid) => {
           if (valid) {
-            this.$Message.success('Success!');
-            this.cancel()
+            getGoodsSave(this.list).then(res=>{
+              this.$Message.success('保存成功');
+              this.getList()
+              this.cancel()
+            }).catch(err => {
+              this.$Message.error(err.response.data.message)
+            })
+            
 
           } else {
             this.$Message.error('请全部填写!');
@@ -241,16 +236,24 @@ export default {
     },
     confirmTwo(){
       this.$refs['formValidate1'].validate((valid) => {
-          if (valid) {
-            this.$Message.success('Success!');
+        if (valid) {
+          getGoodsSave(this.listTwo).then(res=>{
+            this.$Message.success('保存成功');
             this.cancel()
-
-          } else {
-            this.$Message.error('请全部填写!');
-          }
+          }).catch(err => {
+            this.$Message.error(err.response.data.message)
+          })
+        } else {
+          this.$Message.error('请全部填写!');
+        }
       })
     },
     cancel(){
+      this.list.name=''
+      this.list.id=''
+      this.listTwo.name=''
+      this.listTwo.id=''
+      this.listTwo.parentId=''
       this.oneModal = false
       this.twoModal = false
     },

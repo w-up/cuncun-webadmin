@@ -103,7 +103,7 @@
         },
         methods: {
             ...mapActions('admin/account', [
-                'register',
+                // 'register',
                 'login'
             ]),
             handleChangePassword (val) {
@@ -117,15 +117,15 @@
                 if (valid) {
                     if (valid) {
                         const { mail, password, mobile, captcha } = values;
-                        this.register({
-                            mail,
-                            password,
-                            mobile,
-                            captcha
-                        })
-                            .then(() => {
-                                this.$router.replace({ name: 'register-result' });
-                        });
+                        // this.register({
+                        //     mail,
+                        //     password,
+                        //     mobile,
+                        //     captcha
+                        // })
+                        //     .then(() => {
+                        //         this.$router.replace({ name: 'register-result' });
+                        // });
                     }
                 }
             },

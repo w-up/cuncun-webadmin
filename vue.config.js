@@ -15,7 +15,19 @@ module.exports = {
     runtimeCompiler: true,
     productionSourceMap: false,
     devServer: {
-        publicPath: Setting.publicPath
+        disableHostCheck: true,
+        hot: true,
+        inline: true,
+        proxy: {
+        '/server': {
+            target: 'http://cuncun.admin.iisu.cn/server',
+            changeOrigin: true, // 开启代理
+            pathRewrite: {
+            '^/server': ''
+            }
+        }
+        }
+        // publicPath: Setting.publicPath
     },
     css: {
         loaderOptions: {

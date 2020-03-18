@@ -11,8 +11,8 @@
                 <div class="page-account-top-desc">存存管理系统</div>
             </div>
             <Login @on-submit="handleSubmit">
-                <UserName name="username" value="admin" />
-                <Password name="password" value="admin" enter-to-submit />
+                <UserName name="username" value="" />
+                <Password name="password" value="" enter-to-submit />
                 <!-- <div class="page-account-auto-login">
                     <Checkbox v-model="autoLogin" size="large">{{ $t('page.login.remember') }}</Checkbox>
                     <a href="">{{ $t('page.login.forgot') }}</a>
