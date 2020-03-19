@@ -146,7 +146,7 @@ export default {
         },
         {
           title: '上级分类',
-          key: 'contacts',
+          key: 'parentName',
           width: 170,
           align: 'center'
         },
