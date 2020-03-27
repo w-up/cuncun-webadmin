@@ -17,8 +17,8 @@ const Setting = {
     // 页面切换时，是否显示模拟的进度条
     showProgressBar: true,
     // 接口请求地址
-    apiBaseURL:'http://cuncun.admin.iisu.cn' ,//'http://cuncun.admin.iisu.cn' 
-    // apiBaseURL:env === 'development' ? '/' : '/',
+    //apiBaseURL:'http://cuncun.admin.iisu.cn' ,//'http://cuncun.admin.iisu.cn' 
+    apiBaseURL:env === 'development' ? '/' : '/',
     // 接口请求返回错误时，弹窗的持续时间，单位：秒
     modalDuration: 3,
     // 接口请求返回错误时，弹窗的类型，可选值为 Message 或 Notice
@@ -38,7 +38,7 @@ const Setting = {
      * 布局配置
      * */
     // 侧边菜单宽度，单位 px，不可动态修改，需与 setting.less 的 @menuSideWidth 保持一致
-    menuSideWidth: 256,
+    menuSideWidth: 200,
     layout: {
         // 侧边栏风格，可选值为 dark 或 light
         siderTheme: 'dark',
@@ -78,11 +78,11 @@ const Setting = {
         // 是否显示重载按钮
         showReload: true,
         // 是否显示搜索
-        showSearch: true,
+        showSearch: false,
         // 是否显示通知
-        showNotice: true,
+        showNotice: false,
         // 是否显示全屏
-        showFullscreen: true,
+        showFullscreen: false,
         // 在手机访问时，是否在顶部显示小尺寸 logo
         showMobileLogo: true,
         // 是否显示全局面包屑，开启 headerMenu 时不可用

@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div style="margin:15px 0">
+    <!-- <div style="margin:15px 0">
       <Select  style="width:200px">
         <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
       </Select>
-    </div>
+    </div> -->
     <div style="margin:12px 0">
       <Table border :columns="columns" :data="data">
         <template slot-scope="{ row, index }" slot="caseNum">

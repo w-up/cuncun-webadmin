@@ -56,7 +56,7 @@
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(188, 190, 191);cursor: default" v-if="row.state == '11'">已取消</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#FF8768;cursor: default" v-if="row.state == '22'">待处理</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(74, 210, 142);cursor: default" v-if="row.state == '33'">待支付</Button>
-            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#68B0EF;cursor: default" v-if="row.state == '44'">入库作业中</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#68B0EF;cursor: default" v-if="row.state == '44'">入库中</Button>
           </template>
           <template slot-scope="{ row, index }" slot="paymentType">
             <Icon type="md-checkmark-circle" />
@@ -71,6 +71,7 @@
       <div class="page" style="margin-top:20px;display:flex;justify-content:space-between">
         <div class="operationBtn">
           <Button type="success">接单</Button>
+          <Button type="error">拒单</Button>
           <Button type="info">导出取件单</Button>
           <Button type="info">导出上架单</Button>
           <Button type="warning" @click="assignRidersClick">分配骑手</Button>

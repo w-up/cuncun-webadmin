@@ -38,17 +38,13 @@
       </Form>
       <Tabs  style="margin-top:20px" @on-click="tabsClick">
         <TabPane label="全部" name="name1"></TabPane>
-        <TabPane label="待处理" name="name2"></TabPane>
-        <TabPane label="待分配骑手" name="name3"></TabPane>
-        <TabPane label="待取货" name="name4"></TabPane>
-        <TabPane label="回库中" name="name5"></TabPane>
-        <TabPane label="入库作业中" name="name6"></TabPane>
-        <TabPane label="安检中" name="name7"></TabPane>
-        <TabPane label="待拍照" name="name8"></TabPane>
-        <TabPane label="待上架" name="name9"></TabPane>
-        <TabPane label="待支付" name="name10"></TabPane>
-        <TabPane label="已完成" name="name11"></TabPane>
-        <TabPane label="已取消" name="name12"></TabPane>
+        <TabPane label="待付款" name="name2"></TabPane>
+        <TabPane label="待处理" name="name3"></TabPane>
+        <TabPane label="拣货作业中" name="name4"></TabPane>
+        <TabPane label="待发货" name="name5"></TabPane>
+        <TabPane label="待签收" name="name6"></TabPane>
+        <TabPane label="已完成" name="name7"></TabPane>
+        <TabPane label="已取消" name="name8"></TabPane>
       </Tabs>
       <div style="margin-top:20px">
         <Table border ref="selection" :columns="columnsList" :data="dataList">
@@ -56,7 +52,7 @@
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(188, 190, 191);cursor: default" v-if="row.state == '11'">已取消</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#FF8768;cursor: default" v-if="row.state == '22'">待处理</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(74, 210, 142);cursor: default" v-if="row.state == '33'">待支付</Button>
-            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#68B0EF;cursor: default" v-if="row.state == '44'">入库作业中</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#68B0EF;cursor: default" v-if="row.state == '44'">入库中</Button>
           </template>
           <template slot-scope="{ row, index }" slot="operation">
             <Button type="text" size="small" icon="md-create" style="margin-right: 5px;color:#19be6b;" @click="detailsClick(row.id)">详情</Button>
@@ -66,6 +62,8 @@
       <div class="page" style="margin-top:20px;display:flex;justify-content:space-between">
         <div class="operationBtn">
           <!-- <Button type="success">接单</Button> -->
+          <Button type="success">接单</Button>
+          <Button type="error">拒单</Button>
           <Button type="success">导出拣货单</Button>
           <Button type="info">导出配送单</Button>
           <Button type="warning" @click="assignRidersClick">分配骑手</Button>

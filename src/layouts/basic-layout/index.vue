@@ -3,7 +3,7 @@
         <Sider v-if="!isMobile && !hideSider" class="i-layout-sider" :class="siderClasses" :width="menuSideWidth">
             <i-menu-side :hide-logo="isHeaderStick && headerFix && showHeader" />
         </Sider>
-        <Layout class="i-layout-inside" :class="insideClasses">
+        <Layout class="i-layout-inside" :class="insideClasses"  >
             <transition name="fade-quick">
                 <Header class="i-layout-header" :class="headerClasses" :style="headerStyle" v-show="showHeader" v-resize="handleHeaderWidthChange">
                     <i-header-logo v-if="isMobile && showMobileLogo" />
@@ -261,3 +261,10 @@
         }
     }
 </script>
+<style lang="less" scoped>
+
+.i-layout-inside-fix-with-sider{
+    padding-left: 188px;
+}
+
+</style>
