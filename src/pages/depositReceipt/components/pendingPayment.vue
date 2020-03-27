@@ -10,6 +10,9 @@
       <Table border :columns="caseColumns" :data="data">
       </Table>
     </Card>
+    <div style="margin-top:20px">
+      <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
+    </div>
   </div>
 </template>
 

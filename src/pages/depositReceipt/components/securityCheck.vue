@@ -44,6 +44,7 @@
       <div style="margin-top:20px">
         <Button type="info" style="margin:0 8px 5px 0" @click="addClick">添加一行</Button>
         <Button type="success" style="margin:0 8px 5px 0">安检完成</Button>
+        <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
       </div>
     </div>
   </div>
@@ -93,14 +94,8 @@ export default {
         {
           title: '安检员备注',
           align:'center',
-          width:250,
+          minWidth:250,
           slot: 'securityRemark'
-        },
-        {
-          title: '备注',
-          minWidth:200,
-          align:'center',
-          key: 'remarks'
         },
         {
           title: '操作',

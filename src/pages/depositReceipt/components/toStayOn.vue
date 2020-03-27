@@ -1,4 +1,7 @@
 <template>
+<div>
+
+
   <div style="display:flex;flex-wrap: wrap;"> 
     <Card style="width:550px;margin-right:5px;margin-top:10px">
       <p slot="title">纸箱列表</p>
@@ -31,13 +34,10 @@
       </Table>
       <div style="margin-top:20px">
         <Button type="success" style="margin:0 8px 5px 0">保存库位</Button>
-        <Button type="warning" style="margin:0 8px 5px 0">保存信息</Button>
+        <Button type="warning" style="margin:0 8px 5px 0">编辑信息</Button>
       </div>
     </Card>
-    <div style="margin:20px 0">
-      <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
-      <Button type="success" style="margin:0 8px 5px 0">该步骤已完成</Button>
-    </div>
+    
     <Modal v-model="refusalOfOrdersModal"  title="照片上传">
       <p style="color:red">注：建议添加 100*100px的照片；</p>
       <Button type="success" >上传</Button>
@@ -48,6 +48,11 @@
         </div>
       </div>
     </Modal>
+  </div>
+  <div style="margin:20px 0">
+      <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
+      <Button type="success" style="margin:0 8px 5px 0">该步骤已完成</Button>
+    </div>
   </div>
 </template>
 

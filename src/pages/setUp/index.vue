@@ -66,7 +66,15 @@
           </Card>
         </Col>
         <Col span="12">
-
+           <Card style="width:500px">
+            <p slot="title">预约日期限额设置</p>
+            <Table border :columns="orderColumns" :data="orderData">
+              <template slot-scope="{ row, index }" slot="price">
+                <Input  placeholder="请输入" v-model="row.num" @on-change="logisticsData[index].num= row.num"></Input>
+              </template>
+            </Table>
+            <Button type="success" style="margin-top:20px" >保存</Button>
+          </Card>
         </Col>
       </Row>
     </Card>
@@ -187,6 +195,16 @@ export default {
           slot: 'price'
         },
       ],
+      orderColumns:[
+        {
+          title: '项目',
+          key: 'name'
+        },
+        {
+          title: '数量',
+          slot: 'price'
+        },
+      ],
       goodsColumns: [
         {
           title: '箱子数量',
@@ -278,6 +296,12 @@ export default {
         {
           name:'额外每公斤',
           num:''
+        },
+      ],
+      orderData:[
+        {
+          name:'日限额',
+          num:'100'
         },
       ],
     }

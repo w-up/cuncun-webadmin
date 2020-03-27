@@ -81,13 +81,13 @@ export default {
           align: 'center'
         },
         {
-          title: 'A箱数量',
+          title: 'SD箱数量',
           key: 'contacts',
           width: 120,
           align: 'center'
         },
         {
-          title: 'B箱数量',
+          title: 'EC箱数量',
           key: 'phone',
           width: 125,
           align: 'center'

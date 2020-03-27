@@ -16,9 +16,9 @@
             <FormItem label="手机号：">
                 <span>{{orderList.phone}}</span>
             </FormItem>
-            <FormItem label="骑手：">
+            <FormItem label="物流单号：">
                 <span>{{orderList.rider}}</span>
-                <Button type="success" style="margin-left:10px">分配骑手</Button>
+                <!-- <Button type="success" style="margin-left:10px">分配骑手</Button> -->
             </FormItem>
             <FormItem label="联系人：">
                 <span>{{orderList.contacts}}</span>
@@ -26,12 +26,12 @@
             <FormItem label="联系电话：">
                 <span>{{orderList.telephone}}</span>
             </FormItem>
-            <FormItem label="取件地址：">
+            <FormItem label="返送地址：">
                 <span>{{orderList.address}}</span>
             </FormItem>
-            <FormItem label="取件时间：">
+            <!-- <FormItem label="取件时间：">
                 <span>{{orderList.time}}</span>
-            </FormItem>
+            </FormItem> -->
           </Form>
         </Card>
         <Card style="width:350px;margin-right:5px;margin-top:10px">
@@ -39,19 +39,19 @@
           <Button slot="extra" v-show='type=="待付款"?true:false' @click="adjustmentClick">调整费用</Button>
           <div>
             <Form  :label-width="110">
-              <FormItem label="运输费用：">
+              <FormItem label="物流费用：">
                   <span style="margin-left:120px">￥{{costList.transport}}</span>
               </FormItem>
-              <FormItem label="打包费用：">
+              <FormItem label="调整费用：">
                   <span style="margin-left:120px">￥{{costList.pack}}</span>
               </FormItem>
-              <FormItem label="纸箱费用：">
+              <!-- <FormItem label="纸箱费用：">
                   <span style="margin-left:120px">￥{{costList.case}}</span>
-              </FormItem>
+              </FormItem> -->
               <FormItem label="订单总价：" style="margin-bottom:45px" class="size20">
                   <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.total}}</span>
               </FormItem>
-              <FormItem label="实付定金：" class="size20">
+              <FormItem label="待付金额：" class="size20">
                   <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.actualPayment}}</span>
               </FormItem>
             </Form>
@@ -60,15 +60,21 @@
         <Card style="width:500px;margin-top:10px">
           <p slot="title">备注信息</p>
           <Form  :label-width="90" label-position='top'>
-            <FormItem label="订单号：">
+            <FormItem label="用户备注：">
               <Input  maxlength="200" show-word-limit type="textarea" :rows="5" />
             </FormItem>
-            <FormItem label="用户姓名：">
+            <FormItem label="管理员备注：">
               <Input  maxlength="200" show-word-limit type="textarea" :rows="5" />
               <Button type="success" style="margin-top:10px">保存</Button>
             </FormItem>
           </Form>
         </Card>
+      </div>
+      <div style="margin:20px 0">
+        <div style="margin:20px 0"> 测试切换状态</div>
+        <Select  slot="extra"  style="width:200px;" v-model="type">
+          <Option v-for="item in stateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        </Select>
       </div>
       <div style="margin:20px 0">
         <Button :disabled='type=="待处理"?true:type=="拣货作业中"?true:type=="待录单"?true:type=="备货完成"?true:type=="已完成"?true:type=="已取消"?true:false' 
@@ -191,11 +197,11 @@ export default {
         },
         {
           value:'待录单',
-          label:'待录单',
+          label:'待发货',
         },
         {
           value:'备货完成',
-          label:'备货完成',
+          label:'待签收',
         },
         {
           value:'已完成',

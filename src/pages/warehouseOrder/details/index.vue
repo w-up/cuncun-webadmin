@@ -90,7 +90,15 @@ export default {
           key: 'bb'
         },
         {
-          title: '箱子数量',
+          title: '箱子编号',
+          key: 'cc'
+        },
+        {
+          title: '初始物品数量',
+          key: 'cc'
+        },
+        {
+          title: '当前物品数量',
           key: 'cc'
         },
         {
@@ -103,19 +111,19 @@ export default {
       ],
       columnsCost:[
         {
-          title: 'A箱数量',
+          title: 'SD箱数量',
           key: 'aa'
         },
         {
-          title: 'A箱总费用',
+          title: 'SD箱总费用',
           key: 'bb'
         },
         {
-          title: 'B箱数量',
+          title: 'EC箱数量',
           key: 'cc'
         },
         {
-          title: 'B箱总费用',
+          title: 'EC箱总费用',
           key: 'dd'
         },
         {

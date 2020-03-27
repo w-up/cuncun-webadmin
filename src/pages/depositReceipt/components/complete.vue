@@ -38,6 +38,12 @@
     <Card style="width:900px;margin-right:5px;margin-top:10px">
       <p slot="title">物品列表</p>
       <Table border :columns="columnsGoods" :data="data">
+         <template slot-scope="{ row, index }" slot="goodsNum" >
+          <Input  placeholder="请输入" :disabled="edit=='编辑'"></Input>
+        </template>
+         <template slot-scope="{ row, index }" slot="goodsName" >
+          <Input  placeholder="请输入" :disabled="edit=='编辑'"></Input>
+        </template>
         <template slot-scope="{ row, index }" slot="storehouse">
           <Input  placeholder="请输入" ></Input>
         </template>
@@ -45,9 +51,21 @@
           <Button type="success" v-show="row.type=='1'" @click="imgClick">查看</Button>
           <Button type="primary" v-show="row.type=='2'" @click="imgClick">上传</Button>
         </template>
+        <template slot-scope="{ row, index }" slot="exhibition" >
+          <Input  placeholder="请输入" :disabled="edit=='编辑'"></Input>
+        </template>
+        <template slot-scope="{ row, index }" slot="classification" >
+          <Input  placeholder="请输入" :disabled="edit=='编辑'"></Input>
+        </template>
+        <template slot-scope="{ row, index }" slot="labelName" >
+          <Input  placeholder="请输入" :disabled="edit=='编辑'"></Input>
+        </template>
+        <template slot-scope="{ row, index }" slot="remarks" >
+          <Input  placeholder="请输入" :disabled="edit=='编辑'"></Input>
+        </template>
       </Table>
       <div style="margin-top:20px">
-        <Button type="success" style="margin:0 8px 5px 0">编辑</Button>
+        <Button type="success" style="margin:0 8px 5px 0" @click="editClick()">{{edit}}</Button>
         <Button type="warning" style="margin:0 8px 5px 0">发布</Button>
       </div>
     </Card>
@@ -74,6 +92,7 @@ export default {
   name: 'pendingPayment',
   data () {
     return {
+      edit:'编辑',
       refusalOfOrdersModal:false,
       columnsGoods:[
         {
@@ -86,13 +105,13 @@ export default {
           title: '物品编号',
           align:'center',
           width:110,
-          key: 'goodsNum'
+          slot: 'goodsNum'
         },
         {
           title: '物品名称',
           align:'center',
           width:110,
-          key: 'goodsName'
+          slot: 'goodsName'
         },
         {
           title: '库位',
@@ -110,25 +129,25 @@ export default {
           title: '展示区域',
           align:'center',
           width:110,
-          key: 'goodsName'
+          slot: 'exhibition'
         },
         {
           title: '分类',
           align:'center',
-          width:70,
-          key: 'goodsName'
+          width:120,
+          slot: 'classification'
         },
         {
           title: '标签',
           align:'center',
-          width:70,
-          key: 'goodsName'
+          width:120,
+          slot: 'labelName'
         },
         {
           title: '备注',
           align:'center',
-          minWidth:100,
-          key: 'remarks'
+          minWidth:120,
+          slot: 'remarks'
         },
       ],
       columns: [
@@ -204,6 +223,13 @@ export default {
     imgClick(){
       this.refusalOfOrdersModal = true
     },
+    editClick(){
+      if (this.edit=='编辑') {
+        this.edit='保存'
+      }else{
+        this.edit='编辑'
+      }
+    }
   }
 }
 </script>

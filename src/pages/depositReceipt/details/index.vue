@@ -18,7 +18,7 @@
             </FormItem>
             <FormItem label="骑手：">
                 <span>{{orderList.rider}}</span>
-                <Button type="success" style="margin-left:10px">分配骑手</Button>
+                <Button type="success" style="margin-left:10px" v-show="type=='安检中'">分配骑手</Button>
             </FormItem>
             <FormItem label="联系人：">
                 <span>{{orderList.contacts}}</span>
@@ -88,10 +88,10 @@
         <Card style="width:500px;margin-top:10px">
           <p slot="title">备注信息</p>
           <Form  :label-width="90" label-position='top'>
-            <FormItem label="订单号：">
+            <FormItem label="用户备注：">
               <Input  maxlength="200" show-word-limit type="textarea" :rows="5" />
             </FormItem>
-            <FormItem label="用户姓名：">
+            <FormItem label="管理员备注：">
               <Input  maxlength="200" show-word-limit type="textarea" :rows="5" />
               <Button type="success" style="margin-top:10px">保存</Button>
             </FormItem>
@@ -143,7 +143,7 @@
           <span style="line-height:51px">11111</span>
         </div>
       </div> -->
-      <Modal v-model="adjustmentModel"  title="照片上传">
+      <Modal v-model="adjustmentModel"  title="费用调整">
         <Form  :label-width="110">
           <FormItem label="运输费用：">
               <span style="margin-left:120px">￥{{costList.transport}}</span>

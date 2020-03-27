@@ -58,6 +58,11 @@
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(74, 210, 142);cursor: default" v-if="row.state == '33'">待支付</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#68B0EF;cursor: default" v-if="row.state == '44'">入库作业中</Button>
           </template>
+          <template slot-scope="{ row, index }" slot="paymentType">
+            <Icon type="md-checkmark-circle" />
+            <Icon type="md-close-circle" />
+            <Icon type="md-close-circle" />
+          </template>
           <template slot-scope="{ row, index }" slot="operation">
             <Button type="text" size="small" icon="md-create" style="margin-right: 5px;color:#19be6b;" @click="detailsClick(row.id)">详情</Button>
           </template>
@@ -114,6 +119,12 @@ export default {
         {
           title: '订单状态',
           slot: 'type',
+          width: 120,
+          align: 'center'
+        },
+        {
+          title: '支付状态',
+          slot: 'paymentType',
           width: 120,
           align: 'center'
         },

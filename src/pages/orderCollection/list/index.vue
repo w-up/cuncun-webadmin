@@ -18,16 +18,16 @@
           <FormItem label="联系电话" >
             <Input  placeholder="请输入" style="width:200px"></Input>
           </FormItem>
-          <FormItem label="骑手姓名" >
+          <!-- <FormItem label="骑手姓名" >
             <Input  placeholder="请输入" style="width:200px"></Input>
-          </FormItem>
-          <FormItem label="取件日期" >
+          </FormItem> -->
+          <FormItem label="返送日期" >
             <DatePicker  type="date"  placeholder="开始日期" style="width: 200px" transfer></DatePicker>
             <span style="margin:0 10px">~</span>
             <DatePicker  type="date"  placeholder="结束日期" style="width: 200px" transfer></DatePicker>
             <!-- :value="searchList.beginDt"  @on-change="searchList.beginDt=$event" -->
           </FormItem>
-          <FormItem label="取件时间" >
+          <FormItem label="返送时间" >
             <TimePicker type="time"  placeholder="开始时间" style="width: 200px" transfer></TimePicker>
             <span style="margin:0 10px">~</span>
             <TimePicker type="time"  placeholder="结束时间" style="width: 200px" transfer></TimePicker>
@@ -141,15 +141,21 @@ export default {
           minWidth: 240,
           align: 'center'
         },
+        // {
+        //   title: '返送日期',
+        //   key: 'date',
+        //   width: 120,
+        //   align: 'center'
+        // },
+        // {
+        //   title: '返送时间',
+        //   key: 'time',
+        //   width: 100,
+        //   align: 'center'
+        // },
         {
-          title: '返送日期',
-          key: 'date',
-          width: 120,
-          align: 'center'
-        },
-        {
-          title: '返送时间',
-          key: 'time',
+          title: '订单重量',
+          key: 'aass',
           width: 100,
           align: 'center'
         },
@@ -166,7 +172,7 @@ export default {
           align: 'center'
         },
         {
-          title: '骑手姓名',
+          title: '物流单号',
           key: 'riderName',
           width: 120,
           align: 'center'
@@ -174,6 +180,12 @@ export default {
         {
           title: '用户ID',
           key: 'userID',
+          width: 125,
+          align: 'center'
+        },
+        {
+          title: '拣货员',
+          key: 'hjaj',
           width: 125,
           align: 'center'
         },
