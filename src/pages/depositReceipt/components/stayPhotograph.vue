@@ -73,9 +73,12 @@
           <Button type="info" style="margin:0 8px 5px 0" @click="addClick">添加一行</Button>
           <Button type="success" style="margin:0 8px 5px 0">保存</Button>
           <Button type="warning" style="margin:0 8px 5px 0">发布信息</Button>
-          <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
         </div>
       </Card>
+      <div style="margin-top:20px">
+        <Button type="success" style="margin:0 8px 5px 0">此步骤已完成</Button>
+        <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
+      </div>
     </div>
     <Modal v-model="refusalOfOrdersModal"  title="照片上传">
       <p style="color:red">注：建议添加 100*100px的照片；</p>

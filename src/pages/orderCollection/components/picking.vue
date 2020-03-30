@@ -13,9 +13,10 @@
       </div>
     </div>
     <div>
-      <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
       <Button type="warning" style="margin:0 8px 5px 0">分配拣货员</Button>
       <Button type="success" style="margin:0 8px 5px 0">拣货完成</Button>
+      <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出拣货单</Button>
+      <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出配送单</Button>
     </div>
   </div>
 </template>

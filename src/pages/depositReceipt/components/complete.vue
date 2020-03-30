@@ -80,10 +80,10 @@
       </div>
     </Modal>
   </div>
-  <div style="margin:20px 0">
+  <!-- <div style="margin:20px 0">
+    <Button type="success" style="margin:0 8px 5px 0">此步骤已完成</Button>
     <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
-    <Button type="success" style="margin:0 8px 5px 0">该步骤已完成</Button>
-  </div>
+  </div> -->
   </div>
 </template>
 

@@ -1,4 +1,5 @@
 <template>
+<div>
   <div style="display:flex;flex-wrap: wrap;"> 
     <Card style="width:450px;margin-right:5px;margin-top:10px">
       <p slot="title">预计存储物品</p>
@@ -10,10 +11,13 @@
       <Table border :columns="caseColumns" :data="data">
       </Table>
     </Card>
-    <div style="margin-top:20px">
-      <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
-    </div>
   </div>
+  <div style="margin-top:20px">
+    <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
+    <Button type="success" style="margin:0 8px 5px 0">此步骤已完成</Button>
+  </div>
+</div>
+  
 </template>
 
 <script>

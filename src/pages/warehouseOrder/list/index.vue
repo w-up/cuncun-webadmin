@@ -39,7 +39,7 @@
       </div>
       <div class="page" style="margin:20px 0;display:flex;justify-content:space-between">
         <div class="operationBtn">
-          <Button type="success">审查</Button>
+          <Button type="success">批量发送</Button>
         </div>
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
       </div>

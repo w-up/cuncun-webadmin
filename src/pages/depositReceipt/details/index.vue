@@ -18,7 +18,7 @@
             </FormItem>
             <FormItem label="骑手：">
                 <span>{{orderList.rider}}</span>
-                <Button type="success" style="margin-left:10px" v-show="type=='安检中'">分配骑手</Button>
+                <Button type="success" style="margin-left:10px" v-show='type=="待取货"?true:type=="回库中"?true:type=="安检中"?true:false'>修改骑手</Button>
             </FormItem>
             <FormItem label="联系人：">
                 <span>{{orderList.contacts}}</span>
@@ -37,7 +37,7 @@
         <Card style="width:350px;margin-right:5px;margin-top:10px">
           <p slot="title">费用明细</p>
           <Button slot="extra" v-show='type=="拍照中"?true:type=="待上架"?true:type=="已完成"?true:type=="已取消"?true:false' @click="adjustmentClick">调整费用</Button>
-          <div v-show='type=="待处理"?true:type=="待分配骑手"?true:type=="待取货"?true:type=="回库中"?true:type=="安检中"?true:false'>
+          <div v-show='type=="待付款"?true:type=="待处理"?true:type=="待分配骑手"?true:type=="待取货"?true:type=="回库中"?true:type=="安检中"?true:false'>
             <Form  :label-width="110">
               <FormItem label="运输费用：">
                   <span style="margin-left:120px">￥{{costList.transport}}</span>
@@ -79,8 +79,13 @@
               <FormItem label="实付定金：" class="size20">
                   <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.actualPayment}}</span>
               </FormItem>
-              <FormItem label="未结算">
-                <Button type="success" style="margin-left:120px">发起结算</Button>
+              <FormItem label="未结算" v-show='type=="拍照中"?true:type=="待上架"?true:false'>
+                <Poptip
+                    confirm
+                    transfer
+                    title="是否确认发起结算?">
+                    <Button type="success" style="margin-left:120px">发起结算</Button>
+                </Poptip>
               </FormItem>
             </Form>
           </div>

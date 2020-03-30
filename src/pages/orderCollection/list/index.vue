@@ -64,20 +64,20 @@
           <!-- <Button type="success">接单</Button> -->
           <Button type="success">接单</Button>
           <Button type="error">拒单</Button>
-          <Button type="success">导出拣货单</Button>
-          <Button type="info">导出配送单</Button>
-          <Button type="warning" @click="assignRidersClick">分配骑手</Button>
+          <Button type="warning" @click="assignRidersClick">分配拣货员</Button>
+          <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出配送单</Button>
+          <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出拣货单</Button>
         </div>
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
       </div>
     </Card>
     <Modal
         v-model="assignRidersModal"
-        title="分配骑手"
+        title="分配拣货员"
         :mask-closable="false">
-        <Form ref="formValidate" :model="assignRidersList" :rules="ruleValidate" :label-width="80">
-          <FormItem label="骑手姓名" prop="name">
-              <Input v-model="assignRidersList.name" placeholder="请为选中的订单批量分配骑手"></Input>
+        <Form ref="formValidate" :model="assignRidersList" :rules="ruleValidate" :label-width="100">
+          <FormItem label="拣货员姓名" prop="name">
+              <Input v-model="assignRidersList.name" placeholder="请为选中的订单批量分配骑手" style="width:250px"></Input>
           </FormItem>
         </Form>
         <div slot="footer" style="text-align: right;">

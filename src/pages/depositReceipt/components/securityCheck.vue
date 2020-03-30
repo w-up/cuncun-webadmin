@@ -43,7 +43,9 @@
       </Table>
       <div style="margin-top:20px">
         <Button type="info" style="margin:0 8px 5px 0" @click="addClick">添加一行</Button>
-        <Button type="success" style="margin:0 8px 5px 0">安检完成</Button>
+      </div>
+      <div style="margin-top:20px">
+        <Button type="success" style="margin:0 8px 5px 0">此步骤已完成</Button>
         <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
       </div>
     </div>
