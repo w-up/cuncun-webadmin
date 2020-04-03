@@ -59,12 +59,12 @@
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#68B0EF;cursor: default" v-if="row.state == '44'">入库中</Button>
           </template>
           <template slot-scope="{ row, index }" slot="paymentType">
-            <Icon type="md-checkmark-circle" />
-            <Icon type="md-close-circle" />
-            <Icon type="md-close-circle" />
+            <Icon type="md-checkmark-circle" size='24' color="#19be6b"/>
+            <Icon type="md-close-circle"  size='24' color="#ed4014"/>
+            <Icon type="md-close-circle"  size='24' color="#ed4014"/>
           </template>
           <template slot-scope="{ row, index }" slot="operation">
-            <Button type="text" size="small" icon="md-create" style="margin-right: 5px;color:#19be6b;" @click="detailsClick(row.id)">详情</Button>
+            <Button type="text" size="small"  style="margin-right: 5px;color:#19be6b;" @click="detailsClick(row.id)">详情</Button>
           </template>
         </Table>
       </div>

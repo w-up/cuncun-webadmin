@@ -6,7 +6,7 @@
       <div style="margin-top:20px">
         <Table border ref="selection" :columns="columnsList" :data="dataList">
           <template slot-scope="{ row, index }" slot="operation">
-            <Button type="text" size="small" icon="md-create" style="margin-right: 5px;color:#19be6b;" @click="boxClick(row.id)">编辑</Button>
+            <Button type="text" size="small"   style="margin-right: 5px;color:#19be6b;" @click="boxClick(row.id)">编辑</Button>
             <Poptip
               confirm
               transfer

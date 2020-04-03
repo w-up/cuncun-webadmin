@@ -25,8 +25,8 @@
       <div style="margin-top:20px">
         <Table border ref="selection" :columns="columnsList" :data="dataList">
           <template slot-scope="{ row, index }" slot="operation">
-            <Button type="text" size="small" icon="md-create" style="margin-right: 5px;color:#19be6b;" @click="addressClick(row.id)">常用地址</Button>
-            <Button type="text" size="small" icon="md-reorder" style="margin-right: 5px;color:#ff9900;" @click="detailedClick(row.id)">订单明细</Button>
+            <Button type="text" size="small"   style="margin-right: 5px;color:#19be6b;" @click="addressClick(row.id)">常用地址</Button>
+            <Button type="text" size="small"  style="margin-right: 5px;color:#ff9900;" @click="detailedClick(row.id)">订单明细</Button>
           </template>
         </Table>
       </div>

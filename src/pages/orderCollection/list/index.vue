@@ -55,7 +55,7 @@
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#68B0EF;cursor: default" v-if="row.state == '44'">入库中</Button>
           </template>
           <template slot-scope="{ row, index }" slot="operation">
-            <Button type="text" size="small" icon="md-create" style="margin-right: 5px;color:#19be6b;" @click="detailsClick(row.id)">详情</Button>
+            <Button type="text" size="small"   style="margin-right: 5px;color:#19be6b;" @click="detailsClick(row.id)">详情</Button>
           </template>
         </Table>
       </div>
