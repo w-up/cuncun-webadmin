@@ -13,7 +13,7 @@
               @on-ok="okDel(row.id)"
               title="您确认删除这条内容吗？"
             >
-            <Button type="text" size="small" icon="md-trash" style="margin-right: 5px;color:#ff9900;">删除</Button>
+            <Button type="text" size="small"  style="margin-right: 5px;color:#ff9900;">删除</Button>
             </Poptip>
           </template>
         </Table>

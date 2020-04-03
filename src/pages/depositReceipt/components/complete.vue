@@ -1,7 +1,7 @@
 <template>
   <div>
   <div style="display:flex;flex-wrap: wrap;"> 
-    <Card style="width:750px;margin-right:5px;margin-top:10px">
+    <Card style="width:45%;margin-right:5px;margin-top:10px">
       <p slot="title">纸箱列表</p>
       <Table border :columns="columns" :data="data">
         <template slot-scope="{ row, index }" slot="caseName">
@@ -12,8 +12,8 @@
         </template>
         <template slot-scope="{ row, index }" slot="inspectType">
           <div v-show="row.type=='1'">
-            <Icon type="md-checkmark-circle" v-show="row.type=='1'" size='26px'/>
-            <Icon type="md-close-circle" v-show="row.type=='2'" size='26px'/>
+            <Icon type="md-checkmark-circle" v-show="row.type=='1'" size='24' color="#19be6b"/>
+            <Icon type="md-close-circle" v-show="row.type=='2'" size='24' color="#ed4014"/>
           </div>
           <Select transfer v-show="row.type=='2'">
             <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -27,15 +27,15 @@
           <div v-show="row.type=='1'">{{row.name}}</div>
         </template>
          <template slot-scope="{ row, index }" slot="operation">
-          <Button type="text" size="small" icon="md-create" style="margin-right: 5px;color:#19be6b;" v-show="row.type=='1'" >编辑</Button>
-          <Button type="text" size="small" icon="ios-add-circle" style="color:#ed3f14;"   v-show="row.type=='2'">保存</Button>
+          <Button type="text" size="small"  style="margin-right: 5px;color:#19be6b;" v-show="row.type=='1'" >编辑</Button>
+          <Button type="text" size="small"  style="color:#ed3f14;"   v-show="row.type=='2'">保存</Button>
         </template>
       </Table>
       <div style="margin-top:20px">
-        <Button type="success" style="margin:0 8px 5px 0">保存库位</Button>
+        <Button type="success" style="margin:0 8px 5px 0">保存信息</Button>
       </div>
     </Card>
-    <Card style="width:900px;margin-right:5px;margin-top:10px">
+    <Card style="width:54%;margin-right:5px;margin-top:10px">
       <p slot="title">物品列表</p>
       <Table border :columns="columnsGoods" :data="data">
          <template slot-scope="{ row, index }" slot="goodsNum" >
@@ -148,6 +148,12 @@ export default {
           align:'center',
           minWidth:120,
           slot: 'remarks'
+        },
+        {
+          title: '发布时间',
+          align:'center',
+          minWidth:120,
+          key: 'time'
         },
       ],
       columns: [

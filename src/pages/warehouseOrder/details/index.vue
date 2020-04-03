@@ -43,12 +43,12 @@
             </Form>
           </FormItem>
         </Form>
-        <Table border :columns="columnsCost" :data="dataCost"></Table>
+        <Table border :columns="columnsCost" :data="dataCost" :span-method="handleSpan"></Table>
       </Card>
       <div style="margin:20px 0"> 
         <Card >
           <p slot="title">数据信息</p>
-          <Table border :columns="columns" :data="data"></Table>
+          <Table border :columns="columns" :data="data" ></Table>
         </Card>
       </div>
     </Card>
@@ -102,8 +102,16 @@ export default {
           key: 'cc'
         },
         {
-          title: '仓储费用',
-          key: 'dd'
+          title: '占比',
+          key: 'cc'
+        },
+        {
+          title: '原始仓储费用',
+          key: 'cc'
+        },
+        {
+          title: '实收仓储费用',
+          key: 'cc'
         },
       ],
       data:[
@@ -119,20 +127,21 @@ export default {
           key: 'bb'
         },
         {
-          title: 'EC箱数量',
-          key: 'cc'
-        },
-        {
-          title: 'EC箱总费用',
-          key: 'dd'
-        },
-        {
           title: '订单总费用',
           key: 'ee'
         },
       ],
       dataCost:[
-        {}
+        {
+
+        },
+        {
+          aa:'EC箱总数量',
+          bb:'EC箱总费用',
+        },
+        {
+
+        },
       ],
       ruleValidate: {
         cost: [
@@ -157,6 +166,30 @@ export default {
           }
       })
     },
+    handleSpan ({ row, column, rowIndex, columnIndex }) {
+      console.log( row, column, rowIndex, columnIndex );
+        // if (rowIndex === 0 && columnIndex === 0) {
+        //     return [1, 2];
+        // } else if (rowIndex === 0 && columnIndex === 1) {
+        //     return  [0, 0];
+        // }
+        if (rowIndex === 0 && columnIndex === 2) {
+            return {
+                rowspan: 0,
+                colspan: 0
+            };
+        } else if (rowIndex === 1 && columnIndex === 2) {
+            return {
+                rowspan: 0,
+                colspan: 0
+            };
+        }else if (rowIndex === 2 && columnIndex === 2) {
+            return {
+                rowspan: 0,
+                colspan: 0
+            };
+        }
+    },
     cancel(){
       this.amendmentFeeModal = false
     },
@@ -170,6 +203,53 @@ export default {
 }
 </script>
 
-<style lang="less">
-
+<style lang="less" scoped>
+.my-table {
+//   table-layout: fixed;
+  width: 100%;
+  min-width: 970px;
+  color: #495060;
+  border-left: 1px solid #dddee1;
+  border-top: 1px solid #dddee1;
+  thead {
+    th {
+      background:#f8f8f9;
+      height: 40px;
+      overflow: hidden;
+      line-height: 40px;
+      border-bottom: 1px solid #ddd;
+      border-right: 1px solid #e9eaec;
+      text-align: center;
+      padding: 0 18px;
+      &:first-child{
+        width: 160px;
+      }
+    }
+    td{
+      min-height: 48px;
+      vertical-align: middle;
+      border-bottom: 2px solid #f2f2f2;
+      padding: 0 18px;
+    }
+  }
+  tr{
+    .td_title{
+        width: 150px
+    }
+    border-bottom: 1px solid #e9eaec;
+    &:hover{
+      background-color: #ebf7ff;
+    }
+    td{
+        
+      min-height: 48px;
+    //   min-width: 190px;
+      vertical-align: middle;
+      text-align: center;
+      border-bottom: 1px solid #e9eaec;
+      padding: 10px 8px;
+      border-right: 1px solid #e9eaec;
+    }
+  }
+} 
 </style>

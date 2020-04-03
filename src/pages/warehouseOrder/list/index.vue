@@ -87,6 +87,12 @@ export default {
           align: 'center'
         },
         {
+          title: 'SD箱物品数量百分比',
+          key: 'contacts',
+          width: 170,
+          align: 'center'
+        },
+        {
           title: 'EC箱数量',
           key: 'phone',
           width: 125,
@@ -105,17 +111,18 @@ export default {
           align: 'center'
         },
         {
-          title: '姓名',
-          key: 'riderName',
-          width: 140,
-          align: 'center'
-        },
-        {
           title: '用户ID',
           key: 'userID',
           width: 125,
           align: 'center'
         },
+        {
+          title: '姓名',
+          key: 'riderName',
+          width: 140,
+          align: 'center'
+        },
+        
         {
           title: '操作',
           slot: 'operation',

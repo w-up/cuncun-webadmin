@@ -37,12 +37,13 @@
             transfer
             title="您确认删除这条内容吗？"
           >
-          <Button type="text" size="small" icon="md-trash" style="margin-right: 5px;color:#ff9900;">删除</Button>
+          <Button type="text" size="small"  style="margin-right: 5px;color:#ff9900;">删除</Button>
           </Poptip>
         </template>
       </Table>
       <div style="margin-top:20px">
         <Button type="info" style="margin:0 8px 5px 0" @click="addClick">添加一行</Button>
+        <Button type="success" style="margin:0 8px 5px 0">保存信息</Button>
       </div>
       <div style="margin-top:20px">
         <Button type="success" style="margin:0 8px 5px 0">此步骤已完成</Button>

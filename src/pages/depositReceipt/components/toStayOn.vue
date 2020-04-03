@@ -3,12 +3,12 @@
 
 
   <div style="display:flex;flex-wrap: wrap;"> 
-    <Card style="width:550px;margin-right:5px;margin-top:10px">
+    <Card style="width:39%;margin-right:5px;margin-top:10px">
       <p slot="title">纸箱列表</p>
       <Table border :columns="columns" :data="data">
         <template slot-scope="{ row, index }" slot="inspectType">
-          <Icon type="md-checkmark-circle" v-show="row.type=='1'" size='26px'/>
-          <Icon type="md-close-circle" v-show="row.type=='2'" size='26px'/>
+          <Icon type="md-checkmark-circle" v-show="row.type=='1'" size='24' color="#19be6b"/>
+          <Icon type="md-close-circle" v-show="row.type=='2'" size='24' color="#ed4014"/>
         </template>
         <template slot-scope="{ row, index }" slot="remarks">
           <Button type="primary">查看</Button>
@@ -21,7 +21,7 @@
         <Button type="success" style="margin:0 8px 5px 0">保存库位</Button>
       </div>
     </Card>
-    <Card style="width:900px;margin-right:5px;margin-top:10px">
+    <Card style="width:60%;margin-right:5px;margin-top:10px">
       <p slot="title">物品列表</p>
       <Table border :columns="columnsGoods" :data="data">
         <template slot-scope="{ row, index }" slot="storehouse">
@@ -141,6 +141,7 @@ export default {
         {
           title: '备注',
           align:'center',
+          minWidth:100,
           slot: 'remarks'
         },
         {

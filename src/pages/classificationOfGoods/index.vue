@@ -3,7 +3,7 @@
     <Card>
       <p slot="title">箱子类型列表</p>
       <div style="display:flex;flex-wrap: wrap">
-        <Card style="width:750px;margin-right:20px;margin-bottom:20px">
+        <Card style="width:49%;margin-right:20px;margin-bottom:20px">
           <p slot="title">一级分类</p>
           <Button type="success" icon="md-add" style="" @click="oneClick('')">添加</Button>
           <div style="margin-top:20px">
@@ -15,13 +15,13 @@
                   transfer
                   title="您确认删除这条内容吗？"
                 >
-                <Button type="text" size="small" icon="md-trash" style="margin-right: 5px;color:#ff9900;">删除</Button>
+                <Button type="text" size="small"  style="margin-right: 5px;color:#ff9900;">删除</Button>
                 </Poptip>
               </template>
             </Table>
           </div>
         </Card>
-        <Card style="width:750px;margin-bottom:20px">
+        <Card style="width:49%;margin-bottom:20px">
           <p slot="title">二级分类</p>
           <Button type="success" icon="md-add" style="" @click="twoClick('')">添加</Button>
           <div style="margin-top:20px">
@@ -33,7 +33,7 @@
                   transfer
                   title="您确认删除这条内容吗？"
                 >
-                <Button type="text" size="small" icon="md-trash" style="margin-right: 5px;color:#ff9900;">删除</Button>
+                <Button type="text" size="small"  style="margin-right: 5px;color:#ff9900;">删除</Button>
                 </Poptip>
               </template>
             </Table>
@@ -119,13 +119,13 @@ export default {
         {
           title: '下级数量',
           key: 'subAmount',
-          width: 170,
+          width: 120,
           align: 'center'
         },
         {
           title: '操作',
           slot: 'operation',
-          width: 250,
+          width: 170,
           align: 'center'
         },
       ],
@@ -153,7 +153,7 @@ export default {
         {
           title: '操作',
           slot: 'operation',
-          width: 250,
+          width: 170,
           align: 'center'
         },
       ],
