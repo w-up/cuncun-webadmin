@@ -97,6 +97,7 @@
 </template>
 
 <script>
+import { getdepositPrderList } from "@api/account";
 export default {
   // name: 'home',
   data () {
@@ -302,10 +303,18 @@ export default {
   },
   mounted () {
     //
+    this.getList()
   },
   methods:{
     getList(){
+      let data ={
 
+      }
+      getdepositPrderList().then(res=>{
+        let arr = res.data.data
+        console.log(arr);
+        
+      })
     },
     assignRidersClick(){
       this.assignRidersModal=true

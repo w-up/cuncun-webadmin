@@ -70,10 +70,10 @@
             <p slot="title">预约日期限额设置</p>
             <Table border :columns="orderColumns" :data="orderData">
               <template slot-scope="{ row, index }" slot="price">
-                <Input  placeholder="请输入" v-model="row.num" @on-change="logisticsData[index].num= row.num"></Input>
+                <Input  placeholder="请输入" v-model="row.num" @on-change="orderData[index].num= row.num"></Input>
               </template>
             </Table>
-            <Button type="success" style="margin-top:20px" >保存</Button>
+            <Button type="success" style="margin-top:20px" @click="clickDeliverylimit">保存</Button>
           </Card>
         </Col>
       </Row>
@@ -82,7 +82,19 @@
 </template>
 
 <script>
-import { getTimeSetUpList,getTimeSetUpSave,getPriceSetUpList,getPriceSetUpSave,getLogisticsFeeSetUpList,getLogisticsFeeSetUpSave,getGoodsNumSetUpList,getGoodsNumSetUpSave,getStorageCostSetUpList,getStorageCostSetUpSave } from '@api/account';
+import { getTimeSetUpList,
+getTimeSetUpSave,
+getPriceSetUpList,
+getPriceSetUpSave,
+getLogisticsFeeSetUpList,
+getLogisticsFeeSetUpSave,
+getGoodsNumSetUpList,
+getGoodsNumSetUpSave,
+getStorageCostSetUpList,
+getStorageCostSetUpSave ,
+getDeliverylimitList,
+getDeliverylimitSave
+} from '@api/account';
 export default {
   // name: 'home',
   data () {
@@ -301,7 +313,7 @@ export default {
       orderData:[
         {
           name:'日限额',
-          num:'100'
+          num:''
         },
       ],
     }
@@ -341,6 +353,11 @@ export default {
       getStorageCostSetUpList().then(res=>{
         let arr = res.data
         this.storageData[0].num = arr.month
+        
+      })
+      getDeliverylimitList().then(res=>{
+        let arr = res.data
+        this.orderData[0].num = arr.day
         
       })
     },
@@ -407,6 +424,18 @@ export default {
         'tr[C]':this.timeData[2].num
       }
       getTimeSetUpSave(data).then(res=>{
+        this.$Message.success('保存成功');
+        
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
+      })
+    },
+    //预约日期限额设置保存
+    clickDeliverylimit(){
+      var data = {
+       'dl[day]':this.orderData[0].num
+      }
+      getDeliverylimitSave(data).then(res=>{
         this.$Message.success('保存成功');
         
       }).catch(err => {

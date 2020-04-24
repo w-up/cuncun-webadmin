@@ -5,16 +5,16 @@
       <p slot="title">用户列表</p>
       <Form inline :label-width="80" >
           <FormItem label="手机号" >
-            <Input  placeholder="请输入" style="width:200px"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="list.mobile"></Input>
           </FormItem>
           <FormItem label="注册时间" >
-            <DatePicker  type="date"  placeholder="开始日期" style="width: 200px" transfer></DatePicker>
+            <DatePicker  type="date"  placeholder="开始日期" style="width: 200px" transfer :value="list.regDateBegin"  @on-change="list.regDateBegin=$event"></DatePicker>
             <span style="margin:0 10px">~</span>
-            <DatePicker  type="date"  placeholder="结束日期" style="width: 200px" transfer></DatePicker>
+            <DatePicker  type="date"  placeholder="结束日期" style="width: 200px" transfer :value="list.regDateEnd"  @on-change="list.regDateEnd=$event"></DatePicker>
             <!-- :value="searchList.beginDt"  @on-change="searchList.beginDt=$event" -->
           </FormItem>
           <FormItem >
-            <Button type="warning" icon="ios-search" style="">搜索</Button>
+            <Button type="warning" icon="ios-search" style="" @click="getList">搜索</Button>
           </FormItem>
       </Form>
       <div style="margin-top:20px">
@@ -35,106 +35,87 @@
 </template>
 
 <script>
+import { getUserList,timeDate } from "@api/account";
 export default {
   // name: 'home',
   data () {
     return {
+      list:{
+        regDateBegin:'',
+        regDateEnd:'',
+        mobile:'',
+      },
       total: 0,
       pageSize: 10,
       pageNumber: 0,
       columnsList:[
         {
           title: '序号',
-          key: 'serialNumber',
+          key: 'num',
           width: 70,
           align: 'center'
         },
         {
           title: '昵称',
-          key: 'orderNumber',
+          key: 'nickName',
           width: 180,
           align: 'center'
         },
         {
           title: '手机号',
-          key: 'contacts',
+          key: 'mobile',
           width: 180,
           align: 'center'
         },
         {
           title: '真实姓名',
-          key: 'phone',
+          key: 'name',
           width: 180,
           align: 'center'
         },
         {
           title: '身份证号',
-          key: 'address',
+          key: 'idNo',
           minWidth: 200,
           align: 'center'
         },
         {
           title: '注册时间',
-          key: 'date',
+          key: 'regTime',
           width: 200,
           align: 'center'
         },
       ],
       dataList:[
-        {
-          id:'1',
-         serialNumber:'1',
-         state:'22', 
-         orderNumber:'哈哈哈', 
-         contacts:'1355587445', 
-         phone:'哇哇哇', 
-         address:'358888888888888', 
-         date:'2月1日~2月29日', 
-         time:'14:13:30', 
-         num:'132', 
-         logisticsCost:'14', 
-         riderName:'-', 
-         userID:'13244324323', 
-        },
-        {
-          id:'1',
-         serialNumber:'1',
-         state:'22', 
-         orderNumber:'哈哈哈', 
-         contacts:'1355587445', 
-         phone:'哇哇哇', 
-         address:'358888888888888', 
-         date:'2月1日~2月29日', 
-         time:'14:13:30', 
-         num:'132', 
-         logisticsCost:'14', 
-         riderName:'-', 
-         userID:'13244324323', 
-        },
-        {
-          id:'1',
-         serialNumber:'1',
-         state:'33', 
-         orderNumber:'哈哈哈', 
-         contacts:'1355587445', 
-         phone:'哇哇哇', 
-         address:'358888888888888', 
-         date:'2月1日~2月29日', 
-         time:'14:13:30', 
-         num:'132', 
-         logisticsCost:'14', 
-         riderName:'-', 
-         userID:'13244324323', 
-        },
+        
       ],
     }
   },
   mounted () {
     //
+    this.getList()
   },
   methods:{
     getList(){
-
+      let data ={
+        pageNo:this.pageNumber,
+        pageSize:this.pageSize,
+        regDateBegin:this.list.regDateBegin,
+        regDateEnd:this.list.regDateEnd,
+        mobile:this.list.mobile,
+      }
+      getUserList(data).then(res=>{
+        let num = 0
+        let arr = res.data.data
+        arr.forEach(v => {
+          num++
+          v.num = num
+          v.regTime = timeDate(v.regTime)
+        });
+        this.total = res.data.total
+        this.total = res.data.total
+        this.dataList = arr
+      })
     },
     changePage (page) {
       this.pageNumber = page - 1

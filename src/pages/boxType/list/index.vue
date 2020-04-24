@@ -24,7 +24,7 @@
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
       </div>
     </Card>
-    <Modal v-model="boxModal"  title="箱子编辑">
+    <Modal v-model="boxModal"  title="箱子编辑" :mask-closable="false" @on-visible-change="visibleChange">
       <Form ref="formValidate" :model="list" :rules="ruleValidate" :label-width="140">
         <FormItem label="箱子名称" prop="name">
             <Input v-model="list.name" placeholder="请输入" style="width:200px"></Input>
@@ -43,20 +43,34 @@
         <FormItem label="重量上限(kg)" prop="weight">
           <Input v-model="list.weight" placeholder="请输入" style="width:200px"></Input>
         </FormItem>
-        <FormItem label="存储费用(月/元)" prop="fee">
-          <Input v-model="list.fee" placeholder="请输入" style="width:200px"></Input>
+        <FormItem label="存储费用(天/元)" prop="storePerDayFee">
+          <Input v-model="list.storePerDayFee" placeholder="请输入" style="width:200px"></Input>
         </FormItem>
         <FormItem label="详情介绍" >
           <Upload
             :before-upload="handleUpload"
             :headers="headers"
+            :on-success="uploadSuccess"
             ref="upload"
             :data='list'
             name='pic'
             action="/server/data/admin/box/save">
             <Button icon="ios-cloud-upload-outline">上传照片</Button>
-        </Upload>
+          </Upload>
           <img :src="img" alt="" style="width:100px">
+        </FormItem>
+        <FormItem label="预览介绍" >
+          <Upload
+            :before-upload="handleUpload1"
+            :on-success="uploadSuccess1"
+            :headers="headers"
+            ref="upload1"
+            :data='list'
+            name='sceneryPic'
+            action="/server/data/admin/box/save">
+            <Button icon="ios-cloud-upload-outline">上传照片</Button>
+          </Upload>
+          <img :src="sceneryPic" alt="" style="width:100px">
         </FormItem>
       </Form>
       <div slot="footer">
@@ -81,8 +95,10 @@ export default {
       pageNumber: 0,
       boxModal:false,
       file: null,
+      file1: null,
       loadingStatus: false,
       img:'',
+      sceneryPic:'',
       list:{
         id:'',
         name:'', 
@@ -91,7 +107,7 @@ export default {
         length:'', 
         width:'', 
         height:'',
-        fee:'',
+        storePerDayFee:'',
       },
       ruleValidate: {
         name: [
@@ -112,7 +128,7 @@ export default {
         height: [
           { required: true, message: '长宽高不能为空', trigger: 'blur' }
         ],
-        fee: [
+        storePerDayFee: [
           { required: true, message: '金额不能为空', trigger: 'blur' }
         ]
       },
@@ -148,8 +164,8 @@ export default {
           align: 'center'
         },
         {
-          title: '存储费用/月',
-          key: 'fee',
+          title: '存储费用/天',
+          key: 'storePerDayFee',
           width: 200,
           align: 'center'
         },
@@ -197,8 +213,9 @@ export default {
           this.list.length=arr.length +''
           this.list.width=arr.width +''
           this.list.height=arr.height+''
-          this.list.fee=arr.fee+''
+          this.list.storePerDayFee=arr.storePerDayFee+''
           this.img = arr.pic+''
+          this.sceneryPic = arr.sceneryPic
           this.boxModal = true
         })
       }
@@ -208,17 +225,24 @@ export default {
     confirm(){
       this.$refs['formValidate'].validate((valid) => {
         if (valid) {
-          if (this.file==null) {
-            getBoxTypeSave(this.list).then(res=>{
-              this.$Message.success('保存成功');
-              this.getList()
-              this.cancel()
-            }).catch(err => {
-              this.$Message.error(err.response.data.message)
-            })
+          if (this.img=='') {
+            this.$Message.error('请添加详情介绍!');
+          }else if(this.sceneryPic==''){
+            this.$Message.error('请添加预览介绍!');
           }else{
-            this.upload()
+            if (this.file!=null) {
+              this.upload()
+            }else{
+              getBoxTypeSave(this.list).then(res=>{
+                this.$Message.success('保存成功');
+                this.getList()
+                this.cancel()
+              }).catch(err => {
+                this.$Message.error(err.response.data.message)
+              })
+            }
           }
+         
         } else {
           this.$Message.error('请全部填写!');
         }
@@ -236,6 +260,7 @@ export default {
     },
     cancel(){
       this.list.name=''
+      this.list.storePerDayFee=''
       this.list.type=''
       this.list.weight=''
       this.list.length=''
@@ -243,6 +268,7 @@ export default {
       this.list.height=''
       this.list.cost=''
       this.img=''
+      this.sceneryPic=''
       this.boxModal = false
     },
     changePage (page) {
@@ -255,20 +281,47 @@ export default {
     },
     handleUpload (file) {
       this.file = file;
-      console.log(file);
-      
       this.img = window.URL.createObjectURL(file)
+      return false;
+    },
+    handleUpload1 (file) {
+      this.file1 = file;
+      this.sceneryPic = window.URL.createObjectURL(file)
       return false;
     },
     upload () {
       this.$refs.upload.post(this.file);
-      setTimeout(() => {
-        this.file = null;
+      // setTimeout(() => {
+       
+        
+      // }, 1500);
+    },
+    uploadSuccess(response, file, fileList){
+       this.file = null;
+        if (this.file1==null) {
+          this.cancel()
+          this.getList()
+          this.$Message.success('保存成功')
+        }else{
+          this.list.id = response.data.id
+          this.upload1()
+        }
+    },
+    upload1(){
+      this.$refs.upload1.post(this.file1);
+    },
+    uploadSuccess1(response, file, fileList){
+      this.file1 = null;
+      this.cancel()
+      this.getList()
+      this.$Message.success('保存成功')
+    },
+    visibleChange(key){
+      if (key==false) {
         this.cancel()
-        this.getList()
-        this.$Message.success('保存成功')
-      }, 1500);
-    }
+      }
+      
+    },
   }
 }
 </script>
