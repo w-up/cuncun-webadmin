@@ -113,7 +113,6 @@ export default {
           v.regTime = timeDate(v.regTime)
         });
         this.total = res.data.total
-        this.total = res.data.total
         this.dataList = arr
       })
     },

@@ -94,20 +94,36 @@
           <p slot="title">备注信息</p>
           <Form  :label-width="90" label-position='top'>
             <FormItem label="用户备注：">
-              <Input  maxlength="200" show-word-limit type="textarea" :rows="5" />
+              <Input   type="textarea"  :rows="5" />
             </FormItem>
-            <FormItem label="管理员备注：">
-              <Input  maxlength="200" show-word-limit type="textarea" :rows="5" />
-              <Button type="success" style="margin-top:10px">保存</Button>
+            <FormItem label="管理员备注:">
+              <Row style="margin-top:5px" v-for="(item, index) in remarkList"
+                :key="index">
+                  <Col span="18">
+                    <Input   type="textarea" :autosize="{minRows: 4,maxRows: 4}" v-model="item.content"/>
+                  </Col>
+                  <Col span="4" offset="1">
+                    <Button type="success" style="margin-bottom:10px;"  v-show="item.id.length<10" @click="handleSave(item)">保存</Button>
+                    <Poptip
+                        transfer
+                        confirm
+                        title="您确认删除此条备注吗?"
+                        @on-ok="handleRemove(item)">
+                        <Button type="error" >删除</Button>
+                    </Poptip>
+                    
+                  </Col>
+              </Row>
+            </FormItem>
+            <FormItem>
+              <Row>
+                  <Col span="12">
+                      <Button type="dashed" long @click="handleAdd" icon="md-add">添加</Button>
+                  </Col>
+              </Row>
             </FormItem>
           </Form>
         </Card>
-      </div>
-      <div style="margin:20px 0">
-        <div style="margin:20px 0"> 测试切换状态</div>
-        <Select  slot="extra"  style="width:200px;" v-model="type">
-          <Option v-for="item in stateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-        </Select>
       </div>
       <div style="margin:20px 0">
         <Button :disabled='type=="待处理"?true:type=="待分配骑手"?true:type=="待取货"?true:type=="回库中"?true:type=="安检中"?true:type=="拍照中"?true:type=="待上架"?true:type=="已完成"?true:type=="已取消"?true:false' 
@@ -192,6 +208,9 @@
 </template>
 
 <script>
+import { getRemarkPage,
+getRemarkAdd,
+getRemarkDel } from "@api/account";
 import pendingPayment from '../components/pendingPayment' //待付款
 import pendingDisposal from '../components/pendingDisposal' // 待处理
 import assignRiders from '../components/assignRiders'//待分配骑手
@@ -216,7 +235,10 @@ export default {
   },
   data () {
     return {
+      orderId:this.$route.query.id,
+      index:0,
       adjustmentModel:false,
+      remarkList:[],
       type:'已完成',
       orderList:{
         orderNumber:'Q14223223',
@@ -281,10 +303,65 @@ export default {
   },
   mounted () {
     //
+    this.getRemarkList()
   },
   methods:{
+    //评论列表
+    getRemarkList(){
+      let data = {
+        orderId:this.$route.query.id,
+        from:'admin'
+      }
+      getRemarkPage(data).then(res=>{
+        var arr = res.data.data
+        this.remarkList = arr
+        
+      })
+    },
     adjustmentClick(){
       this.adjustmentModel = true
+    },
+    //增加评论
+    handleAdd () {
+      this.index++
+      this.remarkList.push({
+          content:'',
+          id:this.index+''
+      });
+    },
+    //评论保存
+    handleSave(item){
+      let data = {
+        orderId:this.orderId,
+        content:item.content,
+        internal:'false'
+      }
+      getRemarkAdd(data).then(res=>{
+        this.$Message.success('成功');
+        this.getRemarkList()
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
+      })
+    },
+    handleRemove (item) {
+      if (item.id.length>10) {
+        let data = {
+          id:item.id
+        }
+        getRemarkDel(data).then(res=>{
+          this.$Message.success('成功');
+          this.getRemarkList()
+        }).catch(err => {
+          this.$Message.error(err.response.data.message)
+        })
+      }else{
+        for (var i = 0; i < this.remarkList.length; i++) { 
+          if (item.id==this.remarkList[i].id) {
+            this.remarkList.splice(i, 1); 
+          }
+        }
+        
+      }
     },
     backPage () {
       this.$router.go(-1)

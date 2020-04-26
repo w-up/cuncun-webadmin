@@ -29,16 +29,16 @@ function errorLog (err) {
     }
     // 显示提示，可配置使用 iView 的 $Message 还是 $Notice 组件来显示
     if (Setting.errorModalType === 'Message') {
-        Message.error({
-            content: err.message,
-            duration: Setting.modalDuration
-        });
+        // Message.error({
+        //     content: err.message,
+        //     duration: Setting.modalDuration
+        // });
     } else if (Setting.errorModalType === 'Notice') {
-        Notice.error({
-            title: '提示',
-            desc: err.message,
-            duration: Setting.modalDuration
-        });
+        // Notice.error({
+        //     title: '提示',
+        //     desc: err.message,
+        //     duration: Setting.modalDuration
+        // });
     }
 }
 

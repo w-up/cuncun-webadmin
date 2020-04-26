@@ -40,6 +40,56 @@ export function getdepositPrderList (data) {
         params:data
     });
 }
+//存单接单
+export function getAccept (data) {
+    return request({
+        url: '/server/data/admin/deposit/order/accept',
+        method: 'post',
+        data 
+    });
+}
+//存单拒单
+export function getRefuse (data) {
+    return request({
+        url: '/server/data/admin/deposit/order/refuse',
+        method: 'post',
+        data 
+    });
+}
+//存单分配骑手
+export function getAssign (data) {
+    return request({
+        url: '/server/data/admin/deposit/order/assign',
+        method: 'post',
+        data 
+    });
+}
+//存单评论列表
+export function getRemarkPage (data) {
+    return request({
+        url: '/server/data/admin/deposit/remark/page',
+        method: 'get',
+        params:data
+    });
+}
+//存单评论保存
+export function getRemarkAdd (data) {
+    return request({
+        url: '/server/data/admin/deposit/remark/add',
+        method: 'post',
+        data 
+    });
+}
+//存单评论删除
+export function getRemarkDel (data) {
+    return request({
+        url: '/server/data/admin/deposit/remark/del',
+        method: 'post',
+        data 
+    });
+}
+
+
 //设置  时间系数设置列表
 export function getTimeSetUpList (data) {
     return request({
