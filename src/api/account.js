@@ -48,6 +48,26 @@ export function getAccept (data) {
         data 
     });
 }
+//存单预计物品列表
+export function getGoodsList4Order (id) {
+    return request({
+        url: '/server/data/admin/deposit/goods/list4Order',
+        method: 'get',
+        params:{
+            orderId:id
+        }
+    });
+}
+//存单预计箱子列表
+export function getBoxList4Order (id) {
+    return request({
+        url: '/server/data/admin/deposit/box/list4Order',
+        method: 'get',
+        params:{
+            orderId:id
+        }
+    });
+}
 //存单拒单
 export function getRefuse (data) {
     return request({
@@ -88,6 +108,102 @@ export function getRemarkDel (data) {
         data 
     });
 }
+//存单详情
+export function getOrderDetail (id) {
+    return request({
+        url: '/server/data/admin/deposit/order/detail/'+id,
+        method: 'get',
+    });
+}
+//存单 调整费用
+export function getFeeAdjust (data) {
+    return request({
+        url: '/server/data/admin/deposit/order/fee/adjust',
+        method: 'post',
+        data 
+    });
+}
+//存单包裹信息列表
+export function getPackPage (data) {
+    return request({
+        url: '/server/data/admin/pack/list',
+        method: 'get',
+        params:data
+    });
+}
+//存单包裹信息保存
+export function getPackAdd (data) {
+    return request({
+        url: '/server/data/admin/pack/save',
+        method: 'post',
+        data 
+    });
+}
+//存单包裹信息删除
+export function getPackDel (data) {
+    return request({
+        url: '/server/data/admin/pack/del',
+        method: 'post',
+        data 
+    });
+}
+//存单包裹库位保存
+export function getPackSet (data) {
+    return request({
+        url: '/server/data/admin/pack/store/code/set',
+        method: 'post',
+        data 
+    });
+}
+//存单物品信息录入
+export function getDepositGoodsSave (data) {
+    return request({
+        url: '/server/data/admin/goods/save',
+        method: 'post',
+        data 
+    });
+}
+//存单物品信息列表
+export function getDepositGoodsList (data) {
+    return request({
+        url: '/server/data/admin/goods/list',
+        method: 'get',
+        params:data
+    });
+}
+//存单物品信息删除
+export function getDepositGoodsDel (data) {
+    return request({
+        url: '/server/data/admin/goods/del',
+        method: 'post',
+        data
+    });
+}
+//存单物品信息图片列表
+export function getDepositGoodsPicList (data) {
+    return request({
+        url: '/server/data/admin/goods/pic/list',
+        method: 'get',
+        params:data
+    });
+}
+//存单物品信息发布
+export function getDepositGoodsShow (data) {
+    return request({
+        url: '/server/data/admin/goods/show',
+        method: 'post',
+        data
+    });
+}
+//存单物品库位
+export function getDepositGoodsSet (data) {
+    return request({
+        url: '/server/data/admin/goods/store/code/set',
+        method: 'post',
+        data
+    });
+}
+
 
 
 //设置  时间系数设置列表
@@ -221,6 +337,14 @@ export function getBoxTypeDel (id) {
 export function getGoodsList (data) {
     return request({
         url: '/server/data/admin/category/list',
+        method: 'get',
+        params:data 
+    });
+}
+//物品分类树
+export function getGoodsTree (data) {
+    return request({
+        url: '/server/data/admin/category/tree',
         method: 'get',
         params:data 
     });

@@ -36,8 +36,8 @@
         </Card>
         <Card style="width:350px;margin-right:5px;margin-top:10px">
           <p slot="title">费用明细</p>
-          <Button slot="extra" v-show='type=="拍照中"?true:type=="待上架"?true:type=="已完成"?true:type=="已取消"?true:false' @click="adjustmentClick">调整费用</Button>
-          <div v-show='type=="待付款"?true:type=="待处理"?true:type=="待分配骑手"?true:type=="待取货"?true:type=="回库中"?true:type=="安检中"?true:false'>
+          <Button slot="extra" v-show='type=="photo"?true:type=="ready"?true:type=="ready"?true:type=="finish"?true:false' @click="adjustmentClick">调整费用</Button>
+          <div v-show='type=="waitpay"?true:type=="init"?true:type=="assign"?true:type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:false'>
             <Form  :label-width="110">
               <FormItem label="运输费用：">
                   <span style="margin-left:120px">￥{{costList.transport}}</span>
@@ -56,7 +56,7 @@
               </FormItem>
             </Form>
           </div>
-          <div v-show='type=="拍照中"?true:type=="待上架"?true:type=="已完成"?true:type=="已取消"?true:false' >
+          <div v-show='type=="photo"?true:type=="ready"?true:type=="ready"?true:type=="finish"?true:false' >
             <Form  :label-width="110">
               <FormItem label="运输费用：">
                   <span style="margin-left:120px">￥{{costList.transport}}</span>
@@ -68,7 +68,7 @@
                   <span style="margin-left:120px">￥{{costList.case}}</span>
               </FormItem>
               <FormItem label="调整费用：">
-                  <span style="margin-left:120px">￥{{costList.case}}</span>
+                  <span style="margin-left:120px">￥{{costList.adjustFee}}</span>
               </FormItem>
               <FormItem label="订单总价：" style="margin-bottom:20px" class="size20">
                   <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.total}}</span>
@@ -79,7 +79,7 @@
               <FormItem label="实付定金：" class="size20">
                   <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.actualPayment}}</span>
               </FormItem>
-              <FormItem label="未结算" v-show='type=="拍照中"?true:type=="待上架"?true:false'>
+              <FormItem label="未结算" v-show='type=="photo"?true:type=="ready"?true:false'>
                 <Poptip
                     confirm
                     transfer
@@ -126,37 +126,43 @@
         </Card>
       </div>
       <div style="margin:20px 0">
-        <Button :disabled='type=="待处理"?true:type=="待分配骑手"?true:type=="待取货"?true:type=="回库中"?true:type=="安检中"?true:type=="拍照中"?true:type=="待上架"?true:type=="已完成"?true:type=="已取消"?true:false' 
-          style="margin:0 8px 5px 0" :type="type=='待付款'?'primary':'dashed'">待付款<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="待分配骑手"?true:type=="待取货"?true:type=="回库中"?true:type=="安检中"?true:type=="拍照中"?true:type=="待上架"?true:type=="已完成"?true:type=="已取消"?true:false' 
-          :type="type=='待处理'?'primary':'dashed'" style="margin:0 8px 5px 0">待处理<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="待取货"?true:type=="回库中"?true:type=="安检中"?true:type=="拍照中"?true:type=="待上架"?true:type=="已完成"?true:type=="已取消"?true:false' 
-          style="margin:0 8px 5px 0" :type="type=='待分配骑手'?'primary':'dashed'">待分配骑手<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="回库中"?true:type=="安检中"?true:type=="拍照中"?true:type=="待上架"?true:type=="已完成"?true:type=="已取消"?true:false' 
-          style="margin:0 8px 5px 0" :type="type=='待取货'?'primary':'dashed'">待取货<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="安检中"?true:type=="拍照中"?true:type=="待上架"?true:type=="已完成"?true:type=="已取消"?true:false' 
-          style="margin:0 8px 5px 0" :type="type=='回库中'?'primary':'dashed'">回库中<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="拍照中"?true:type=="待上架"?true:type=="已完成"?true:type=="已取消"?true:false' 
-          style="margin:0 8px 5px 0" :type="type=='安检中'?'primary':'dashed'">安检中<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="待上架"?true:type=="已完成"?true:type=="已取消"?true:false' 
-          style="margin:0 8px 5px 0" :type="type=='拍照中'?'primary':'dashed'">拍照中<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="已完成"?true:type=="已取消"?true:false' 
-          style="margin:0 8px 5px 0" :type="type=='待上架'?'primary':'dashed'">待上架<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="已取消"?true:false' style="margin:0 8px 5px 0" :type="type=='已完成'?'primary':'dashed'">已完成<Icon type="ios-arrow-forward" /></Button>
-        <Button style="margin:0 8px 5px 0" :type="type=='已取消'?'primary':'dashed'">已取消<Icon type="ios-arrow-forward" /></Button>
+        <div style="margin:20px 0"> 测试切换状态</div>
+        <Select  slot="extra"  style="width:200px;" v-model="type">
+          <Option v-for="item in stateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+        </Select>
+      </div>
+      <div style="margin:20px 0">
+        <Button :disabled='type=="init"?true:type=="assign"?true:type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:false' 
+          style="margin:0 8px 5px 0" :type="type=='waitpay'?'primary':'dashed'">待付款<Icon type="ios-arrow-forward" /></Button>
+        <Button :disabled='type=="assign"?true:type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:false' 
+          :type="type=='init'?'primary':'dashed'" style="margin:0 8px 5px 0">待处理<Icon type="ios-arrow-forward" /></Button>
+        <Button :disabled='type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:false' 
+          style="margin:0 8px 5px 0" :type="type=='assign'?'primary':'dashed'">待分配骑手<Icon type="ios-arrow-forward" /></Button>
+        <Button :disabled='type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:false' 
+          style="margin:0 8px 5px 0" :type="type=='fetch'?'primary':'dashed'">待取货<Icon type="ios-arrow-forward" /></Button>
+        <Button :disabled='type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:false' 
+          style="margin:0 8px 5px 0" :type="type=='delivery'?'primary':'dashed'">回库中<Icon type="ios-arrow-forward" /></Button>
+        <Button :disabled='type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:false' 
+          style="margin:0 8px 5px 0" :type="type=='monitor'?'primary':'dashed'">安检中<Icon type="ios-arrow-forward" /></Button>
+        <Button :disabled='type=="ready"?true:type=="finish"?true:type=="cancel "?true:false' 
+          style="margin:0 8px 5px 0" :type="type=='photo'?'primary':'dashed'">拍照中<Icon type="ios-arrow-forward" /></Button>
+        <Button :disabled='type=="finish"?true:type=="cancel "?true:false' 
+          style="margin:0 8px 5px 0" :type="type=='ready'?'primary':'dashed'">待上架<Icon type="ios-arrow-forward" /></Button>
+        <Button :disabled='type=="cancel "?true:false' style="margin:0 8px 5px 0" :type="type=='finish'?'primary':'dashed'">已完成<Icon type="ios-arrow-forward" /></Button>
+        <Button style="margin:0 8px 5px 0" :type="type=='cancel '?'primary':'dashed'">已取消<Icon type="ios-arrow-forward" /></Button>
       </div>
       <div style="margin:20px 0"> 
         <Card >
           <p slot="title">数据信息</p>
-          <pendingPayment v-show="type=='待付款'"></pendingPayment> 
-          <pendingDisposal v-show="type=='待处理'"></pendingDisposal>
-          <assignRiders  v-show="type=='待分配骑手'"></assignRiders>
-          <waitingForDelivery v-show="type=='待取货'"></waitingForDelivery>
-          <returningLibrary v-show="type=='回库中'"></returningLibrary>
-          <securityCheck v-show="type=='安检中'"></securityCheck>
-          <stayPhotograph v-show="type=='拍照中'"></stayPhotograph>
-          <toStayOn v-show="type=='待上架'"></toStayOn>
-          <complete v-show="type=='已完成'"></complete>
+          <pendingPayment v-show="type=='waitpay'" ref="pendingPayment"></pendingPayment> 
+          <pendingDisposal v-show="type=='init'" ref="pendingDisposal"></pendingDisposal>
+          <assignRiders  v-show="type=='assign'" ref="assignRiders"></assignRiders>
+          <waitingForDelivery v-show="type=='fetch'" ref="waitingForDelivery"></waitingForDelivery>
+          <returningLibrary v-show="type=='delivery'" ref="returningLibrary"></returningLibrary>
+          <securityCheck v-show="type=='monitor'" ref="securityCheck"></securityCheck>
+          <stayPhotograph v-show="type=='photo'" ref="stayPhotograph"></stayPhotograph>
+          <toStayOn v-show="type=='ready'" ref="toStayOn"></toStayOn>
+          <complete v-show="type=='finish'" ref="complete"></complete>
         </Card>
       </div>
       <!-- <div style="margin:10px 0">
@@ -164,7 +170,7 @@
           <span style="line-height:51px">11111</span>
         </div>
       </div> -->
-      <Modal v-model="adjustmentModel"  title="费用调整">
+      <Modal v-model="adjustmentModel"  title="费用调整" @on-visible-change="visibleChange">
         <Form  :label-width="110">
           <FormItem label="运输费用：">
               <span style="margin-left:120px">￥{{costList.transport}}</span>
@@ -176,30 +182,30 @@
               <span style="margin-left:120px">￥{{costList.case}}</span>
           </FormItem>
           <FormItem label="调整费用：">
-              <span style="margin-left:120px">￥{{costList.case}}</span>
+              <span style="margin-left:120px">￥{{costList.adjustFee}}</span>
           </FormItem>
           <FormItem label="订单总价：" style="margin-bottom:20px" class="size20">
               <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.total}}</span>
           </FormItem>
           <FormItem label="费用调整：" >
             <div style="display:flex">
-              <Select style="width:120px">
-                <Option value="增加" >增加</Option>
-                <Option value="减少" >减少</Option>
+              <Select style="width:120px" v-model="adjustmentCost.type">
+                <Option value="+" >增加</Option>
+                <Option value="-" >减少</Option>
               </Select>
-              <Input style="width:90px;margin-left:5px">
+              <Input style="width:90px;margin-left:5px" v-model="adjustmentCost.adjustFee">
                 <span slot="append" >元</span>
               </Input>
             </div>
           </FormItem>
           <FormItem label="调整备注：">
-            <Input  type="textarea" :rows="4"  />
+            <Input  type="textarea" :rows="4" v-model="adjustmentCost.reason" />
           </FormItem>
         </Form>
         <div slot="footer">
           <div style="">
-            <Button type="text" style="margin-right:10px;">取消</Button>
-            <Button type="primary" style="margin-right:10px">保存</Button>
+            <Button type="text" style="margin-right:10px;" @click="cancel">取消</Button>
+            <Button type="primary" style="margin-right:10px" @click="costSaveClick">保存</Button>
           </div>
         </div>
       </Modal>
@@ -210,9 +216,11 @@
 <script>
 import { getRemarkPage,
 getRemarkAdd,
-getRemarkDel } from "@api/account";
+getRemarkDel,
+getOrderDetail,
+getFeeAdjust } from "@api/account";
 import pendingPayment from '../components/pendingPayment' //待付款
-import pendingDisposal from '../components/pendingDisposal' // 待处理
+import pendingDisposal from '../components/pendingDisposal' // init
 import assignRiders from '../components/assignRiders'//待分配骑手
 import waitingForDelivery from '../components/waitingForDelivery'//待取货
 import returningLibrary from '../components/returningLibrary'//回库中
@@ -233,79 +241,136 @@ export default {
     toStayOn,
     complete
   },
+  watch: {
+    type() {
+      console.log('11');
+      
+      if (this.type=='waitpay') {
+          this.$refs.pendingPayment.getData(this.$route.query.id)
+      }else if(this.type=='init'){
+        this.$refs.pendingDisposal.getData(this.$route.query.id)
+      }else if(this.type=='assign'){
+        this.$refs.assignRiders.getData(this.$route.query.id)
+      }else if(this.type=='fetch'){
+        this.$refs.waitingForDelivery.getData(this.$route.query.id)
+      }else if(this.type=='delivery'){
+        this.$refs.returningLibrary.getData(this.$route.query.id)
+      }else if(this.type=='monitor'){
+        this.$refs.securityCheck.getData(this.$route.query.id)
+      }else if(this.type=='photo'){
+        this.$refs.stayPhotograph.getData(this.$route.query.id)
+      }else if(this.type=='ready'){
+        this.$refs.toStayOn.getData(this.$route.query.id)
+      }else if(this.type=='finish'){
+        this.$refs.complete.getData(this.$route.query.id)
+      }
+    },
+  },
   data () {
     return {
       orderId:this.$route.query.id,
       index:0,
       adjustmentModel:false,
       remarkList:[],
-      type:'已完成',
+      type:'',
       orderList:{
-        orderNumber:'Q14223223',
-        name:'老司机',
-        phone:'1334433443',
-        rider:'小司机',
-        contacts:'老司机',
-        telephone:'14423232323',
-        address:'上海市浦东新区九江路666号8楼C',
-        time:'2020年2月20日   9:00~11:00',
+        orderNumber:'',
+        name:'',
+        phone:'',
+        rider:'',
+        contacts:'',
+        telephone:'',
+        address:'',
+        time:'',
       },
       costList:{
-        transport:'20',
-        pack:'20',
-        case:'20',
-        total:'50',
-        actualPayment:'50',
+        transport:'',
+        pack:'',
+        case:'',
+        adjustFee:'',
+        total:'',
+        actualPayment:'',
+      },
+      adjustmentCost:{
+        id:this.$route.query.id,
+        type:'',
+        adjustFee:'',
+        reason:'',
       },
       stateList:[
         {
-          value:'待付款',
+          value:'waitpay',
           label:'待付款',
         },
         {
-          value:'待处理',
+          value:'init',
           label:'待处理',
         },
         {
-          value:'待分配骑手',
+          value:'assign',
           label:'待分配骑手',
         },
         {
-          value:'待取货',
+          value:'fetch',
           label:'待取货',
         },
         {
-          value:'回库中',
+          value:'delivery',
           label:'回库中',
         },
         {
-          value:'安检中',
+          value:'monitor',
           label:'安检中',
         },
         {
-          value:'拍照中',
+          value:'photo',
           label:'拍照中',
         },
         {
-          value:'待上架',
+          value:'ready',
           label:'待上架',
         },
         {
-          value:'已完成',
+          value:'finish',
           label:'已完成',
         },
         {
-          value:'已取消',
+          value:'cancel',
           label:'已取消',
         },
       ]
     }
   },
   mounted () {
-    //
-    this.getRemarkList()
+    this.OrderDetail()//存单详情
+    this.getRemarkList()//评论列表
+    
+    
   },
   methods:{
+    //存单详情
+    OrderDetail(){
+      getOrderDetail(this.$route.query.id).then(res=>{
+        var arr = res.data
+        this.type=arr.status.code
+        this.orderList.orderNumber=arr.orderNo
+        // this.orderList.name=arr.linkman
+        this.orderList.phone=arr.mobile
+        // this.orderList.rider=arr.mobile
+        this.orderList.contacts=arr.linkman
+        this.orderList.address=arr.address
+        this.orderList.time=arr.bookFetchDate + ' '+arr.bookFetchTime[0]+' - '+arr.bookFetchTime[1]
+        this.costList.transport= arr.deliveryFee
+        this.costList.pack= arr.packFee
+        this.costList.case= arr.boxFee
+        this.costList.total= arr.totalFee
+        this.costList.adjustFee= arr.adjustFee
+        this.costList.actualPayment= arr.prepaid
+        
+        // console.log(arr);
+        
+      })
+    },
     //评论列表
     getRemarkList(){
       let data = {
@@ -363,9 +428,41 @@ export default {
         
       }
     },
+    //保存调整费用
+    costSaveClick(){
+      let data = {
+        id:this.adjustmentCost.id,
+        reason:this.adjustmentCost.reason,
+      }
+      if (this.adjustmentCost.type=='-') {
+        data.adjustFee='-'+this.adjustmentCost.adjustFee
+      }else{
+        data.adjustFee=this.adjustmentCost.adjustFee
+      }
+      getFeeAdjust(data).then(res=>{
+        this.OrderDetail()
+        this.cancel()
+        this.$Message.success('成功');
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
+      })
+    },
+    //关闭弹窗
+    cancel(){
+      this.adjustmentCost.type=''
+      this.adjustmentCost.adjustFee=''
+      this.adjustmentCost.reason=''
+      this.adjustmentModel = false
+    },
     backPage () {
       this.$router.go(-1)
-    }
+    },
+    visibleChange(key){
+      if (key==false) {
+        this.cancel()
+      }
+      
+    },
   }
 }
 </script>

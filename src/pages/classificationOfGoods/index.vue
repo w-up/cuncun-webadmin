@@ -1,7 +1,7 @@
 <template>
   <div>
     <Card>
-      <p slot="title">箱子类型列表</p>
+      <p slot="title">物品分类列表</p>
       <div style="display:flex;flex-wrap: wrap">
         <Card style="width:49%;margin-right:20px;margin-bottom:20px">
           <p slot="title">一级分类</p>
@@ -86,6 +86,7 @@ export default {
       list:{
         name:'', 
       },
+      parentId:'',
       listTwo:{
         name:'', 
         parentId:'', 
@@ -215,6 +216,7 @@ export default {
           v.num = num
         });
         this.dataListTwo = arr
+        // this.parentId=''
       })
     },
     confirm(){
@@ -239,6 +241,7 @@ export default {
         if (valid) {
           getGoodsSave(this.listTwo).then(res=>{
             this.$Message.success('保存成功');
+            this.oneOnRowClick({id:this.parentId})
             this.cancel()
           }).catch(err => {
             this.$Message.error(err.response.data.message)

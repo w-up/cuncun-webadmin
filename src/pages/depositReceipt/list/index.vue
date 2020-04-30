@@ -42,11 +42,11 @@
         <TabPane label="待分配骑手" name="assign"></TabPane>
         <TabPane label="待取货" name="fetch"></TabPane>
         <TabPane label="回库中" name="delivery"></TabPane>
-        <TabPane label="入库作业中" name="inputwork"></TabPane>
+        <!-- <TabPane label="入库作业中" name="inputwork"></TabPane> -->
         <TabPane label="安检中" name="monitor"></TabPane>
         <TabPane label="待拍照" name="photo"></TabPane>
         <TabPane label="待上架" name="ready"></TabPane>
-        <TabPane label="待支付" name="waipay"></TabPane>
+        <TabPane label="待支付" name="waitpay"></TabPane>
         <TabPane label="已完成" name="finish"></TabPane>
         <TabPane label="已取消" name="cancel"></TabPane>
       </Tabs>
@@ -55,7 +55,7 @@
           <template slot-scope="{ row, index }" slot="type">
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(188, 190, 191);cursor: default" v-if="row.status.code == 'cancel'">已取消</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#FF8768;cursor: default" v-if="row.status.code == 'init'">待处理</Button>
-            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(74, 210, 142);cursor: default" v-if="row.status.code == 'waipay'">待支付</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(74, 210, 142);cursor: default" v-if="row.status.code == 'waitpay'">待支付</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#68B0EF;cursor: default" v-if="row.status.code == 'inputwork'">入库中</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#ff9900;cursor: default" v-if="row.status.code == 'assign'">待分配骑手</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#B34DFF;cursor: default" v-if="row.status.code == 'fetch'">待取货</Button>
@@ -64,6 +64,7 @@
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#7FF85C;cursor: default" v-if="row.status.code == 'photo'">拍照中</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#585EEE;cursor: default" v-if="row.status.code == 'ready'">待上架</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#19be6b;cursor: default" v-if="row.status.code == 'finish'">已完成</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#FC041A;cursor: default" v-if="row.status.code == 'refuse'">拒单</Button>
           </template>
           <template slot-scope="{ row, index }" slot="paymentType">
             <!-- <Icon type="md-checkmark-circle" size='24' color="#19be6b"/> -->
@@ -370,7 +371,7 @@ export default {
           this.$Message.error(err.response.data.message)
         })
       }else{
-        getAccept(data).then(res=>{
+        getRefuse(data).then(res=>{
           this.$Message.success('成功');
           this.getList()
           this.typeModal=false

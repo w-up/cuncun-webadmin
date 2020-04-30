@@ -53,6 +53,7 @@
             :on-success="uploadSuccess"
             ref="upload"
             :data='list'
+            :show-upload-list='false'
             name='pic'
             action="/server/data/admin/box/save">
             <Button icon="ios-cloud-upload-outline">上传照片</Button>
@@ -64,6 +65,7 @@
             :before-upload="handleUpload1"
             :on-success="uploadSuccess1"
             :headers="headers"
+            :show-upload-list='false'
             ref="upload1"
             :data='list'
             name='sceneryPic'
@@ -259,6 +261,9 @@ export default {
       })
     },
     cancel(){
+      this.file= null,
+      this.file1=null,
+      this.list.id=''
       this.list.name=''
       this.list.storePerDayFee=''
       this.list.type=''
