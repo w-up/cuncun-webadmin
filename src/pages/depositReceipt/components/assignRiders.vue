@@ -13,22 +13,22 @@
       </Card>
     </div>
     <div style="margin-top:20px">
-      <Button type="info" style="margin:0 8px 5px 0" >分配骑手</Button>
-      <Button type="success" style="margin:0 8px 5px 0">此步骤已完成</Button>
+      <Button type="info" style="margin:0 8px 5px 0" @click="assignRidersClick">分配骑手</Button>
       <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
     </div>
-    <Modal v-model="refusalOfOrdersModal"  title="拒单理由">
-      <div style="text-align:center">
-          <h4 style="margin-bottom:8px">请输入拒单理由.</h4 style="margin-bottom:8px">
-          <Input  type="textarea" :rows="4" style="width:400px" placeholder="请输入拒单理由" />
-      </div>
-      <div slot="footer">
-        <div style="">
-          <Button type="text" style="margin-right:10px;">取消</Button>
-          <Button type="primary" style="margin-right:10px">确定</Button>
+    <Modal
+        v-model="assignRidersModal"
+        title="分配骑手"
+        :mask-closable="false">
+        <Form ref="formValidate" :model="assignRidersList" :rules="ruleValidate" :label-width="80">
+          <FormItem label="骑手姓名" prop="name">
+              <Input v-model="assignRidersList.name" placeholder="请为选中的订单批量分配骑手" style="width:300px"></Input>
+          </FormItem>
+        </Form>
+        <div slot="footer" style="text-align: right;">
+          <Button type="text" @click="assignRidersCancel">取消</Button>
+          <Button type="primary" @click="assignRidersOk">确定</Button>
         </div>
-        
-      </div>
     </Modal>
   </div>
 </template>
@@ -39,6 +39,7 @@ export default {
   name: 'pendingDisposal',
   data () {
     return {
+      assignRidersModal:false,
       refusalOfOrdersModal:false,
       orderId:'',
       caseColumns:[
@@ -94,6 +95,14 @@ export default {
       dataBox: [
           
       ],
+      assignRidersList:{
+        name:''
+      },
+      ruleValidate: {
+        name: [
+          { required: true, message: '请输入', trigger: 'blur' }
+        ],
+      },
       dataGoods:[]
     }
   },
@@ -128,6 +137,34 @@ export default {
     },
     refusalOfOrders(){
       this.refusalOfOrdersModal = true
+    },
+    assignRidersClick(){
+      this.assignRidersModal=true
+    },
+    assignRidersCancel(){
+      this.assignRidersList.name=''
+      this.assignRidersModal=false
+    },
+    assignRidersOk(){
+      this.$refs["formValidate"].validate((valid) => {
+        if (valid) {
+          let data ={
+            diliveryManName:this.assignRidersList.name,
+            ids:this.orderId
+          }
+          getAssign(data).then(res=>{
+            this.$Message.success('成功');
+            this.$emit('detailsRefresh','1')
+            this.assignRidersList.name=''
+            this.assignRidersModal=false
+          }).catch(err => {
+            this.$Message.error(err.response.data.message)
+          })
+          
+        } else {
+            this.$Message.error('请输入骑手姓名');
+        }
+      })
     },
   }
 }

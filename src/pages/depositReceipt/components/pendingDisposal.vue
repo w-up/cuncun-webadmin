@@ -13,8 +13,20 @@
       </Card>
     </div>
     <div style="margin-top:20px">
-      <Button type="info" style="margin:0 8px 5px 0" >接单</Button>
-      <Button type="error" style="margin:0 8px 5px 0" @click="refusalOfOrders()">拒单</Button>
+      <Poptip
+        confirm
+        title="确认接单吗?"
+        @on-ok="receiptOk"
+        >
+        <Button type="info" style="margin:0 8px 5px 0" >接单</Button>
+      </Poptip>
+      <Poptip
+        confirm
+        title="确认拒单吗?"
+        @on-ok="receiptOk1"
+        >
+      <Button type="error" style="margin:0 8px 5px 0" >拒单</Button>
+      </Poptip>
       <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
     </div>
     <Modal v-model="refusalOfOrdersModal"  title="拒单理由">
@@ -128,6 +140,39 @@ export default {
     },
     refusalOfOrders(){
       this.refusalOfOrdersModal = true
+    },
+    receiptOk(){
+      getAccept(data).then(res=>{
+        this.$Message.success('成功');
+         this.$emit('detailsRefresh','1')
+        this.typeModal=false
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
+      })
+     
+    },
+    receiptOk(){
+      let data ={
+        ids:this.orderId
+      }
+      getAccept(data).then(res=>{
+        this.$Message.success('成功');
+        this.$emit('detailsRefresh','1')
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
+      })
+     
+    },
+    receiptOk1(){
+      let data ={
+        ids:this.orderId
+      }
+      getRefuse(data).then(res=>{
+        this.$Message.success('成功');
+        this.$emit('detailsRefresh','1')
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
+      })
     },
   }
 }
