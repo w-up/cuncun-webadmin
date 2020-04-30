@@ -36,8 +36,8 @@
         </Card>
         <Card style="width:350px;margin-right:5px;margin-top:10px">
           <p slot="title">费用明细</p>
-          <Button slot="extra" v-show='type=="photo"?true:type=="ready"?true:type=="ready"?true:type=="finish"?true:false' @click="adjustmentClick">调整费用</Button>
-          <div v-show='type=="waitpay"?true:type=="init"?true:type=="assign"?true:type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:false'>
+          <Button slot="extra" v-show='type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="ready"?true:type=="finish"?true:false' @click="adjustmentClick">调整费用</Button>
+          <div v-show='type=="waitpay"?true:type=="init"?true:type=="assign"?true:type=="fetch"?true:false'>
             <Form  :label-width="110">
               <FormItem label="运输费用：">
                   <span style="margin-left:120px">￥{{costList.transport}}</span>
@@ -56,7 +56,7 @@
               </FormItem>
             </Form>
           </div>
-          <div v-show='type=="photo"?true:type=="ready"?true:type=="ready"?true:type=="finish"?true:false' >
+          <div v-show='type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="ready"?true:type=="finish"?true:false' >
             <Form  :label-width="110">
               <FormItem label="运输费用：">
                   <span style="margin-left:120px">￥{{costList.transport}}</span>
@@ -79,11 +79,13 @@
               <FormItem label="实付定金：" class="size20">
                   <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.actualPayment}}</span>
               </FormItem>
-              <FormItem label="未结算" v-show='type=="photo"?true:type=="ready"?true:false'>
+              <FormItem label="未结算" v-show='type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:false'>
                 <Poptip
                     confirm
                     transfer
-                    title="是否确认发起结算?">
+                    title="是否确认发起结算?"
+                    @on-ok="settleOk"
+                    >
                     <Button type="success" style="margin-left:120px">发起结算</Button>
                 </Poptip>
               </FormItem>
@@ -125,12 +127,12 @@
           </Form>
         </Card>
       </div>
-      <div style="margin:20px 0">
+      <!-- <div style="margin:20px 0">
         <div style="margin:20px 0"> 测试切换状态</div>
         <Select  slot="extra"  style="width:200px;" v-model="type">
           <Option v-for="item in stateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
-      </div>
+      </div> -->
       <div style="margin:20px 0">
         <Button :disabled='type=="init"?true:type=="assign"?true:type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:false' 
           style="margin:0 8px 5px 0" :type="type=='waitpay'?'primary':'dashed'">待付款<Icon type="ios-arrow-forward" /></Button>
@@ -154,15 +156,15 @@
       <div style="margin:20px 0"> 
         <Card >
           <p slot="title">数据信息</p>
-          <pendingPayment v-show="type=='waitpay'" ref="pendingPayment"></pendingPayment> 
-          <pendingDisposal v-show="type=='init'" ref="pendingDisposal"></pendingDisposal>
-          <assignRiders  v-show="type=='assign'" ref="assignRiders"></assignRiders>
-          <waitingForDelivery v-show="type=='fetch'" ref="waitingForDelivery"></waitingForDelivery>
-          <returningLibrary v-show="type=='delivery'" ref="returningLibrary"></returningLibrary>
-          <securityCheck v-show="type=='monitor'" ref="securityCheck"></securityCheck>
-          <stayPhotograph v-show="type=='photo'" ref="stayPhotograph"></stayPhotograph>
-          <toStayOn v-show="type=='ready'" ref="toStayOn"></toStayOn>
-          <complete v-show="type=='finish'" ref="complete"></complete>
+          <pendingPayment v-show="type=='waitpay'" ref="pendingPayment" @detailsRefresh="getDetailsRefresh"></pendingPayment> 
+          <pendingDisposal v-show="type=='init'" ref="pendingDisposal" @detailsRefresh="getDetailsRefresh"></pendingDisposal>
+          <assignRiders  v-show="type=='assign'" ref="assignRiders" @detailsRefresh="getDetailsRefresh"></assignRiders>
+          <waitingForDelivery v-show="type=='fetch'" ref="waitingForDelivery" @detailsRefresh="getDetailsRefresh"></waitingForDelivery>
+          <returningLibrary v-show="type=='delivery'" ref="returningLibrary" @detailsRefresh="getDetailsRefresh"></returningLibrary>
+          <securityCheck v-show="type=='monitor'" ref="securityCheck" @detailsRefresh="getDetailsRefresh"></securityCheck>
+          <stayPhotograph v-show="type=='photo'" ref="stayPhotograph" @detailsRefresh="getDetailsRefresh"></stayPhotograph>
+          <toStayOn v-show="type=='ready'" ref="toStayOn" @detailsRefresh="getDetailsRefresh"></toStayOn>
+          <complete v-show="type=='finish'" ref="complete" @detailsRefresh="getDetailsRefresh"></complete>
         </Card>
       </div>
       <!-- <div style="margin:10px 0">
@@ -218,7 +220,8 @@ import { getRemarkPage,
 getRemarkAdd,
 getRemarkDel,
 getOrderDetail,
-getFeeAdjust } from "@api/account";
+getFeeAdjust,
+getFeeSettle } from "@api/account";
 import pendingPayment from '../components/pendingPayment' //待付款
 import pendingDisposal from '../components/pendingDisposal' // init
 import assignRiders from '../components/assignRiders'//待分配骑手
@@ -243,8 +246,6 @@ export default {
   },
   watch: {
     type() {
-      console.log('11');
-      
       if (this.type=='waitpay') {
           this.$refs.pendingPayment.getData(this.$route.query.id)
       }else if(this.type=='init'){
@@ -462,6 +463,22 @@ export default {
         this.cancel()
       }
       
+    },
+    //刷新详情
+    getDetailsRefresh(){
+      this.OrderDetail()
+    },
+    //发起结算
+    settleOk(){
+      let data={
+        id:this.orderId
+      }
+      getFeeSettle(data).then(res=>{
+        this.OrderDetail()
+        this.$Message.success('成功');
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
+      })
     },
   }
 }

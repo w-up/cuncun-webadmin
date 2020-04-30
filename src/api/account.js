@@ -48,6 +48,7 @@ export function getAccept (data) {
         data 
     });
 }
+
 //存单预计物品列表
 export function getGoodsList4Order (id) {
     return request({
@@ -68,10 +69,58 @@ export function getBoxList4Order (id) {
         }
     });
 }
+//存单待取货此步骤已完成
+export function getCompleteDelivery (data) {
+    return request({
+        url: '/server/data/admin/deposit/order/delivery',
+        method: 'post',
+        data 
+    });
+}
+//存单回库中此步骤已完成
+export function getCompleteMonitor (data) {
+    return request({
+        url: '/server/data/admin/deposit/order/monitor',
+        method: 'post',
+        data 
+    });
+}
+//存单安检中此步骤已完成
+export function getCompletePhoto(data) {
+    return request({
+        url: '/server/data/admin/deposit/order/photo',
+        method: 'post',
+        data 
+    });
+}
+//存单拍照中此步骤已完成
+export function getCompleteReady(data) {
+    return request({
+        url: '/server/data/admin/deposit/order/ready',
+        method: 'post',
+        data 
+    });
+}
+//存单待上架此步骤已完成
+export function getCompleteFinish(data) {
+    return request({
+        url: '/server/data/admin/deposit/order/finish',
+        method: 'post',
+        data 
+    });
+}
 //存单拒单
 export function getRefuse (data) {
     return request({
         url: '/server/data/admin/deposit/order/refuse',
+        method: 'post',
+        data 
+    });
+}
+//存单发起结算
+export function getFeeSettle (data) {
+    return request({
+        url: '/server/data/admin/deposit/order/fee/settle',
         method: 'post',
         data 
     });

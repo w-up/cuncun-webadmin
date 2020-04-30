@@ -13,7 +13,13 @@
       </Card>
     </div>
     <div style="margin-top:20px">
-      <Button type="success" style="margin:0 8px 5px 0" >此步骤已完成</Button>
+      <Poptip
+        confirm
+        title="是否确认此步骤已完成?"
+        @on-ok="stepComplete"
+      >
+        <Button type="success" style="margin:0 8px 5px 0" >此步骤已完成</Button>
+      </Poptip>
       <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
     </div>
     <Modal v-model="refusalOfOrdersModal"  title="拒单理由">
@@ -33,7 +39,7 @@
 </template>
 
 <script>
-import { getBoxList4Order,getGoodsList4Order } from "@api/account";
+import { getBoxList4Order,getGoodsList4Order,getCompleteDelivery } from "@api/account";
 export default {
   name: 'pendingDisposal',
   data () {
@@ -127,6 +133,17 @@ export default {
     },
     refusalOfOrders(){
       this.refusalOfOrdersModal = true
+    },
+    stepComplete(){
+      let data ={
+        ids:this.orderId
+      }
+      getCompleteDelivery(data).then(res=>{
+        this.$emit('detailsRefresh','1')
+        this.$Message.success('成功');
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
+      })
     },
   }
 }

@@ -86,7 +86,13 @@
       
     </div>
     <div style="margin-top:20px">
-      <Button type="success" style="margin:0 8px 5px 0">此步骤已完成</Button>
+      <Poptip
+        confirm
+        title="是否确认此步骤已完成?"
+        @on-ok="stepComplete"
+      >
+        <Button type="success" style="margin:0 8px 5px 0" >此步骤已完成</Button>
+      </Poptip>
       <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
     </div>
     <Modal v-model="refusalOfOrdersModal"  title="照片上传" @on-visible-change="visibleChange">
@@ -127,7 +133,8 @@ getDepositGoodsDel,
 getDepositGoodsPicList,
 getDepositGoodsShow,
 timeDate,
-getGoodsTree
+getGoodsTree,
+getCompleteReady
  } from "@api/account";
 export default {
   name: 'pendingDisposal',
@@ -230,7 +237,7 @@ export default {
           title: '物品数量',
           align:'center',
           minWidth:100,
-          key: 'name'
+          key: 'goodsCount'
         },
         {
           title: '操作',
@@ -482,7 +489,19 @@ export default {
       }).catch(err => {
         this.$Message.error(err.response.data.message)
       })
-    }
+    },
+    //此步骤已完成
+    stepComplete(){
+      let data ={
+        ids:this.orderId
+      }
+      getCompleteReady(data).then(res=>{
+        this.$emit('detailsRefresh','1')
+        this.$Message.success('成功');
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
+      })
+    },
   }
 }
 </script>
