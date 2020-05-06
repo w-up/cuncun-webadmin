@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { getBoxList4Order,getGoodsList4Order } from "@api/account";
+import { getBoxList4Order,getGoodsList4Order,getAssign } from "@api/account";
 export default {
   name: 'pendingDisposal',
   data () {
