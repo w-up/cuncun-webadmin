@@ -97,10 +97,12 @@
         </Select>
       </div> -->
       <div style="margin:20px 0">
-        <Button :disabled='type=="init"?true:type=="collect"?true:type=="waitsend"?true:type=="waitsign"?true:type=="finish"?true:type=="cancel"?true:false' 
+        <Button :disabled='type=="init"?true:type=="collect"?true:type=="accept"?true:type=="waitsend"?true:type=="waitsign"?true:type=="finish"?true:type=="cancel"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='waitpay'?'primary':'dashed'">待付款<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="collect"?true:type=="waitsend"?true:type=="waitsign"?true:type=="finish"?true:type=="cancel"?true:false'  
+        <Button :disabled='type=="collect"?true:type=="accept"?true:type=="waitsend"?true:type=="waitsign"?true:type=="finish"?true:type=="cancel"?true:false'  
           :type="type=='init'?'primary':'dashed'" style="margin:0 8px 5px 0">待处理<Icon type="ios-arrow-forward" /></Button>
+          <Button :disabled='type=="collect"?true:type=="waitsend"?true:type=="waitsign"?true:type=="finish"?true:type=="cancel"?true:false' 
+          style="margin:0 8px 5px 0" :type="type=='accept'?'primary':'dashed'">待分配拣货员<Icon type="ios-arrow-forward" /></Button>
         <Button :disabled='type=="waitsend"?true:type=="waitsign"?true:type=="finish"?true:type=="cancel"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='collect'?'primary':'dashed'">拣货作业中<Icon type="ios-arrow-forward" /></Button>
         <Button :disabled='type=="waitsign"?true:type=="finish"?true:type=="cancel"?true:false' 
@@ -116,6 +118,7 @@
           <p slot="title">数据信息</p>
           <pendingPayment v-show="type=='waitpay'" ref="pendingPayment" @detailsRefresh="getDetailsRefresh"></pendingPayment> 
           <pendingDisposal v-show="type=='init'" ref="pendingDisposal" @detailsRefresh="getDetailsRefresh"></pendingDisposal>
+          <assignPicking  v-show="type=='accept'" ref="assignPicking" @detailsRefresh="getDetailsRefresh"></assignPicking>
           <picking  v-show="type=='collect'" ref="picking" @detailsRefresh="getDetailsRefresh"></picking>
           <waitingList v-show="type=='waitsend'" ref="waitingList" @detailsRefresh="getDetailsRefresh"></waitingList>
           <stockUp v-show="type=='waitsign'" ref="stockUp" @detailsRefresh="getDetailsRefresh"></stockUp>
@@ -171,6 +174,7 @@ getWithdrawFeeAdjust
  } from "@/api/account";
 import pendingPayment from '../components/pendingPayment' //待付款
 import pendingDisposal from '../components/pendingDisposal' // 待处理
+import assignPicking from '../components/assignPicking'//拣货作业中
 import picking from '../components/picking'//拣货作业中
 import waitingList from '../components/waitingList'//待录单
 import stockUp from '../components/stockUp'//备货完成
@@ -181,6 +185,7 @@ export default {
   components: {
     pendingPayment,
     pendingDisposal,
+    assignPicking,
     picking,
     waitingList,
     stockUp,
@@ -203,6 +208,8 @@ export default {
         this.$refs.complete.getData(this.$route.query.id)
       }else if(this.type=='cancel'){
         this.$refs.Cancelled.getData(this.$route.query.id)
+      }else if(this.type=='accept'){
+        this.$refs.assignPicking.getData(this.$route.query.id)
       }
     },
   },

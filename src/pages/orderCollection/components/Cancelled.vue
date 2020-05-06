@@ -27,6 +27,7 @@ export default {
   name: 'pendingPayment',
   data () {
     return {
+      orderId:'',
       imgModal:false,
       img:'',
       columns: [

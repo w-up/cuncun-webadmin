@@ -38,6 +38,7 @@
         <TabPane label="全部" name=""></TabPane>
         <TabPane label="待付款" name="waitpay"></TabPane>
         <TabPane label="待处理" name="init"></TabPane>
+        <TabPane label="待分配拣货员" name="accept"></TabPane>
         <TabPane label="拣货作业中" name="collect"></TabPane>
         <TabPane label="待发货" name="waitsend"></TabPane>
         <TabPane label="待签收" name="waitsign"></TabPane>
@@ -51,11 +52,12 @@
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(188, 190, 191);cursor: default" v-if="row.status.code == 'cancel'">已取消</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#FF8768;cursor: default" v-if="row.status.code == 'init'">待处理</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(74, 210, 142);cursor: default" v-if="row.status.code == 'waitpay'">待支付</Button>
-            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#68B0EF;cursor: default" v-if="row.status.code == 'waitsend'">待发货</Button>
-            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#ff9900;cursor: default" v-if="row.status.code == 'collect'">拣货作业中</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#68B0EF;cursor: default" v-if="row.status.code == 'collect'">拣货作业中</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#ff9900;cursor: default" v-if="row.status.code == 'accept'">待分配拣货员</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#B34DFF;cursor: default" v-if="row.status.code == 'waitsign'">待签收</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#19be6b;cursor: default" v-if="row.status.code == 'finish'">已完成</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#FC041A;cursor: default" v-if="row.status.code == 'refuse'">已拒绝</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#7FF85C;cursor: default" v-if="row.status.code == 'waitsend'">待发货</Button>
           </template>
           <template slot-scope="{ row, index }" slot="operation">
             <Button type="text" size="small"   style="margin-right: 5px;color:#19be6b;" @click="detailsClick(row.id)">详情</Button>
@@ -141,7 +143,7 @@ export default {
         {
           title: '订单状态',
           slot: 'type',
-          width: 120,
+          width: 140,
           align: 'center'
         },
         {
@@ -153,7 +155,7 @@ export default {
         {
           title: '联系人',
           key: 'linkman',
-          width: 120,
+          width: 160,
           align: 'center'
         },
         {
@@ -195,7 +197,7 @@ export default {
         {
           title: '用户ID',
           key: 'userId',
-          minWidth: 160,
+          minWidth: 220,
           align: 'center'
         },
         {

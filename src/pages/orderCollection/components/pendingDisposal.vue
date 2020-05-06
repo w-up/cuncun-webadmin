@@ -54,6 +54,7 @@ export default {
   name: 'pendingDisposal',
   data () {
     return {
+      orderId:'',
       refusalOfOrdersModal:false,
       imgModal:false,
       img:'',

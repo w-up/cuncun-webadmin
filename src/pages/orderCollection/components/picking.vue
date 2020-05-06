@@ -9,9 +9,7 @@
         </template>
       </Table>
     </div>
-    <div>
-      <Button type="warning" style="margin:0 8px 5px 0" @click="assignRidersClick">分配拣货员</Button>
-    </div>
+
     <div style="margin-top:10px"> 
       <Poptip
         confirm
@@ -19,8 +17,8 @@
         @on-ok="ok">
         <Button type="success" style="margin:0 8px 5px 0">拣货完成</Button>
       </Poptip>
+      <!-- <Button type="warning" style="margin:0 8px 5px 0" @click="assignRidersClick">分配拣货员</Button> -->
       <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出拣货单</Button>
-      <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出配送单</Button>
     </div>
     <Modal
         v-model="imgModal"
@@ -53,6 +51,7 @@ export default {
   name: 'pendingPayment',
   data () {
     return {
+      orderId:'',
       imgModal:false,
       img:'',
       columns: [
@@ -162,7 +161,6 @@ export default {
           }
           getWithdrawCollect(data).then(res=>{
             this.$Message.success('成功');
-            this.getData()
             this.assignRidersList.name=''
             this.assignRidersModal=false
           }).catch(err => {

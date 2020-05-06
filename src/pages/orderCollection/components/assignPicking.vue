@@ -1,27 +1,26 @@
 <template>
   <div>
-    <!-- <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button> -->
-    
+   
     <!-- <Button type="error" style="margin:0 8px 5px 0">拒单</Button> -->
     <div style="margin:12px 0">
       <Table border :columns="columns" :data="data">
-        <template slot-scope="{ row, index }" slot="img1">
+       <template slot-scope="{ row, index }" slot="img1">
             <Button type="primary" size="small"  @click="imgClick(row.img)">查看</Button>
         </template>
       </Table>
     </div>
-    <div>
-      <Button type="warning" style="margin:0 8px 5px 0" @click="assignRidersClick">输入单号</Button>
-    </div>
+    <!-- <div>
+      
+    </div> -->
     <div style="margin-top:10px"> 
-      <Poptip
+      <!-- <Poptip
         confirm
-        title="是否确认完成?"
+        title="是否确认拣货完成?"
         @on-ok="ok">
-        <Button type="success" style="margin:0 8px 5px 0">此步骤已完成</Button>
-      </Poptip>
+        <Button type="success" style="margin:0 8px 5px 0">拣货完成</Button>
+      </Poptip> -->
+      <Button type="warning" style="margin:0 8px 5px 0" @click="assignRidersClick">分配拣货员</Button>
       <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出拣货单</Button>
-      <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出配送单</Button>
     </div>
     <Modal
         v-model="imgModal"
@@ -33,11 +32,11 @@
     </Modal>
     <Modal
         v-model="assignRidersModal"
-        title="单号"
+        title="分配拣货员"
         :mask-closable="false">
         <Form ref="formValidate" :model="assignRidersList" :rules="ruleValidate" :label-width="100">
-          <FormItem label="单号" prop="name">
-              <Input v-model="assignRidersList.name" placeholder="请输入单号" style="width:250px"></Input>
+          <FormItem label="拣货员姓名" prop="name">
+              <Input v-model="assignRidersList.name" placeholder="请为选中的订单批量分配骑手" style="width:250px"></Input>
           </FormItem>
         </Form>
         <div slot="footer" style="text-align: right;">
@@ -49,7 +48,7 @@
 </template>
 
 <script>
-import { getWithdrawGoodsList,getWithdrawWwaitsign,getWithdrawWaybillNo } from "@api/account";
+import { getWithdrawGoodsList,getWithdrawCollect,getWithdrawWaitsend } from "@api/account";
 export default {
   name: 'pendingPayment',
   data () {
@@ -57,15 +56,6 @@ export default {
       orderId:'',
       imgModal:false,
       img:'',
-      assignRidersModal:false,
-      assignRidersList:{
-        name:''
-      },
-      ruleValidate: {
-        name: [
-            { required: true, message: '请输入', trigger: 'blur' }
-        ],
-      },
       columns: [
         {
           title: '序号',
@@ -116,7 +106,16 @@ export default {
           slot: 'img1'
         },
       ],
-      data: []
+      data: [],
+      assignRidersModal:false,
+      assignRidersList:{
+        name:''
+      },
+      ruleValidate: {
+        name: [
+            { required: true, message: '请输入', trigger: 'blur' }
+        ],
+      }
     }
   },
   mounted () {
@@ -152,7 +151,6 @@ export default {
     },
     //分配拣货员弹窗false
     assignRidersCancel(){
-      this.assignRidersList.name=''
       this.assignRidersModal=false
     },
     //分配拣货员
@@ -160,24 +158,25 @@ export default {
       this.$refs["formValidate"].validate((valid) => {
         if (valid) {
           let data ={
-            waybillNo:this.assignRidersList.name,
+            pickmanName:this.assignRidersList.name,
             ids:this.orderId
           }
-          getWithdrawWaybillNo(data).then(res=>{
+          getWithdrawCollect(data).then(res=>{
             this.$Message.success('成功');
+            this.$emit('detailsRefresh','1')
             this.assignRidersList.name=''
             this.assignRidersModal=false
           }).catch(err => {
             this.$Message.error(err.response.data.message)
           })
         } else {
-            this.$Message.error('请输入单号');
+            this.$Message.error('请输入拣货员姓名');
         }
       })
     },
-    //此步骤已完成
+    //拣货完成
     ok(){
-      getWithdrawWwaitsign(this.orderId).then(res=>{
+      getWithdrawWaitsend(this.orderId).then(res=>{
         this.$Message.success('成功');
         this.$emit('detailsRefresh','1')
       }).catch(err => {

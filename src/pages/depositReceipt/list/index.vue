@@ -165,7 +165,7 @@ export default {
         {
           title: '联系人',
           key: 'linkman',
-          width: 120,
+          width: 160,
           align: 'center'
         },
         {
