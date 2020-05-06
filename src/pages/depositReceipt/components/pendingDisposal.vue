@@ -142,16 +142,6 @@ export default {
       this.refusalOfOrdersModal = true
     },
     receiptOk(){
-      getAccept(data).then(res=>{
-        this.$Message.success('成功');
-         this.$emit('detailsRefresh','1')
-        this.typeModal=false
-      }).catch(err => {
-        this.$Message.error(err.response.data.message)
-      })
-     
-    },
-    receiptOk(){
       let data ={
         ids:this.orderId
       }

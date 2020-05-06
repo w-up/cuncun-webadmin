@@ -159,18 +159,18 @@ export default {
         {
           title: '订单号',
           key: 'orderNo',
-          width: 140,
+          width: 180,
           align: 'center'
         },
         {
           title: '联系人',
-          key: 'contacts',
+          key: 'linkman',
           width: 120,
           align: 'center'
         },
         {
           title: '联系电话',
-          key: 'phone',
+          key: 'mobile',
           width: 125,
           align: 'center'
         },
@@ -194,7 +194,7 @@ export default {
         },
         {
           title: '预估数量',
-          key: 'num1',
+          key: 'prepareBoxNum',
           width: 100,
           align: 'center'
         },
@@ -281,9 +281,6 @@ export default {
         
       })
     },
-    assignRidersClick(){
-      this.assignRidersModal=true
-    },
     assignRidersOk(){
       this.$refs["formValidate"].validate((valid) => {
         if (valid) {
@@ -313,6 +310,15 @@ export default {
       this.assignRidersList.name=''
       this.assignRidersModal=false
     },
+    //分配骑手
+    assignRidersClick(){
+      if (this.selectionList.length>0) {
+        this.assignRidersModal=true
+      }else{
+        this.$Message.warning('请选择订单');
+      }
+      
+    },
     //选择状态
     tabsClick(name){
       this.searchList.status = name
@@ -336,7 +342,6 @@ export default {
       })
     },
     tableChangeClick(selection){
-      console.log(selection);
       this.selectionList = selection
     },
     //接单拒单

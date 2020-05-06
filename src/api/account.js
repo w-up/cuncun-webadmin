@@ -254,6 +254,118 @@ export function getDepositGoodsSet (data) {
 }
 
 
+//取单
+//取单列表
+export function getWithdrawList (data) {
+    return request({
+        url: '/server/data/admin/withdraw/order/page',
+        method: 'get',
+        params:data
+    });
+}
+//取单详情
+export function getWithdrawDetail(id) {
+    return request({
+        url: '/server/data/admin/withdraw/order/detail/'+id,
+        method: 'get',
+    });
+}
+//分配拣货员
+export function getWithdrawCollect (data) {
+    return request({
+        url: '/server/data/admin/withdraw/order/collect',
+        method: 'post',
+        data
+    });
+}
+//取单接单
+export function getWithdrawAccept (data) {
+    return request({
+        url: '/server/data/admin/withdraw/order/accept',
+        method: 'post',
+        data
+    });
+}
+//取单拒单
+export function getWithdrawRefuse (data) {
+    return request({
+        url: '/server/data/admin/withdraw/order/refuse',
+        method: 'post',
+        data
+    });
+}
+//取单备注列表
+export function getWithdrawRemarkList(data) {
+    return request({
+        url: '/server/data/admin/withdraw/remark/page',
+        method: 'get',
+        params:data
+    });
+}
+//取单备注删除
+export function getWithdrawRemarkDel(id) {
+    return request({
+        url: '/server/data/admin/withdraw/remark/del',
+        method: 'post',
+        params:{
+            id:id
+        }
+    });
+}
+//取单备注增加
+export function getWithdrawRemarkSave(data) {
+    return request({
+        url: '/server/data/admin/withdraw/remark/add',
+        method: 'post',
+        params:data
+    });
+}
+//取单调整费用
+export function getWithdrawFeeAdjust(data) {
+    return request({
+        url: '/server/data/admin/withdraw/order/fee/adjust',
+        method: 'post',
+        data
+    });
+}
+//取单物品列表
+export function getWithdrawGoodsList(id) {
+    return request({
+        url: '/server/data/admin/withdraw/goods/page',
+        method: 'get',
+        params:{
+            orderId:id
+        }
+    });
+}
+//取单拣货完成
+export function getWithdrawWaitsend(id) {
+    return request({
+        url: '/server/data/admin/withdraw/order/waitsend',
+        method: 'post',
+        data:{
+            ids:id
+        }
+    });
+}
+//取单输入单号
+export function getWithdrawWaybillNo(data) {
+    return request({
+        url: '/server/data/admin/withdraw/order/waybillNo',
+        method: 'post',
+        data
+    });
+}
+//取单完成待发货
+export function getWithdrawWwaitsign(id) {
+    return request({
+        url: '/server/data/admin/withdraw/order/waitsign',
+        method: 'post',
+        data:{
+            ids:id
+        }
+    });
+}
 
 //设置  时间系数设置列表
 export function getTimeSetUpList (data) {

@@ -3,56 +3,59 @@
     <Card>
       <p slot="title">取单列表</p>
       <Form inline :label-width="80" >
+          <Form inline :label-width="80" >
           <FormItem label="订单号" >
-            <Input  placeholder="请输入" style="width:200px"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.orderNo"></Input>
           </FormItem>
           <FormItem label="联系人" >
-            <Input  placeholder="请输入" style="width:200px"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.linkman"></Input>
           </FormItem>
           <FormItem label="用户ID" >
-            <Input  placeholder="请输入" style="width:200px"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.userAccountId"></Input>
           </FormItem>
           <FormItem label="用户姓名" >
-            <Input  placeholder="请输入" style="width:200px"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.orderNo"></Input>
           </FormItem>
           <FormItem label="联系电话" >
-            <Input  placeholder="请输入" style="width:200px"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.linktel"></Input>
           </FormItem>
-          <!-- <FormItem label="骑手姓名" >
-            <Input  placeholder="请输入" style="width:200px"></Input>
-          </FormItem> -->
-          <FormItem label="返送日期" >
-            <DatePicker  type="date"  placeholder="开始日期" style="width: 200px" transfer></DatePicker>
+          <!-- <FormItem label="返送日期" >
+            <DatePicker  type="date"  placeholder="开始日期" style="width: 200px" transfer :value="searchList.bookFetchDateStart"  @on-change="searchList.bookFetchDateStart=$event"></DatePicker>
             <span style="margin:0 10px">~</span>
-            <DatePicker  type="date"  placeholder="结束日期" style="width: 200px" transfer></DatePicker>
-            <!-- :value="searchList.beginDt"  @on-change="searchList.beginDt=$event" -->
+            <DatePicker  type="date"  placeholder="结束日期" style="width: 200px" transfer :value="searchList.bookFetchDateEnd"  @on-change="searchList.bookFetchDateEnd=$event"></DatePicker>
           </FormItem>
           <FormItem label="返送时间" >
-            <TimePicker type="time"  placeholder="开始时间" style="width: 200px" transfer></TimePicker>
+            <TimePicker  format="HH" placeholder="开始时间" style="width: 100px" transfer :value="searchList.bookFetchHourStart"  @on-change="searchList.bookFetchHourStart=$event"></TimePicker>
             <span style="margin:0 10px">~</span>
-            <TimePicker type="time"  placeholder="结束时间" style="width: 200px" transfer></TimePicker>
-          </FormItem>
+            <TimePicker  format="HH"   placeholder="结束时间" style="width: 100px" transfer :value="searchList.bookFetchHourEnd"  @on-change="searchList.bookFetchHourEnd=$event"></TimePicker>
+          </FormItem> -->
           <FormItem >
-            <Button type="warning" icon="ios-search" style="">搜索</Button>
+            <Button type="warning" icon="ios-search" style="" @click="getList()">搜索</Button>
           </FormItem>
       </Form>
+      </Form>
       <Tabs  style="margin-top:20px" @on-click="tabsClick">
-        <TabPane label="全部" name="name1"></TabPane>
-        <TabPane label="待付款" name="name2"></TabPane>
-        <TabPane label="待处理" name="name3"></TabPane>
-        <TabPane label="拣货作业中" name="name4"></TabPane>
-        <TabPane label="待发货" name="name5"></TabPane>
-        <TabPane label="待签收" name="name6"></TabPane>
-        <TabPane label="已完成" name="name7"></TabPane>
-        <TabPane label="已取消" name="name8"></TabPane>
+        <TabPane label="全部" name=""></TabPane>
+        <TabPane label="待付款" name="waitpay"></TabPane>
+        <TabPane label="待处理" name="init"></TabPane>
+        <TabPane label="拣货作业中" name="collect"></TabPane>
+        <TabPane label="待发货" name="waitsend"></TabPane>
+        <TabPane label="待签收" name="waitsign"></TabPane>
+        <TabPane label="已完成" name="finish"></TabPane>
+        <TabPane label="已拒绝" name="refuse"></TabPane>
+        <TabPane label="已取消" name="cancel"></TabPane>
       </Tabs>
       <div style="margin-top:20px">
-        <Table border ref="selection" :columns="columnsList" :data="dataList">
+        <Table border ref="selection" :columns="columnsList" :data="dataList" @on-selection-change="tableChangeClick">
           <template slot-scope="{ row, index }" slot="type">
-            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(188, 190, 191);cursor: default" v-if="row.state == '11'">已取消</Button>
-            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#FF8768;cursor: default" v-if="row.state == '22'">待处理</Button>
-            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(74, 210, 142);cursor: default" v-if="row.state == '33'">待支付</Button>
-            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#68B0EF;cursor: default" v-if="row.state == '44'">入库中</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(188, 190, 191);cursor: default" v-if="row.status.code == 'cancel'">已取消</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#FF8768;cursor: default" v-if="row.status.code == 'init'">待处理</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(74, 210, 142);cursor: default" v-if="row.status.code == 'waitpay'">待支付</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#68B0EF;cursor: default" v-if="row.status.code == 'waitsend'">待发货</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#ff9900;cursor: default" v-if="row.status.code == 'collect'">拣货作业中</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#B34DFF;cursor: default" v-if="row.status.code == 'waitsign'">待签收</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#19be6b;cursor: default" v-if="row.status.code == 'finish'">已完成</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#FC041A;cursor: default" v-if="row.status.code == 'refuse'">已拒绝</Button>
           </template>
           <template slot-scope="{ row, index }" slot="operation">
             <Button type="text" size="small"   style="margin-right: 5px;color:#19be6b;" @click="detailsClick(row.id)">详情</Button>
@@ -62,8 +65,8 @@
       <div class="page" style="margin-top:20px;display:flex;justify-content:space-between">
         <div class="operationBtn">
           <!-- <Button type="success">接单</Button> -->
-          <Button type="success">接单</Button>
-          <Button type="error">拒单</Button>
+          <Button type="success" @click="RefuseToAccept(true)">接单</Button>
+          <Button type="error" @click="RefuseToAccept(false)">拒单</Button>
           <Button type="warning" @click="assignRidersClick">分配拣货员</Button>
           <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出配送单</Button>
           <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出拣货单</Button>
@@ -85,17 +88,43 @@
           <Button type="primary" @click="assignRidersOk">确定</Button>
         </div>
     </Modal>
+    <Modal
+        v-model="typeModal"
+        :mask-closable="false">
+        <div style="height:100px;line-height:100px">
+          <h2 v-show="type" style="text-align: center">是否确认将已选中的订单全部接单</h2>
+          <h2 v-show="!type" style="text-align: center">是否确认将已选中的订单全部拒单</h2>
+        </div>
+        
+        <div slot="footer" style="text-align: right;">
+          <Button type="text" @click="typeCancel">取消</Button>
+          <Button type="primary" @click="typeOk">确定</Button>
+        </div>
+    </Modal>
   </div>
 </template>
 
 <script>
+import { getWithdrawList,getWithdrawCollect,getWithdrawAccept,getWithdrawRefuse } from "@api/account";
 export default {
   // name: 'home',
   data () {
     return {
+      typeModal:false,//接单拒单
       total: 0,
       pageSize: 10,
       pageNumber: 0,
+      searchList:{
+        status:'',
+        orderNo:'',
+        linkman:'',
+        linktel:'',
+        userAccountId:'',
+        bookFetchDateStart:'',
+        bookFetchDateEnd:'',
+        bookFetchHourStart:'',
+        bookFetchHourEnd:'',
+      },
       columnsList:[
         {
           type: 'selection',
@@ -105,7 +134,7 @@ export default {
         },
         {
           title: '序号',
-          key: 'serialNumber',
+          key: 'num',
           width: 70,
           align: 'center'
         },
@@ -117,19 +146,19 @@ export default {
         },
         {
           title: '订单号',
-          key: 'orderNumber',
-          width: 125,
+          key: 'orderNo',
+          width: 190,
           align: 'center'
         },
         {
           title: '联系人',
-          key: 'contacts',
+          key: 'linkman',
           width: 120,
           align: 'center'
         },
         {
           title: '联系电话',
-          key: 'phone',
+          key: 'mobile',
           width: 125,
           align: 'center'
         },
@@ -139,51 +168,39 @@ export default {
           minWidth: 240,
           align: 'center'
         },
-        // {
-        //   title: '返送日期',
-        //   key: 'date',
-        //   width: 120,
-        //   align: 'center'
-        // },
-        // {
-        //   title: '返送时间',
-        //   key: 'time',
-        //   width: 100,
-        //   align: 'center'
-        // },
         {
           title: '订单重量',
-          key: 'aass',
+          key: 'totalWeight',
           width: 100,
           align: 'center'
         },
         {
           title: '返送数量',
-          key: 'num',
+          key: 'packNum',
           width: 100,
           align: 'center'
         },
         {
           title: '物流费用',
-          key: 'logisticsCost',
+          key: 'deliveryFee',
           width: 100,
           align: 'center'
         },
         {
           title: '物流单号',
-          key: 'riderName',
-          width: 120,
+          key: 'waybillNo',
+          minWidth: 160,
           align: 'center'
         },
         {
           title: '用户ID',
-          key: 'userID',
-          width: 125,
+          key: 'userId',
+          minWidth: 160,
           align: 'center'
         },
         {
           title: '拣货员',
-          key: 'hjaj',
+          key: 'pickmanName',
           width: 125,
           align: 'center'
         },
@@ -196,97 +213,10 @@ export default {
         },
       ],
       dataList:[
-        {
-          id:'1',
-         serialNumber:'1',
-         state:'11', 
-         orderNumber:'15544556677', 
-         contacts:'Ding Han', 
-         phone:'13344223232', 
-         address:'上海市黄浦区九江路666号13B', 
-         date:'2019-12-13', 
-         time:'14:13:30', 
-         num:'132', 
-         logisticsCost:'14', 
-         riderName:'-', 
-         userID:'13244324323', 
-        },
-        {
-          id:'1',
-         serialNumber:'1',
-         state:'22', 
-         orderNumber:'15544556677', 
-         contacts:'Ding Han', 
-         phone:'13344223232', 
-         address:'上海市黄浦区九江路666号13B', 
-         date:'2019-12-13', 
-         time:'14:13:30', 
-         num:'132', 
-         logisticsCost:'14', 
-         riderName:'-', 
-         userID:'13244324323', 
-        },
-        {
-          id:'1',
-         serialNumber:'1',
-         state:'33', 
-         orderNumber:'15544556677', 
-         contacts:'Ding Han', 
-         phone:'13344223232', 
-         address:'上海市黄浦区九江路666号13B', 
-         date:'2019-12-13', 
-         time:'14:13:30', 
-         num:'132', 
-         logisticsCost:'14', 
-         riderName:'-', 
-         userID:'13244324323', 
-        },
-        {
-          id:'1',
-         serialNumber:'1',
-         state:'44', 
-         orderNumber:'15544556677', 
-         contacts:'Ding Han', 
-         phone:'13344223232', 
-         address:'上海市黄浦区九江路666号13B', 
-         date:'2019-12-13', 
-         time:'14:13:30', 
-         num:'132', 
-         logisticsCost:'14', 
-         riderName:'-', 
-         userID:'13244324323', 
-        },
-        {
-          id:'1',
-         serialNumber:'1',
-         state:'44', 
-         orderNumber:'15544556677', 
-         contacts:'Ding Han', 
-         phone:'13344223232', 
-         address:'上海市黄浦区九江路666号13B', 
-         date:'2019-12-13', 
-         time:'14:13:30', 
-         num:'132', 
-         logisticsCost:'14', 
-         riderName:'-', 
-         userID:'13244324323', 
-        },
-        {
-          id:'1',
-         serialNumber:'1',
-         state:'44', 
-         orderNumber:'15544556677', 
-         contacts:'Ding Han', 
-         phone:'13344223232', 
-         address:'上海市黄浦区九江路666号13B', 
-         date:'2019-12-13', 
-         time:'14:13:30', 
-         num:'132', 
-         logisticsCost:'14', 
-         riderName:'-', 
-         userID:'13244324323', 
-        },
+
       ],
+      selectionList:[],//多选列表
+      type:false,//接单拒单状态
       assignRidersModal:false,
       assignRidersList:{
         name:''
@@ -300,29 +230,78 @@ export default {
   },
   mounted () {
     //
+    this.getList()
   },
   methods:{
     getList(){
-
+      let data ={
+        pageNumber:this.pageNumber,
+        pageSize:this.pageSize,
+        status:this.searchList.status,
+        orderNo:this.searchList.orderNo,
+        linkman:this.searchList.linkman,
+        linktel:this.searchList.linktel,
+        userAccountId:this.searchList.userAccountId,
+        bookFetchDateStart:this.searchList.bookFetchDateStart,
+        bookFetchDateEnd:this.searchList.bookFetchDateEnd,
+        bookFetchHourStart:this.searchList.bookFetchHourStart,
+        bookFetchHourEnd:this.searchList.bookFetchHourEnd,
+      }
+      getWithdrawList(data).then(res=>{
+        var num = 0
+        let arr = res.data.data
+        arr.forEach(v => {
+          num ++ 
+          v.num = num
+          v.type=v.status.code
+          v.userId=v.user.code
+        });
+        this.total = res.data.total
+        this.dataList=arr
+      })
     },
-    assignRidersClick(){
-      this.assignRidersModal=true
-    },
+    //分配拣货员
     assignRidersOk(){
       this.$refs["formValidate"].validate((valid) => {
         if (valid) {
-            this.$Message.success('Success!');
+          let id=[]
+          this.selectionList.forEach(v => {
+            id.push(v.id)
+          });
+          let data ={
+            pickmanName:this.assignRidersList.name,
+            ids:id.join(',')
+          }
+          getWithdrawCollect(data).then(res=>{
+            this.$Message.success('成功');
+            this.getList()
+            this.assignRidersList.name=''
             this.assignRidersModal=false
+          }).catch(err => {
+            this.$Message.error(err.response.data.message)
+          })
         } else {
-            this.$Message.error('请输入骑手姓名');
+            this.$Message.error('请输入拣货员姓名');
         }
       })
     },
+    //分配拣货员弹窗true
+    assignRidersClick(){
+      if (this.selectionList.length>0) {
+        this.assignRidersModal=true
+      }else{
+        this.$Message.warning('请选择订单');
+      }
+      
+    },
+    //分配拣货员弹窗false
     assignRidersCancel(){
       this.assignRidersModal=false
     },
     tabsClick(name){
-      console.log(name);
+      this.searchList.status = name
+      this.pageNumber = 0
+      this.getList()
       
     },
     changePage (page) {
@@ -332,6 +311,52 @@ export default {
     pageSizeChange(pageSize){
       this.pageSize=pageSize
       this.getList()
+    },
+    //接单拒单
+    RefuseToAccept(key){
+      if (this.selectionList.length>0) {
+        this.type =key
+        this.typeModal=true
+      }else{
+        this.$Message.warning('请选择订单');
+      }
+      
+    },
+    //接单拒单弹窗关闭
+    typeCancel(){
+      this.typeModal=false
+    },
+    //接单拒单弹窗确定
+    typeOk(){
+      let id=[]
+      this.selectionList.forEach(v => {
+        id.push(v.id)
+      });
+      let data ={
+        ids:id.join(',')
+      }
+      if (this.type==true) {
+        getWithdrawAccept(data).then(res=>{
+          this.$Message.success('成功');
+          this.getList()
+          this.typeModal=false
+        }).catch(err => {
+          this.$Message.error(err.response.data.message)
+        })
+      }else{
+        getWithdrawRefuse(data).then(res=>{
+          this.$Message.success('成功');
+          this.getList()
+          this.typeModal=false
+        }).catch(err => {
+          this.$Message.error(err.response.data.message)
+        })
+      }
+      
+    },
+    //多选
+    tableChangeClick(selection){
+      this.selectionList = selection
     },
     detailsClick(id){
       this.$router.push({

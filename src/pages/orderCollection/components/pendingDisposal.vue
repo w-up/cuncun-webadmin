@@ -2,18 +2,26 @@
   <div>
     <div style="margin:12px 0">
       <Table border :columns="columns" :data="data">
-        <template slot-scope="{ row, index }" slot="img">
-            <Button type="primary" size="small" >查看</Button>
+        <template slot-scope="{ row, index }" slot="img1">
+            <Button type="primary" size="small"  @click="imgClick(row.img)">查看</Button>
         </template>
       </Table>
-      <div style="margin-top:20px">
-        <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
-      </div>
     </div>
     <div>
-      <!-- <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button> -->
-      <Button type="success" style="margin:0 8px 5px 0">接单</Button>
-      <Button type="error" style="margin:0 8px 5px 0" @click="refusalOfOrders()">拒单</Button>
+     <Poptip
+        confirm
+        title="确认接单吗?"
+        @on-ok="receiptOk"
+        >
+        <Button type="success" style="margin:0 8px 5px 0" >接单</Button>
+      </Poptip>
+      <Poptip
+        confirm
+        title="确认拒单吗?"
+        @on-ok="receiptOk1"
+        >
+      <Button type="error" style="margin:0 8px 5px 0" >拒单</Button>
+      </Poptip>
     </div>
     <Modal v-model="refusalOfOrdersModal"  title="拒单理由">
       <div style="text-align:center">
@@ -28,48 +36,57 @@
         
       </div>
     </Modal>
+    <Modal
+        v-model="imgModal"
+        title="照片"
+        >
+        <div style="text-align: center"> 
+          <img :src="img" alt="" style="height:200px;">
+        </div>
+    </Modal>
   </div>
 </template>
 
 <script>
+import { getWithdrawAccept,getWithdrawRefuse,getWithdrawGoodsList } from "@api/account";
+
 export default {
   name: 'pendingDisposal',
   data () {
     return {
-      total: 0,
-      pageSize: 10,
-      pageNumber: 0,
       refusalOfOrdersModal:false,
+      imgModal:false,
+      img:'',
       columns: [
         {
           title: '序号',
           align:'center',
           width:75,
-          key: 'key'
+          key: 'num'
         },
         {
           title: '所在库位',
           align:'center',
-          width:150,
-          key: 'storehouse'
+          minWidth:150,
+          key: 'storeCode'
         },
         {
           title: '备注信息',
           align:'center',
-          width:160,
-          key: 'type'
+          minWidth:160,
+          key: 'auditRemark'
         },
         {
           title: '箱子编号',
           align:'center',
-          width:120,
-          key: 'num'
+          minWidth:120,
+          key: 'packCode'
         },
         {
           title: 'Item SKU',
           align:'center',
-          width:120,
-          key: 'SKU'
+          minWidth:120,
+          key: 'code'
         },
         {
           title: '物品名称',
@@ -80,37 +97,71 @@ export default {
         {
           title: '物品重量',
           align:'center',
-          width:150,
-          key: 'attribute'
+          minWidth:150,
+          key: 'weight'
         },
         {
           title: '照片',
           width:150,
           align:'center',
-          slot: 'img'
+          slot: 'img1'
         },
       ],
-      data: [
-          {
-            name:'1'
-          }
-      ]
+      data: []
     }
   },
   mounted () {
     //
   },
   methods:{
+    getData(id){
+      this.orderId=id
+      getWithdrawGoodsList(this.orderId).then(res=>{
+        var num = 0
+        var arr = res.data.data
+        arr.forEach(v => {
+          num++
+          v.num=num
+          v.name = v.goods.name
+          v.code = v.goods.code
+          v.packCode = v.goods.pack.code
+          v.storeCode = v.goods.storeCode
+          v.weight = v.goods.weight
+          v.auditRemark = v.goods.auditRemark
+          v.img = v.goods.coverPic
+        });
+        this.data = arr
+      })
+    },
+    imgClick(img){
+      this.img = img
+      this.imgModal=true
+    },
+    receiptOk(){
+      let data ={
+        ids:this.orderId
+      }
+      getWithdrawAccept(data).then(res=>{
+        this.$Message.success('成功');
+        this.$emit('detailsRefresh','1')
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
+      })
+     
+    },
+    receiptOk1(){
+      let data ={
+        ids:this.orderId
+      }
+      getWithdrawRefuse(data).then(res=>{
+        this.$Message.success('成功');
+        this.$emit('detailsRefresh','1')
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
+      })
+    },
     refusalOfOrders(){
       this.refusalOfOrdersModal = true
-    },
-    changePage (page) {
-      this.pageNumber = page - 1
-      // this.getList()
-    },
-    pageSizeChange(pageSize){
-      this.pageSize=pageSize
-      // this.getList()
     },
   }
 }
