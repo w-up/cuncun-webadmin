@@ -60,6 +60,15 @@ const frameIn = [
                 }
             },
             {
+                path: 'inventoryItems',
+                name: 'inventoryItems',
+                meta: {
+                    title: '库存物品管理',
+                    auth: true
+                },
+                component: () => import('@/pages/inventoryItems')
+            },
+            {
                 path: 'classificationOfGoods',
                 name: 'classificationOfGoods',
                 meta: {

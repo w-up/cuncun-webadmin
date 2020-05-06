@@ -13,6 +13,12 @@ export default [
     depositReceipt,
     orderCollection,
     warehouseOrder,
+    {
+        path: '/inventoryItems',
+        title: '库存物品管理',
+        header: 'home',
+        icon: 'md-cube',
+    },
     user,
     dataStatistics,
     {
