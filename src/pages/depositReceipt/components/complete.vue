@@ -3,7 +3,7 @@
     <div style="display:flex;"> 
       <Card style="width:38%;margin-right:5px;margin-top:10px">
         <p slot="title">纸箱列表</p>
-        <Table border :columns="columns" :data="boxData" @on-row-dblclick="oneOnRowClick">
+        <Table border :columns="columns" :data="boxData" @on-row-dblclick="oneOnRowClick" :row-class-name="rowClassName">
           <template slot-scope="{ row, index }" slot="inspectType">
             <Icon type="md-checkmark-circle" v-show="row.auditStatus=='pass'" size='24' color="#19be6b" />
             <Icon type="md-close-circle" v-show="row.auditStatus=='fail'" size='24' color="#ed4014"/>
@@ -116,6 +116,7 @@ export default {
   data () {
     return {
       num:0,
+      listColor:undefined,
       boxStorehouse:false,//保存编辑纸箱
       goodsStorehouse:false,//保存编辑库位
       goodsInformation:false,//物品编辑保存信息
@@ -363,7 +364,9 @@ export default {
       
     },
     //选中某一条箱子
-    oneOnRowClick(data){
+    oneOnRowClick(data,index){
+      this.listColor=index
+      this.rowClassName()
       if (data.auditStatus=='pass') {
         this.packId=data.id
         this.goodsList()
@@ -430,7 +433,7 @@ export default {
       this.data[index].categoryId=event
       
     },
-    okGoodsDel(id){
+    okGoodsDel(id){ 
       getDepositGoodsDel({id:id}).then(res=>{
         this.goodsList()
         this.$Message.success('成功');
@@ -438,10 +441,16 @@ export default {
         this.$Message.error(err.response.data.message)
       })
     },
+    rowClassName (row, index) {
+      if (index === Number(this.listColor) ) {
+          return 'demo-table-info-row';
+      } 
+      return '';
+    }
   }
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less" >
 
 </style>

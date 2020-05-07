@@ -236,6 +236,14 @@ export function getDepositGoodsPicList (data) {
         params:data
     });
 }
+//存单包裹内物品备注
+export function getUpdateRemark (data) {
+    return request({
+        url: '/server/data/admin/pack/update/remark',
+        method: 'post',
+        data
+    });
+}
 //存单物品信息发布
 export function getDepositGoodsShow (data) {
     return request({

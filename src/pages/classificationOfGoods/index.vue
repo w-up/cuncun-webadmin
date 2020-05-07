@@ -5,9 +5,10 @@
       <div style="display:flex;flex-wrap: wrap">
         <Card style="width:49%;margin-right:20px;margin-bottom:20px">
           <p slot="title">一级分类</p>
+          <p slot="extra" style="color:red">双击一级分类添加二级分类</p>
           <Button type="success" icon="md-add" style="" @click="oneClick('')">添加</Button>
           <div style="margin-top:20px">
-            <Table border ref="selection" :columns="columnsListOne" :data="dataListOne" @on-row-dblclick="oneOnRowClick">
+            <Table border ref="selection" :columns="columnsListOne" :data="dataListOne" @on-row-dblclick="oneOnRowClick" :row-class-name="rowClassName">
               <template slot-scope="{ row, index }" slot="operation">
                 <Button type="text" size="small"   style="margin-right: 5px;color:#19be6b;" @click="oneClick(row)">编辑</Button>
                 <Poptip
@@ -81,6 +82,7 @@ export default {
   // name: 'home',
   data () {
     return {
+      listColor:undefined,
       twoModal:false,
       oneModal:false,
       list:{
@@ -207,7 +209,9 @@ export default {
     twoClick(){
       this.twoModal = true
     },
-    oneOnRowClick(data){
+    oneOnRowClick(data,index){
+      this.listColor=index
+      this.rowClassName()
       getGoodsList({parentId:data.id}).then(res=>{
         var arr = res.data
         var num = 0
@@ -260,6 +264,12 @@ export default {
       this.oneModal = false
       this.twoModal = false
     },
+    rowClassName (row, index) {
+      if (index === Number(this.listColor) ) {
+          return 'demo-table-info-row';
+      } 
+      return '';
+    }
   }
 }
 </script>

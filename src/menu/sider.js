@@ -6,7 +6,7 @@ import user from './modules/user'; //用户管理
 import dataStatistics from './modules/dataStatistics'; //用户管理
 import boxType from './modules/boxType'; //用户管理
 // 系统
-import log from './modules/log';
+// import log from './modules/log';
 
 export default [
     // dashboard,
@@ -34,5 +34,5 @@ export default [
         header: 'home',
         icon: 'md-settings',
     },
-    log
+    // log
 ];

@@ -43,8 +43,8 @@
         <FormItem label="重量上限(kg)" prop="weight">
           <Input v-model="list.weight" placeholder="请输入" style="width:200px"></Input>
         </FormItem>
-        <FormItem label="存储费用(天/元)" prop="storePerDayFee">
-          <Input v-model="list.storePerDayFee" placeholder="请输入" style="width:200px"></Input>
+        <FormItem label="存储费用(月/元)" prop="storePerMonthFee">
+          <Input v-model="list.storePerMonthFee" placeholder="请输入" style="width:200px"></Input>
         </FormItem>
         <FormItem label="详情介绍" >
           <Upload
@@ -109,7 +109,7 @@ export default {
         length:'', 
         width:'', 
         height:'',
-        storePerDayFee:'',
+        storePerMonthFee:'',
       },
       ruleValidate: {
         name: [
@@ -130,7 +130,7 @@ export default {
         height: [
           { required: true, message: '长宽高不能为空', trigger: 'blur' }
         ],
-        storePerDayFee: [
+        storePerMonthFee: [
           { required: true, message: '金额不能为空', trigger: 'blur' }
         ]
       },
@@ -167,7 +167,7 @@ export default {
         },
         {
           title: '存储费用/天',
-          key: 'storePerDayFee',
+          key: 'storePerMonthFee',
           width: 200,
           align: 'center'
         },
@@ -215,7 +215,7 @@ export default {
           this.list.length=arr.length +''
           this.list.width=arr.width +''
           this.list.height=arr.height+''
-          this.list.storePerDayFee=arr.storePerDayFee+''
+          this.list.storePerMonthFee=arr.storePerMonthFee+''
           this.img = arr.pic+''
           this.sceneryPic = arr.sceneryPic
           this.boxModal = true
@@ -265,7 +265,7 @@ export default {
       this.file1=null,
       this.list.id=''
       this.list.name=''
-      this.list.storePerDayFee=''
+      this.list.storePerMonthFee=''
       this.list.type=''
       this.list.weight=''
       this.list.length=''

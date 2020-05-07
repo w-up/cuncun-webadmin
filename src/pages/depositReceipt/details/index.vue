@@ -14,17 +14,17 @@
                 <span>{{orderList.name}}</span>
             </FormItem>
             <FormItem label="手机号：">
-                <span>{{orderList.phone}}</span>
+                <span>{{orderList.telephone}}</span>
             </FormItem>
             <FormItem label="骑手：">
-                <span>{{orderList.rider}}</span>
+                <span>{{orderList.diliveryManName}}</span>
                 <Button type="success" style="margin-left:10px" v-show='type=="待取货"?true:type=="回库中"?true:type=="安检中"?true:false'>修改骑手</Button>
             </FormItem>
             <FormItem label="联系人：">
                 <span>{{orderList.contacts}}</span>
             </FormItem>
             <FormItem label="联系电话：">
-                <span>{{orderList.telephone}}</span>
+                <span>{{orderList.phone}}</span>
             </FormItem>
             <FormItem label="取件地址：">
                 <span>{{orderList.address}}</span>
@@ -96,7 +96,7 @@
           <p slot="title">备注信息</p>
           <Form  :label-width="90" label-position='top'>
             <FormItem label="用户备注：">
-              <Input   type="textarea"  :rows="5" />
+              <Input   type="textarea"  :rows="5" v-model="userRemark"/>
             </FormItem>
             <FormItem label="管理员备注:">
               <Row style="margin-top:5px" v-for="(item, index) in remarkList"
@@ -271,6 +271,7 @@ export default {
     return {
       orderId:this.$route.query.id,
       index:0,
+      userRemark:'',//用户备注
       adjustmentModel:false,
       remarkList:[],
       type:'',
@@ -278,7 +279,7 @@ export default {
         orderNumber:'',
         name:'',
         phone:'',
-        rider:'',
+        diliveryManName:'',
         contacts:'',
         telephone:'',
         address:'',
@@ -345,7 +346,7 @@ export default {
   mounted () {
     this.OrderDetail()//存单详情
     this.getRemarkList()//评论列表
-    
+    this.getUserRemark()
     
   },
   methods:{
@@ -357,7 +358,11 @@ export default {
         this.orderList.orderNumber=arr.orderNo
         // this.orderList.name=arr.linkman
         this.orderList.phone=arr.mobile
-        // this.orderList.rider=arr.mobile
+        if (arr.diliveryManName) {
+          this.orderList.diliveryManName=arr.diliveryManName
+        }
+        this.orderList.name=arr.user.name
+        this.orderList.telephone=arr.user.mobile
         this.orderList.contacts=arr.linkman
         this.orderList.address=arr.address
         this.orderList.time=arr.bookFetchDate + ' '+arr.bookFetchTime[0]+' - '+arr.bookFetchTime[1]
@@ -370,6 +375,17 @@ export default {
         
         // console.log(arr);
         
+      })
+    },
+    getUserRemark(){
+      let data = {
+        orderId:this.$route.query.id,
+        from:'user'
+      }
+      getRemarkPage(data).then(res=>{
+        var arr =res.data.data
+        this.userRemark = arr[0].content
+
       })
     },
     //评论列表

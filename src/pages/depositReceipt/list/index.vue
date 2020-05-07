@@ -67,9 +67,9 @@
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#FC041A;cursor: default" v-if="row.status.code == 'refuse'">拒单</Button>
           </template>
           <template slot-scope="{ row, index }" slot="paymentType">
-            <!-- <Icon type="md-checkmark-circle" size='24' color="#19be6b"/> -->
-            <!-- <Icon type="md-close-circle"  size='24' color="#ed4014"/>
-            <Icon type="md-close-circle"  size='24' color="#ed4014"/> -->
+            <Icon :type="row.prepaidStatus.code=='payed'?'md-checkmark-circle':'md-close-circle'" size='24' :color="row.prepaidStatus.code=='payed'?'#19be6b':'#ed4014'"/>
+            <Icon :type="row.adjustPayStatus.code=='waitSettle'?'md-close-circle':'md-checkmark-circle'" size='24' :color="row.adjustPayStatus.code=='waitSettle'?'#ed4014':'#19be6b'"/>
+            <Icon :type="row.adjustPayStatus.code=='payed'?'md-checkmark-circle':'md-close-circle'" size='24' :color="row.adjustPayStatus.code=='payed'?'#19be6b':'#ed4014'"/>
           </template>
           <template slot-scope="{ row, index }" slot="operation">
             <Button type="text" size="small"  style="margin-right: 5px;color:#19be6b;" @click="detailsClick(row.id)">详情</Button>
@@ -206,7 +206,7 @@ export default {
         },
         {
           title: '骑手姓名',
-          key: 'riderName',
+          key: 'diliveryManName',
           width: 120,
           align: 'center'
         },

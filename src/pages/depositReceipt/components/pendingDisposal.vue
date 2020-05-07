@@ -123,7 +123,7 @@ export default {
           v.num=num
           v.boxName=v.box.name
           v.boxType=v.box.type.name
-          v.storePerDayFee=v.box.storePerDayFee
+          v.storePerDayFee= (Number(v.amount)  *Number(v.box.storePerMonthFee)).toFixed(2) 
         });
         this.dataBox=arr
         
