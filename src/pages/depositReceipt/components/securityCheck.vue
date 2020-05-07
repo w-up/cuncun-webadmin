@@ -143,7 +143,9 @@ export default {
       getPackPage(data).then(res=>{
         var arr = res.data
         arr.forEach(v => {
-          v.auditStatus=v.auditStatus.code
+          if (v.auditStatus) {
+            v.auditStatus=v.auditStatus.code
+          }
           if (v.box) {
             v.boxId=v.box.id
             v.type=v.box.type.code

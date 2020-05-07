@@ -321,6 +321,9 @@ export default {
           getPackSet(arr).then(res=>{
             if (i==this.boxData.length-1) {
               this.dataList()
+              if (this.packId!='') {
+                this.goodsList()
+              }
               this.boxStorehouse=!this.boxStorehouse
               this.$Message.success('成功');
             }

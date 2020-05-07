@@ -24,12 +24,12 @@
         <template slot-scope="{ row, index }" slot="caseKg">
           <Input  placeholder="请输入" v-model="row.weight" @on-change="data[index].weight= row.weight"></Input>
         </template>
-        <template slot-scope="{ row, index }" slot="securityType">
+        <!-- <template slot-scope="{ row, index }" slot="securityType">
           <Select transfer v-model="row.auditStatus" @on-change="data[index].auditStatus= row.auditStatus">
             <Option  value="pass" >已通过</Option>
             <Option  value="fail" >未通过</Option>
           </Select>
-        </template>
+        </template> -->
         <template slot-scope="{ row, index }" slot="operation">
          <Poptip
             confirm
@@ -96,12 +96,12 @@ export default {
           minWidth:150,
           slot: 'caseKg'
         },
-        {
-          title: '安检状态',
-          align:'center',
-          minWidth:150,
-          slot: 'securityType'
-        },
+        // {
+        //   title: '安检状态',
+        //   align:'center',
+        //   minWidth:150,
+        //   slot: 'securityType'
+        // },
         {
           title: '操作',
           align:'center',
@@ -134,7 +134,10 @@ export default {
       getPackPage(data).then(res=>{
         var arr = res.data
         arr.forEach(v => {
-          v.auditStatus=v.auditStatus.code
+          if (v.auditStatus) {
+            v.auditStatus=v.auditStatus.code
+          }
+          
           if (v.box) {
             v.boxId=v.box.id
             v.type=v.box.type.code
@@ -181,7 +184,7 @@ export default {
           code:item.code,
           boxId:item.boxId,
           weight:item.weight,
-          auditStatus:item.auditStatus,
+          // auditStatus:item.auditStatus,
         }
         if (item.id.length>10) {
           arr.id=item.id

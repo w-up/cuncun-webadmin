@@ -77,13 +77,20 @@ new Vue({
                 // 在 404 时，是没有 headerName 的
                 if (headerName !== null) {
                     this.$store.commit('admin/menu/setHeaderName', headerName);
-
                     const filterMenuSider = getMenuSider(menuSider, headerName);
                     this.$store.commit('admin/menu/setSider', filterMenuSider);
                     this.$store.commit('admin/menu/setActivePath', to.path);
 
                     const openNames = getSiderSubmenu(path, menuSider);
                     this.$store.commit('admin/menu/setOpenNames', openNames);
+                }else{
+                    // this.$store.commit('admin/menu/setHeaderName', headerName);
+                    const filterMenuSider = getMenuSider(menuSider, headerName);
+                    this.$store.commit('admin/menu/setSider', filterMenuSider);
+                    // this.$store.commit('admin/menu/setActivePath', to.path);
+
+                    // const openNames = getSiderSubmenu(path, menuSider);
+                    // this.$store.commit('admin/menu/setOpenNames', openNames);
                 }
             }
             this.appRouteChange(to, from);

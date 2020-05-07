@@ -30,6 +30,7 @@ export default {
             path: '/orderCollection/details',
             name: 'orderCollection-details',
             meta: {
+                ...meta,
                 title: '取单详情',
                 closable: true,
             },

@@ -324,6 +324,7 @@ export default {
         getDepositGoodsSave(data).then(res=>{
           if (i==this.data.length-1) {
             this.$Message.success('保存成功')
+            this.goodsList()
           }
         }).catch(err => {
           this.$Message.error(err.response.data.message)
@@ -375,7 +376,11 @@ export default {
           packId:this.packId
         }
         getDepositGoodsSave(data).then(res=>{
-          this.goodsList()
+          // console.log(res.data);
+          this.data.push({
+            id:res.data.id
+          })
+          // this.goodsList()
         }).catch(err => {
           this.$Message.error(err.response.data.message)
         })
@@ -440,7 +445,7 @@ export default {
     uploadSuccess(response, file, fileList){
       this.file = null;
       this.$Message.success('保存成功')
-      this.goodsList()
+      // this.goodsList()
       this.cancel()
     },
     //发布消息

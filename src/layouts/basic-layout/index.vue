@@ -8,7 +8,7 @@
                 <Header class="i-layout-header" :class="headerClasses" :style="headerStyle" v-show="showHeader" v-resize="handleHeaderWidthChange">
                     <i-header-logo v-if="isMobile && showMobileLogo" />
                     <i-header-logo v-if="!isMobile && isHeaderStick && headerFix" />
-                    <i-header-collapse v-if="(isMobile || showSiderCollapse) && !hideSider" @on-toggle-drawer="handleToggleDrawer" />
+                    <!-- <i-header-collapse v-if="(isMobile || showSiderCollapse) && !hideSider" @on-toggle-drawer="handleToggleDrawer" /> -->
                     <i-header-reload v-if="!isMobile && showReload" @on-reload="handleReload" />
                     <i-menu-head v-if="headerMenu && !isMobile" ref="menuHead" />
                     <i-header-breadcrumb v-if="showBreadcrumb && !headerMenu && !isMobile" ref="breadcrumb" />
@@ -266,5 +266,7 @@
 .i-layout-inside-fix-with-sider{
     padding-left: 188px;
 }
-
+.i-layout-header-fix{
+    left: 212px;
+}
 </style>
