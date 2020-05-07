@@ -20,26 +20,33 @@
           </FormItem>
       </Form>
       <div style="margin-top:20px">
-        <Table border ref="selection" :columns="columnsList" :data="dataList">
+        <Table border ref="selection" :columns="columnsList" :data="dataList" @on-selection-change="tableChangeClick">
           <template slot-scope="{ row, index }" slot="type">
-            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#FF8768;cursor: default" v-if="row.state == '22'">待审查</Button>
-            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(74, 210, 142);cursor: default" v-if="row.state == '33'">已支付</Button>
-            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#68B0EF;cursor: default" v-if="row.state == '44'">待支付</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#FF8768;cursor: default" v-if="row.status.code == 'waitcheck'">待审查</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(74, 210, 142);cursor: default" v-if="row.status.code == 'payed'">已支付</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#68B0EF;cursor: default" v-if="row.status.code == 'waitpay'">待支付</Button>
           </template>
           <template slot-scope="{ row, index }" slot="operation">
-            <Button type="text" size="small"   style="margin-right: 5px;color:#19be6b;" @click="detailsClick(row.id,row.state)">审查详情</Button>
+            <Button type="text" size="small"   style="margin-right: 5px;color:#19be6b;" @click="detailsClick(row.id,row.status.code)">审查详情</Button>
              <Poptip
               confirm
               transfer
-              title="是否通过审查">
-            <Button type="text" size="small"  style="margin-right: 5px;color:#ff9900;"  v-show="row.state=='22'">发送订单</Button>
+              @on-ok="tableOk(row.id)"
+              title="是否发送订单" >
+            <Button type="text" size="small"  style="margin-right: 5px;color:#ff9900;"  v-show="row.status.code == 'waitcheck'">发送订单</Button>
           </Poptip>
           </template>
         </Table>
       </div>
       <div class="page" style="margin:20px 0;display:flex;justify-content:space-between">
         <div class="operationBtn">
-          <Button type="success">批量发送</Button>
+          <Poptip
+            confirm
+            title="是否确认批量发送?"
+            @on-ok="ok">
+            <Button type="success">批量发送</Button>
+          </Poptip>
+          
         </div>
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
       </div>
@@ -48,6 +55,7 @@
 </template>
 
 <script>
+import {  getStorageOrderList,timeDate1,getStorageOrderSend2user } from "@/api/account";
 export default {
   // name: 'home',
   data () {
@@ -64,7 +72,7 @@ export default {
         },
         {
           title: '序号',
-          key: 'serialNumber',
+          key: 'num',
           width: 70,
           align: 'center'
         },
@@ -76,13 +84,13 @@ export default {
         },
         {
           title: '订单号',
-          key: 'orderNumber',
-          width: 125,
+          key: 'orderNo',
+          width: 270,
           align: 'center'
         },
         {
           title: 'SD箱数量',
-          key: 'contacts',
+          key: 'boxSDnum',
           width: 120,
           align: 'center'
         },
@@ -94,31 +102,31 @@ export default {
         },
         {
           title: 'EC箱数量',
-          key: 'phone',
+          key: 'boxECnum',
           width: 125,
           align: 'center'
         },
         {
           title: '仓储费用/元',
-          key: 'address',
+          key: 'fee',
           width: 140,
           align: 'center'
         },
         {
           title: '费用周期',
-          key: 'date',
-          minWidth: 160,
+          key: 'time',
+          minWidth: 250,
           align: 'center'
         },
         {
           title: '用户ID',
-          key: 'userID',
-          width: 125,
+          key: 'userCode',
+          width: 220,
           align: 'center'
         },
         {
           title: '姓名',
-          key: 'riderName',
+          key: 'userName',
           width: 140,
           align: 'center'
         },
@@ -132,105 +140,34 @@ export default {
         },
       ],
       dataList:[
-        {
-          id:'1',
-         serialNumber:'1',
-         state:'22', 
-         orderNumber:'15544556677', 
-         contacts:'5', 
-         phone:'5', 
-         address:'400', 
-         date:'2月1日~2月29日', 
-         time:'14:13:30', 
-         num:'132', 
-         logisticsCost:'14', 
-         riderName:'-', 
-         userID:'13244324323', 
-        },
-        {
-          id:'1',
-         serialNumber:'1',
-         state:'22', 
-         orderNumber:'15544556677', 
-         contacts:'5', 
-         phone:'5', 
-         address:'400', 
-         date:'2月1日~2月29日', 
-         time:'14:13:30', 
-         num:'132', 
-         logisticsCost:'14', 
-         riderName:'-', 
-         userID:'13244324323', 
-        },
-        {
-          id:'1',
-         serialNumber:'1',
-         state:'33', 
-         orderNumber:'15544556677', 
-         contacts:'5', 
-         phone:'5', 
-         address:'400', 
-         date:'2月1日~2月29日', 
-         time:'14:13:30', 
-         num:'132', 
-         logisticsCost:'14', 
-         riderName:'-', 
-         userID:'13244324323', 
-        },
-        {
-          id:'1',
-         serialNumber:'1',
-         state:'44', 
-         orderNumber:'15544556677', 
-         contacts:'5', 
-         phone:'5', 
-         address:'400', 
-         date:'2月1日~2月29日', 
-         time:'14:13:30', 
-         num:'132', 
-         logisticsCost:'14', 
-         riderName:'-', 
-         userID:'13244324323', 
-        },
-        {
-          id:'1',
-         serialNumber:'1',
-         state:'44', 
-         orderNumber:'15544556677', 
-         contacts:'5', 
-         phone:'5', 
-         address:'400', 
-         date:'2月1日~2月29日', 
-         time:'14:13:30', 
-         num:'132', 
-         logisticsCost:'14', 
-         riderName:'-', 
-         userID:'13244324323', 
-        },
-        {
-          id:'1',
-         serialNumber:'1',
-         state:'44', 
-         orderNumber:'15544556677', 
-         contacts:'5', 
-         phone:'5', 
-         address:'400', 
-         date:'2月1日~2月29日', 
-         time:'14:13:30', 
-         num:'132', 
-         logisticsCost:'14', 
-         riderName:'-', 
-         userID:'13244324323', 
-        },
       ],
+      selectionList:[],
     }
   },
   mounted () {
     //
+    this.getList()
   },
   methods:{
     getList(){
-
+      let data ={
+        pageNumber:this.pageNumber,
+        pageSize:this.pageSize,
+      }
+      getStorageOrderList(data).then(res=>{
+        var num = 0
+        let arr = res.data.data
+        arr.forEach(v => {
+          num ++ 
+          v.num = num
+          v.time = timeDate1(v.beginDate)+' - '+timeDate1(v.endDate)
+          v.userCode = v.user.id
+          v.userName = v.user.name
+        });
+        this.total = res.data.total
+        this.dataList = arr
+        
+      })
     },
     changePage (page) {
       this.pageNumber = page - 1
@@ -239,6 +176,31 @@ export default {
     pageSizeChange(pageSize){
       this.pageSize=pageSize
       this.getList()
+    },
+    ok(){
+      let id=[]
+      this.selectionList.forEach(v => {
+        id.push(v.id)
+      });
+      let ids=id.join(',')
+      getStorageOrderSend2user(ids).then(res=>{
+        this.$Message.success('成功');
+        this.getList()
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
+      })
+    },
+    tableOk(id){
+      getStorageOrderSend2user(id).then(res=>{
+        this.$Message.success('成功');
+        this.getList()
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
+      })
+    },
+    //多选
+    tableChangeClick(selection){
+      this.selectionList = selection
     },
     detailsClick(id,type){
       this.$router.push({

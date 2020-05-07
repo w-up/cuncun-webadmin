@@ -1,7 +1,7 @@
 <template>
   <div>
     <Card>
-      <p slot="title">取单详情</p>
+      <p slot="title">仓储订单详情</p>
       <Button  slot="extra" icon="ios-arrow-back" @click="backPage" >返回上一页</Button>
       <Card>
         <p slot="title">基本信息</p>
@@ -9,27 +9,27 @@
           <FormItem >
             <Form  :label-width="100" inline style="">
               <FormItem label="订单号:" style="width:400px">
-                <span>Q14223223</span>
+                <span>{{list.orderNo}}</span>
               </FormItem>
               <FormItem label="用户姓名:" style="width:300px">
-                <span>老司机</span>
+                <span>{{list.name}}</span>
               </FormItem>
             </Form>
           </FormItem>
           <FormItem >
             <Form  :label-width="100" inline style="">
               <FormItem label="费用周期:" style="width:400px">
-                <span>2020-1-1~2020-1-30</span>
+                <span>{{list.time}}</span>
               </FormItem>
               <FormItem label="手机号:" style="width:300px">
-                <span>1334433443</span>
+                <span>{{list.name}}</span>
               </FormItem>
             </Form>
           </FormItem>
           <FormItem v-show="type">
             <Form  :label-width="100" inline style="">
               <FormItem label="订单费用:" style="width:400px">
-                <span>-</span>
+                <span>{{list.fee}}</span>
                 <Button type="info" style="margin-left:20px" @click="amendmentFee()">修改费用</Button>
               </FormItem>
             </Form>
@@ -43,7 +43,7 @@
             </Form>
           </FormItem>
         </Form>
-        <Table border :columns="columnsCost" :data="dataCost" :span-method="handleSpan"></Table>
+        <Table border :columns="columnsCost" :data="dataCost" :span-method="handleSpan" :row-class-name="rowClassName"></Table>
       </Card>
       <div style="margin:20px 0"> 
         <Card >
@@ -69,11 +69,12 @@
 </template>
 
 <script>
-
+import { getStorageOrderDetail,timeDate1 } from "@/api/account";
 export default {
   // name: 'home',
   data () {
     return {
+      id:this.$route.query.id,
       type:false,
       amendmentFeeModal:false,
       list:{
@@ -115,32 +116,39 @@ export default {
         },
       ],
       data:[
-        {}
       ],
       columnsCost:[
         {
           title: 'SD箱数量',
-          key: 'aa'
+          key: 'aa',
+          align: 'center'
         },
         {
           title: 'SD箱总费用',
-          key: 'bb'
+          key: 'bb',
+          align: 'center'
         },
         {
           title: '订单总费用',
-          key: 'ee'
+          key: 'ee',
+          align: 'center'
         },
       ],
       dataCost:[
         {
-
+          aa:'',
+          bb:'',
+          ee:''
         },
         {
           aa:'EC箱总数量',
           bb:'EC箱总费用',
+          ee:''
         },
         {
-
+          aa:'',
+          bb:'',
+          ee:''
         },
       ],
       ruleValidate: {
@@ -151,11 +159,27 @@ export default {
     }
   },
   mounted () {
-    if (this.$route.query.type=='44') {
+    if (this.$route.query.type=='waitcheck') {
       this.type=true
     }
+    this.getList()
   },
   methods:{
+    getList(){
+      getStorageOrderDetail(this.$route.query.id).then(res=>{
+        let arr = res.data
+        arr.time = timeDate1(arr.beginDate)+' - '+timeDate1(arr.endDate)
+        this.dataCost[0].aa = arr.boxSDnum
+        this.dataCost[0].bb = arr.boxSDprice
+        this.dataCost[2].aa = arr.boxECnum
+        this.dataCost[2].bb = arr.boxECprice
+        arr.fee = Number(arr.boxECprice)+Number(arr.boxSDprice)
+        this.dataCost[0].ee = arr.fee
+        arr.name = arr.user.name
+        arr.mobile = arr.user.mobile
+        this.list = arr
+      })
+    },
     confirm(){
       this.$refs['formValidate'].validate((valid) => {
           if (valid) {
@@ -167,7 +191,6 @@ export default {
       })
     },
     handleSpan ({ row, column, rowIndex, columnIndex }) {
-      console.log( row, column, rowIndex, columnIndex );
         // if (rowIndex === 0 && columnIndex === 0) {
         //     return [1, 2];
         // } else if (rowIndex === 0 && columnIndex === 1) {
@@ -175,8 +198,8 @@ export default {
         // }
         if (rowIndex === 0 && columnIndex === 2) {
             return {
-                rowspan: 0,
-                colspan: 0
+                rowspan: 3,
+                colspan: 1
             };
         } else if (rowIndex === 1 && columnIndex === 2) {
             return {
@@ -198,58 +221,21 @@ export default {
     },
     backPage () {
       this.$router.go(-1)
+    },
+    rowClassName (row, index) {
+      if (index ===1) {
+        return 'demo-table-info-row';
+      } 
+      return '';
     }
   }
 }
 </script>
 
-<style lang="less" scoped>
-.my-table {
-//   table-layout: fixed;
-  width: 100%;
-  min-width: 970px;
-  color: #495060;
-  border-left: 1px solid #dddee1;
-  border-top: 1px solid #dddee1;
-  thead {
-    th {
-      background:#f8f8f9;
-      height: 40px;
-      overflow: hidden;
-      line-height: 40px;
-      border-bottom: 1px solid #ddd;
-      border-right: 1px solid #e9eaec;
-      text-align: center;
-      padding: 0 18px;
-      &:first-child{
-        width: 160px;
-      }
-    }
-    td{
-      min-height: 48px;
-      vertical-align: middle;
-      border-bottom: 2px solid #f2f2f2;
-      padding: 0 18px;
-    }
-  }
-  tr{
-    .td_title{
-        width: 150px
-    }
-    border-bottom: 1px solid #e9eaec;
-    &:hover{
-      background-color: #ebf7ff;
-    }
-    td{
-        
-      min-height: 48px;
-    //   min-width: 190px;
-      vertical-align: middle;
-      text-align: center;
-      border-bottom: 1px solid #e9eaec;
-      padding: 10px 8px;
-      border-right: 1px solid #e9eaec;
-    }
-  }
-} 
+<style lang="less" >
+.ivu-table .demo-table-info-row td{
+  background-color: #f8f8f9;
+  color: #515a6e;
+  font-weight: 600
+}
 </style>
