@@ -4,22 +4,22 @@
     <Card>
       <p slot="title">用户数据统计</p>
       <Form inline :label-width="80" >
-          <FormItem label="手机号" >
-            <Input  placeholder="请输入" style="width:200px"></Input>
+           <FormItem label="手机号" >
+            <Input  placeholder="请输入" style="width:200px" v-model="list.mobile"></Input>
           </FormItem>
           <FormItem label="注册时间" >
-            <DatePicker  type="date"  placeholder="开始日期" style="width: 200px" transfer></DatePicker>
+            <DatePicker  type="date"  placeholder="开始日期" style="width: 200px" transfer :value="list.regDateBegin"  @on-change="list.regDateBegin=$event"></DatePicker>
             <span style="margin:0 10px">~</span>
-            <DatePicker  type="date"  placeholder="结束日期" style="width: 200px" transfer></DatePicker>
+            <DatePicker  type="date"  placeholder="结束日期" style="width: 200px" transfer :value="list.regDateEnd"  @on-change="list.regDateEnd=$event"></DatePicker>
             <!-- :value="searchList.beginDt"  @on-change="searchList.beginDt=$event" -->
           </FormItem>
-          <FormItem label="注册来源" >
+          <!-- <FormItem label="注册来源" >
             <Select   style="width:200px;">
               <Option v-for="item in stateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
             </Select>
-          </FormItem>
+          </FormItem> -->
           <FormItem >
-            <Button type="warning" icon="ios-search" style="">搜索</Button>
+            <Button type="warning" icon="ios-search" style="" @click="getList">搜索</Button>
           </FormItem>
       </Form>
       <div style="margin-top:20px">
@@ -32,10 +32,6 @@
       </div>
       <div class="page" style="margin-top:20px;display:flex;justify-content:space-between">
         <div class="operationBtn">
-          <!-- <Button type="success">接单</Button> -->
-          <!-- <Button type="success">导出拣货单</Button>
-          <Button type="info">导出配送单</Button>
-          <Button type="warning" @click="assignRidersClick">分配骑手</Button> -->
         </div>
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
       </div>
@@ -44,6 +40,7 @@
 </template>
 
 <script>
+import { getUserList,timeDate } from "@api/account";
 export default {
   // name: 'home',
   data () {
@@ -51,22 +48,27 @@ export default {
       total: 0,
       pageSize: 10,
       pageNumber: 0,
+      list:{
+        regDateBegin:'',
+        regDateEnd:'',
+        mobile:'',
+      },
       columnsList:[
         {
           title: '序号',
-          key: 'serialNumber',
+          key: 'num',
           width: 70,
           align: 'center'
         },
         {
           title: '昵称',
-          key: 'orderNumber',
+          key: 'nickName',
           width: 160,
           align: 'center'
         },
         {
           title: '姓名',
-          key: 'contacts',
+          key: 'name',
           width: 160,
           align: 'center'
         },
@@ -84,7 +86,7 @@ export default {
         },
         {
           title: '手机号',
-          key: 'date',
+          key: 'mobile',
           width: 200,
           align: 'center'
         },
@@ -96,7 +98,7 @@ export default {
         },
         {
           title: '注册时间',
-          key: 'dated',
+          key: 'regTime',
           width: 200,
           align: 'center'
         },{
@@ -120,18 +122,7 @@ export default {
         },
       ],
       dataList:[
-        {
-          serialNumber:'1',
-          orderNumber:'Ding Han',
-          contacts:'hahah ',
-          phone:'男',
-          address:'19',
-          date:'115455445676',
-          datee:'APP注册',
-          dated:'2019-3-5',
-          datea:'2019-3-5',
-          datet:'2019-3-5',
-        }
+
       ],
        stateList:[
         {
@@ -147,10 +138,28 @@ export default {
   },
   mounted () {
     //
+    this.getList()
   },
   methods:{
     getList(){
-
+      let data ={
+        pageNo:this.pageNumber,
+        pageSize:this.pageSize,
+        regDateBegin:this.list.regDateBegin,
+        regDateEnd:this.list.regDateEnd,
+        mobile:this.list.mobile,
+      }
+      getUserList(data).then(res=>{
+        let num = 0
+        let arr = res.data.data
+        arr.forEach(v => {
+          num++
+          v.num = num
+          v.regTime = timeDate(v.regTime)
+        });
+        this.total = res.data.total
+        this.dataList = arr
+      })
     },
     changePage (page) {
       this.pageNumber = page - 1

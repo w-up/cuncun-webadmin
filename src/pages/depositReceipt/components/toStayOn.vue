@@ -182,6 +182,12 @@ export default {
           slot: 'img'
         },
         {
+          title: '重量',
+          align:'center',
+          width:120,
+          slot: 'kg'
+        },
+        {
           title: '备注',
           align:'center',
           minWidth:140,
@@ -256,7 +262,7 @@ export default {
             v.type=v.box.type.code
           }
         });
-        this.boxData = arr
+        this.boxData = arr.reverse()
       })
     },
     //类型列表
@@ -383,6 +389,7 @@ export default {
         this.goodsList()
       }else if (data.auditStatus=='fail'){
         this.packId=''
+        this.data=[]
         this.$Message.warning('选中的箱子安检状态未通过,不能添加物品，请修改安检状态');
       }
     },
@@ -407,7 +414,7 @@ export default {
             v.categoryId=[]
           }
         });
-        this.data = arr
+        this.data = arr.reverse()
       })
     },
     //选择图片

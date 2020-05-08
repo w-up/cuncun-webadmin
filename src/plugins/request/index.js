@@ -3,6 +3,7 @@ import axios from 'axios';
 import util from '@/libs/util';
 import Setting from '@/setting';
 import qs from 'qs'
+import router from '@/router';
 import { Message, Notice } from 'view-design';
 
 // 创建一个错误
@@ -101,7 +102,17 @@ service.interceptors.response.use(
     },
     error => {
         if (error && error.response) {
+            if (error.response.status==401) {
+
+                util.cookies.remove('token');
+                util.cookies.remove('uuid');
+                // 跳转路由
+                router.push({
+                    name: 'login'
+                });
+            }
             switch (error.response.status) {
+            
             case 400: error.message = '请求错误'; break;
             case 401: error.message = '未授权，请登录'; break;
             case 403: error.message = '拒绝访问'; break;

@@ -155,7 +155,7 @@ export default {
           this.boxTypeChange(v)
         });
 
-        this.data = arr
+        this.data = arr.reverse()
       })
     },
     caseNumCange(id,num){

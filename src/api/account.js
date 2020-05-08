@@ -425,6 +425,26 @@ export function getStorageOrderSend2user(id) {
         }
     });
 }
+//仓储订单改价格
+export function getStorageOrderFeeAdjust(data) {
+    return request({
+        url: '/server/data/admin/storage/order/fee/adjust',
+        method: 'post',
+        data
+    });
+}
+
+
+//库存物品
+export function getInventoryItemsList (data) {
+    return request({
+        url: '/server/data/admin/goods/page',
+        method: 'get',
+        params:data
+    });
+}
+
+
 
 
 

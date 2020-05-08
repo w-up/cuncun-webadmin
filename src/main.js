@@ -23,7 +23,10 @@ import router from './router';
 import menuHeader from '@/menu/header';
 import menuSider from '@/menu/sider';
 import { frameInRoutes } from '@/router/routes';
-
+//查看图片
+import Viewer from 'v-viewer'
+import 'viewerjs/dist/viewer.css'
+Vue.use(Viewer)
 // 多语言
 import i18n from '@/i18n';
 

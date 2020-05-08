@@ -29,7 +29,7 @@
           <FormItem v-show="type">
             <Form  :label-width="100" inline style="">
               <FormItem label="订单费用:" style="width:400px">
-                <span>{{list.fee}}</span>
+                <span>{{list.settleFee?list.settleFee:list.fee}}</span>
                 <Button type="info" style="margin-left:20px" @click="amendmentFee()">修改费用</Button>
               </FormItem>
             </Form>
@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { getStorageOrderDetail,timeDate1 } from "@/api/account";
+import { getStorageOrderDetail,timeDate1,getStorageOrderFeeAdjust } from "@/api/account";
 export default {
   // name: 'home',
   data () {
@@ -173,7 +173,7 @@ export default {
         this.dataCost[0].bb = arr.boxSDprice
         this.dataCost[2].aa = arr.boxECnum
         this.dataCost[2].bb = arr.boxECprice
-        arr.fee = Number(arr.boxECprice)+Number(arr.boxSDprice)
+        // arr.fee = Number(arr.boxECprice)+Number(arr.boxSDprice)
         this.dataCost[0].ee = arr.fee
         arr.name = arr.user.name
         arr.mobile = arr.user.mobile
@@ -183,8 +183,19 @@ export default {
     confirm(){
       this.$refs['formValidate'].validate((valid) => {
           if (valid) {
-            this.$Message.success('Success!');
-            this.amendmentFeeModal = false
+            let data ={
+              id:this.id,
+              settleFee:this.list.cost
+            }
+            getStorageOrderFeeAdjust(data).then(res=>{
+
+              this.list.cost=''
+              this.$Message.success('成功!');
+              this.getList()
+              this.amendmentFeeModal = false
+            }).catch(err => {
+              this.$Message.error(err.response.data.message)
+            })
           } else {
             this.$Message.error('金额不能为空!');
           }
@@ -214,6 +225,7 @@ export default {
         }
     },
     cancel(){
+      this.list.cost=''
       this.amendmentFeeModal = false
     },
     amendmentFee(){
