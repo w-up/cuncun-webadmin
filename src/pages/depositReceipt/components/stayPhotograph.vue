@@ -18,6 +18,7 @@
             </Poptip>
           </template>
           <template slot-scope="{ row, index }" slot="operation">
+            <Button type="text" size="small"  style="margin-right: 5px;color:#19be6b;" @click="detailsClick(row)">详情</Button>
             <Poptip
               confirm
               transfer
@@ -28,8 +29,7 @@
           </template>
         </Table>
         <div style="margin-top:20px">
-          <Button type="success" style="margin:0 8px 5px 0"  @click="boxEditClick">{{boxEdit==true?'保存':'编辑'}}</Button>
-          <!-- <Button type="info" style="margin:0 8px 5px 0" @click="addCaseClick">添加一行</Button> -->
+          <Button type="info" style="margin:0 8px 5px 0" @click="boxModal=true">添加一行</Button>
         </div>
       </Card>
       <Card style="margin-right:5px;margin-top:10px;box-sizing:border-box;width:60%" >
@@ -129,6 +129,42 @@
         </div>
       </div>
     </Modal>
+    <Modal v-model="boxModal"  title="添加/编辑纸箱" @on-visible-change="boxModalChange">
+      <Form ref="boxList" :model="boxList" :rules="ruleValidate" :label-width="150">
+        <FormItem label="纸箱编号" prop="code">
+            <Input v-model="boxList.code" placeholder="请输入" style="width:300px"></Input>
+        </FormItem>
+        <FormItem label="纸箱类型">
+            <Select placeholder="请选择" @on-change="boxTypeChange(boxList.type)" style="width:300px" v-model="boxList.type">
+                <Option value="A">拍照</Option>
+                <Option value="B">不拍照</Option>
+            </Select>
+        </FormItem>
+        <FormItem label="纸箱名称" prop="boxId">
+            <Select transfer v-model="boxList.boxId" style="width:300px">
+              <Option v-for="item in boxTypeList" :value="item.id" :key="item.value">{{ item.name }}</Option>
+            </Select>
+        </FormItem>
+        <FormItem label="纸箱重量(kg)" prop="weight">
+            <Input v-model="boxList.weight" placeholder="请输入" style="width:300px"></Input>
+        </FormItem>
+        <FormItem label="安检状态" prop="auditStatus" >
+            <Select placeholder="请选择" v-model="boxList.auditStatus" style="width:300px">
+                <Option value="pass">通过</Option>
+                <Option value="fail">未通过</Option>
+            </Select>
+        </FormItem>
+        <FormItem label="管理员备注" >
+            <Input v-model="boxList.auditRemark" placeholder="请输入" style="width:300px"></Input>
+        </FormItem>
+      </Form>        
+      <div slot="footer">
+        <div style="">
+          <Button type="text" style="margin-right:10px;" @click="boxCancel">取消</Button>
+          <Button type="primary" style="margin-right:10px" @click="boxClickOk">保存</Button>
+        </div>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -151,6 +187,18 @@ export default {
   name: 'pendingDisposal',
   data () {
     return {
+      boxList:{
+        id:'',
+        depositOrderId:'',
+        code:'',
+        boxId:'',
+        weight:'',
+        auditStatus:'',
+        auditRemark:'',
+        type:'',
+      },
+      boxTypeList:[],
+      boxModal:false,
       listColor:undefined,
       boxType:'',//箱子类型
       remark:'',//不拍照箱子输入信息
@@ -271,6 +319,20 @@ export default {
       ],
       boxData:[],
       categoryList:[],//分类列表
+      ruleValidate: {
+        code: [
+            { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        boxId: [
+            { required: true, message: '请选择', trigger: 'blur' }
+        ],
+        weight: [
+            { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        auditStatus: [
+            { required: true, message: '请选择', trigger: 'blur' }
+        ],
+      }
     }
   },
   mounted () {
@@ -279,6 +341,7 @@ export default {
   methods:{
     getData(id){
       this.orderId=id
+      this.boxList.depositOrderId=id
       this.dataList(id)
       this.GoodsTree()
     },
@@ -387,13 +450,6 @@ export default {
       this.boxEdit=!this.boxEdit
 
     },
-    //箱子添加一行
-    addCaseClick(){
-      this.num++
-      this.boxData.push({
-        id:this.num+'',
-      })
-    },
     //物品添加一行
     addGoodsClick(){
       if (this.packId!='') {
@@ -455,6 +511,9 @@ export default {
         let arr = res.data
         arr.forEach(v => {
           v.showTime= timeDate(new Date(v.showTime))
+          if (v.showTime=='1970-01-01 08:00:00') {
+            v.showTime=''
+          }
           if (v.type) {
             v.type=v.type.code
           }
@@ -490,7 +549,7 @@ export default {
           packId:this.packId
         }
         getDepositGoodsShow(list).then(res=>{
-          
+            this.goodsList()
             this.$Message.success('成功');
         }).catch(err => {
           this.$Message.error(err.response.data.message)
@@ -542,12 +601,70 @@ export default {
         this.$Message.error(err.response.data.message)
       })
     },
+    //箱子类型选择
+    boxTypeChange(row){
+      this.boxList.boxId=''
+      let data ={
+        type:row
+      }
+      getBoxTypeList(data).then(res=>{
+        let arr = res.data
+        this.boxTypeList=arr
+
+        // this.boxList = arr 
+      })
+    },
+    //纸箱编辑
+    detailsClick(row){
+      this.boxTypeChange(row.type)
+      this.boxList.id=row.id
+      this.boxList.code=row.code
+      this.boxList.boxId=row.box.id
+      this.boxList.weight=row.weight+''
+      this.boxList.auditStatus=row.auditStatus
+      this.boxList.auditRemark=row.remark
+      this.boxList.type=row.type
+      this.boxModal=true
+    },
+    //箱子添加编辑保存
+    boxClickOk(){
+      this.$refs['boxList'].validate((valid) => {
+          if (valid) {
+            getPackAdd(this.boxList).then(res=>{
+              this.boxCancel()
+              this.dataList()
+              this.$Message.success('成功');
+            }).catch(err => {
+              this.$Message.error(err.response.data.message)
+            })
+          } else {
+              this.$Message.error('请检查内容必填项是否全部填写!');
+          }
+      })
+    },
+     //箱子添加编辑取消
+    boxCancel(){
+      this.boxModal=false
+      this.boxList.id=''
+      this.boxList.code=''
+      this.boxList.boxId=''
+      this.boxList.weight=''
+      this.boxList.auditStatus=''
+      this.boxList.auditRemark=''
+      this.boxList.type=''
+      this.boxTypeList=[]
+    },
+    boxModalChange(key){
+      if (key==false) {
+        this.boxCancel()
+      }
+    },
     rowClassName (row, index) {
       if (index === Number(this.listColor) ) {
           return 'demo-table-info-row';
       } 
       return '';
-    }
+    },
   }
 }
 </script>

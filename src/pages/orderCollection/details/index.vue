@@ -27,7 +27,7 @@
                 <span>{{orderList.mobile}}</span>
             </FormItem>
             <FormItem label="返送地址：">
-                <span>{{orderList.address}}</span>
+                <span>{{orderList.addressName}}</span>
             </FormItem>
             <!-- <FormItem label="取件时间：">
                 <span>{{orderList.time}}</span>
@@ -61,7 +61,7 @@
           <p slot="title">备注信息</p>
           <Form  :label-width="90" label-position='top'>
             <FormItem label="用户备注：">
-              <Input  maxlength="200" show-word-limit type="textarea" :rows="5" />
+              <Input  maxlength="200" show-word-limit type="textarea" :rows="5"  v-model="userRemark" disabled/>
             </FormItem>
             <FormItem label="管理员备注:">
               <Row style="margin-top:5px" v-for="(item, index) in remarkList" :key="index">
@@ -216,6 +216,7 @@ export default {
   data () {
     return {
       index:0,//评论id
+      userRemark:'',//用户备注
       orderId:this.$route.query.id,
       adjustmentModel:false,
       type:'待付款',
@@ -263,12 +264,14 @@ export default {
     //
     this.getList()
     this.getRemarkList()
+    this.getUserRemark()
   },
   methods:{
     //基础数据
     getList(){
       getWithdrawDetail(this.$route.query.id).then(res=>{
         var arr = res.data
+        arr.addressName = arr.area.province+' '+arr.area.city+' '+arr.area.name+' '+arr.address
         this.type = arr.status.code
         this.orderList = arr
         
@@ -283,6 +286,16 @@ export default {
       getWithdrawRemarkList(data).then(res=>{
         var arr = res.data.data
         this.remarkList = arr
+      })
+    },
+    getUserRemark(){
+      let data ={
+        orderId:this.orderId,
+        from:'user'
+      }
+      getWithdrawRemarkList(data).then(res=>{
+        var arr =res.data.data
+        this.userRemark = arr[0].content
       })
     },
     //增加评论

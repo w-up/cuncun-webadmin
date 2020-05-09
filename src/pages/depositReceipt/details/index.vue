@@ -36,7 +36,7 @@
         </Card>
         <Card style="width:350px;margin-right:5px;margin-top:10px">
           <p slot="title">费用明细</p>
-          <Button slot="extra" v-show='type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="ready"?true:type=="finish"?true:false' @click="adjustmentClick">调整费用</Button>
+          <Button slot="extra" v-show='type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:false' @click="adjustmentClick">调整费用</Button>
           <div v-show='type=="waitpay"?true:type=="init"?true:type=="assign"?true:type=="fetch"?true:false'>
             <Form  :label-width="110">
               <FormItem label="运输费用：">
@@ -96,7 +96,7 @@
           <p slot="title">备注信息</p>
           <Form  :label-width="90" label-position='top'>
             <FormItem label="用户备注：">
-              <Input   type="textarea"  :rows="5" v-model="userRemark"/>
+              <Input   type="textarea"  :rows="5" v-model="userRemark" disabled/>
             </FormItem>
             <FormItem label="管理员备注:">
               <Row style="margin-top:5px" v-for="(item, index) in remarkList"
@@ -119,7 +119,7 @@
             </FormItem>
             <FormItem>
               <Row>
-                  <Col span="12">
+                  <Col span="12"> 
                       <Button type="dashed" long @click="handleAdd" icon="md-add">添加</Button>
                   </Col>
               </Row>

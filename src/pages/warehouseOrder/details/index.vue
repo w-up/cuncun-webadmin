@@ -22,7 +22,7 @@
                 <span>{{list.time}}</span>
               </FormItem>
               <FormItem label="手机号:" style="width:300px">
-                <span>{{list.name}}</span>
+                <span>{{list.mobile}}</span>
               </FormItem>
             </Form>
           </FormItem>
@@ -30,7 +30,6 @@
             <Form  :label-width="100" inline style="">
               <FormItem label="订单费用:" style="width:400px">
                 <span>{{list.settleFee?list.settleFee:list.fee}}</span>
-                <Button type="info" style="margin-left:20px" @click="amendmentFee()">修改费用</Button>
               </FormItem>
             </Form>
           </FormItem>
@@ -48,74 +47,77 @@
       <div style="margin:20px 0"> 
         <Card >
           <p slot="title">数据信息</p>
-          <Table border :columns="columns" :data="data" ></Table>
+          <Table border :columns="columns" :data="data" >
+            
+            <template slot-scope="{ row, index }" slot="aaa">
+              <div v-show="tableType==false">{{row.settleFee}}</div>
+              <Input v-show="tableType==true"  style="" placeholder="请输入" v-model="row.settleFee" @on-change="data[index].settleFee= row.settleFee"/>
+            </Poptip>
+            </template>
+          </Table>
+          <Button type="info" style="margin-top:20px" @click="tableTypeClick" v-show="this.type">{{tableType==true?'保存':'修改费用'}}</Button>
         </Card>
       </div>
     </Card>
-    <Modal v-model="amendmentFeeModal"  title="订单费用">
-      <Form ref="formValidate" :model="list" :rules="ruleValidate" :label-width="80">
-        <FormItem label="订单费用" prop="cost">
-            <Input v-model="list.cost" placeholder="请输入"></Input>
-        </FormItem>
-      </Form>
-      <div slot="footer">
-        <div style="">
-          <Button type="text" style="margin-right:10px;" @click="cancel">取消</Button>
-          <Button type="primary" style="margin-right:10px" @click="confirm">确定</Button>
-        </div>
-      </div>
-    </Modal>
   </div>
 </template>
 
 <script>
-import { getStorageOrderDetail,timeDate1,getStorageOrderFeeAdjust } from "@/api/account";
+import { getStorageOrderDetail,timeDate1,getStorageOrderFeeAdjust,getStorageOrderPacksList } from "@/api/account";
 export default {
   // name: 'home',
   data () {
     return {
       id:this.$route.query.id,
       type:false,
-      amendmentFeeModal:false,
-      list:{
-        cost:'',
-      },
+      tableType:false,
+      list:{},
       columns:[
         {
           title: '序号',
-          key: 'aa',
+          key: 'num',
+          align: 'center',
           width:80
         },
         {
           title: '箱子类型',
-          key: 'bb'
+          key: 'packType',
+          align: 'center'
         },
         {
           title: '箱子编号',
-          key: 'cc'
+          key: 'packCode',
+          align: 'center'
         },
         {
           title: '初始物品数量',
-          key: 'cc'
+          key: 'initGoodsCount',
+          align: 'center'
         },
         {
           title: '当前物品数量',
-          key: 'cc'
+          key: 'nowGoodsCount',
+          align: 'center'
         },
         {
           title: '占比',
-          key: 'cc'
+          key: 'proportion',
+          align: 'center'
         },
         {
           title: '原始仓储费用',
-          key: 'cc'
+          key: 'fee',
+          align: 'center'
         },
         {
           title: '实收仓储费用',
-          key: 'cc'
-        },
+          slot: 'aaa',
+          align: 'center'
+
+        }
       ],
       data:[
+
       ],
       columnsCost:[
         {
@@ -151,11 +153,6 @@ export default {
           ee:''
         },
       ],
-      ruleValidate: {
-        cost: [
-          { required: true, message: '金额不能为空', trigger: 'blur' }
-        ]
-      },
     }
   },
   mounted () {
@@ -163,6 +160,7 @@ export default {
       this.type=true
     }
     this.getList()
+    this.getPacksList()
   },
   methods:{
     getList(){
@@ -175,31 +173,67 @@ export default {
         this.dataCost[2].bb = arr.boxECprice
         // arr.fee = Number(arr.boxECprice)+Number(arr.boxSDprice)
         this.dataCost[0].ee = arr.fee
-        arr.name = arr.user.name
-        arr.mobile = arr.user.mobile
+        if (arr.user) {
+          arr.name = arr.user.name
+          arr.mobile = arr.user.mobile
+        }else{
+          arr.name = ''
+          arr.mobile = ''
+        }
+        
         this.list = arr
       })
     },
-    confirm(){
-      this.$refs['formValidate'].validate((valid) => {
-          if (valid) {
-            let data ={
-              id:this.id,
-              settleFee:this.list.cost
+    getPacksList(){
+      //
+      // getStorageOrderPacksList('5eb65eee25f6505b6e516020').then(res=>{
+      getStorageOrderPacksList(this.$route.query.id).then(res=>{
+        var arr = res.data.data
+        let num = 0
+        arr.forEach(v => {
+          num ++ 
+          v.num = num
+          v.packType = v.packType.name
+          if (v.nowGoodsCount==null) {
+            v.nowGoodsCount=0
+          }
+          if (v.nowGoodsCount==0 && v.initGoodsCount==0) {
+            v.proportion='100%'
+          }else{
+            v.proportion = (( Number(v.nowGoodsCount)/Number(v.initGoodsCount) ).toFixed(0))*100+'%'
+          }
+        });
+        this.data=arr
+        
+      })
+    },
+    tableTypeClick(){
+      if (this.data.length>0) {
+        if (this.tableType==true) {
+          var list = this.data
+          for (let i = 0; i < list.length; i++) {
+            let data = {
+              orderPackId:list[i].id,
+              fee:list[i].settleFee,
             }
             getStorageOrderFeeAdjust(data).then(res=>{
-
-              this.list.cost=''
-              this.$Message.success('成功!');
-              this.getList()
-              this.amendmentFeeModal = false
+              if (i==list.length-1) {
+                this.$Message.success('成功');
+                this.getPacksList()
+                this.tableType = !this.tableType
+              }
             }).catch(err => {
               this.$Message.error(err.response.data.message)
             })
-          } else {
-            this.$Message.error('金额不能为空!');
           }
-      })
+        }else{
+          this.tableType = !this.tableType
+        }
+      }else{
+        this.$Message.error('暂无数据无法修改！')
+      }
+      
+      
     },
     handleSpan ({ row, column, rowIndex, columnIndex }) {
         // if (rowIndex === 0 && columnIndex === 0) {
@@ -223,13 +257,6 @@ export default {
                 colspan: 0
             };
         }
-    },
-    cancel(){
-      this.list.cost=''
-      this.amendmentFeeModal = false
-    },
-    amendmentFee(){
-      this.amendmentFeeModal = true
     },
     backPage () {
       this.$router.go(-1)

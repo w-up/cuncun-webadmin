@@ -166,7 +166,7 @@ export default {
         },
         {
           title: '返送地址',
-          key: 'address',
+          key: 'addressName',
           minWidth: 240,
           align: 'center'
         },
@@ -180,6 +180,30 @@ export default {
           title: '返送数量',
           key: 'packNum',
           width: 100,
+          align: 'center'
+        },
+        {
+          title: '箱子数量',
+          key: 'packNum',
+          width: 100,
+          align: 'center'
+        },
+        {
+          title: '箱子总重量',
+          key: 'packWeight',
+          width: 120,
+          align: 'center'
+        },
+        {
+          title: '物品数量',
+          key: 'goodsNum',
+          width: 100,
+          align: 'center'
+        },
+        {
+          title: '物品总重量',
+          key: 'goodsWeight',
+          width: 120,
           align: 'center'
         },
         {
@@ -256,6 +280,12 @@ export default {
           num ++ 
           v.num = num
           v.type=v.status.code
+          if (v.area) {
+            v.addressName = v.area.province+' '+v.area.city+' '+v.area.name+' '+v.address
+          }else{
+            v.addressName = v.address
+          }
+          
           v.userId=v.user.code
         });
         this.total = res.data.total

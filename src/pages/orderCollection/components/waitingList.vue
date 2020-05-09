@@ -166,6 +166,7 @@ export default {
           getWithdrawWaybillNo(data).then(res=>{
             this.$Message.success('成功');
             this.assignRidersList.name=''
+            this.$emit('detailsRefresh','1')
             this.assignRidersModal=false
           }).catch(err => {
             this.$Message.error(err.response.data.message)

@@ -408,6 +408,16 @@ export function getStorageOrderList (data) {
         params:data
     });
 }
+//仓储订单箱子列表
+export function getStorageOrderPacksList (id) {
+    return request({
+        url: '/server/data/admin/storage/order/packs',
+        method: 'get',
+        params:{
+            orderId:id
+        }
+    });
+}
 //仓储订单详情
 export function getStorageOrderDetail (id) {
     return request({
@@ -428,11 +438,12 @@ export function getStorageOrderSend2user(id) {
 //仓储订单改价格
 export function getStorageOrderFeeAdjust(data) {
     return request({
-        url: '/server/data/admin/storage/order/fee/adjust',
+        url: '/server/data/admin/storage/order/pack/settle',
         method: 'post',
         data
     });
 }
+
 
 
 //库存物品
