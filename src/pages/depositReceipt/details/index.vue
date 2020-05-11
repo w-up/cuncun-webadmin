@@ -18,7 +18,7 @@
             </FormItem>
             <FormItem label="骑手：">
                 <span>{{orderList.diliveryManName}}</span>
-                <Button type="success" style="margin-left:10px" v-show='type=="待取货"?true:type=="回库中"?true:type=="安检中"?true:false'>修改骑手</Button>
+                <Button type="success" style="margin-left:10px" v-show='type=="fetch"?true:false' @click="modifyRiderModal=true">修改骑手</Button>
             </FormItem>
             <FormItem label="联系人：">
                 <span>{{orderList.contacts}}</span>
@@ -134,24 +134,24 @@
         </Select>
       </div> -->
       <div style="margin:20px 0">
-        <Button :disabled='type=="init"?true:type=="assign"?true:type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:false' 
+        <Button :disabled='type=="init"?true:type=="assign"?true:type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='waitpay'?'primary':'dashed'">待付款<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="assign"?true:type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:false' 
-          :type="type=='init'?'primary':'dashed'" style="margin:0 8px 5px 0">待处理<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:false' 
+        <Button :disabled='type=="assign"?true:type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
+          :type="type=='init'?'primary':'dashed'" style="margin:0 8px 5px 0">待受理<Icon type="ios-arrow-forward" /></Button>
+        <Button :disabled='type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='assign'?'primary':'dashed'">待分配骑手<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:false' 
+        <Button :disabled='type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='fetch'?'primary':'dashed'">待取货<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:false' 
+        <Button :disabled='type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='delivery'?'primary':'dashed'">回库中<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:false' 
+        <Button :disabled='type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='monitor'?'primary':'dashed'">安检中<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="ready"?true:type=="finish"?true:type=="cancel "?true:false' 
+        <Button :disabled='type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='photo'?'primary':'dashed'">拍照中<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="finish"?true:type=="cancel "?true:false' 
+        <Button :disabled='type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='ready'?'primary':'dashed'">待上架<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="cancel "?true:false' style="margin:0 8px 5px 0" :type="type=='finish'?'primary':'dashed'">已完成<Icon type="ios-arrow-forward" /></Button>
-        <Button style="margin:0 8px 5px 0" :type="type=='cancel '?'primary':'dashed'">已取消<Icon type="ios-arrow-forward" /></Button>
+        <Button :disabled='type=="cancel"?true:type=="refuse"?true:false' style="margin:0 8px 5px 0" :type="type=='finish'?'primary':'dashed'">已完成<Icon type="ios-arrow-forward" /></Button>
+        <Button style="margin:0 8px 5px 0" :type="type=='cancel'||type=='refuse'?'primary':'dashed'">已取消<Icon type="ios-arrow-forward" /></Button>
       </div>
       <div style="margin:20px 0"> 
         <Card >
@@ -172,6 +172,19 @@
           <span style="line-height:51px">11111</span>
         </div>
       </div> -->
+      <Modal v-model="modifyRiderModal"  title="修改骑手">
+        <Form  :label-width="110">
+          <FormItem label="骑手姓名">
+            <Input  placeholder="请输入" style="width:200px"></Input>
+          </FormItem>
+        </Form>
+        <div slot="footer">
+          <div style="">
+            <Button type="text" style="margin-right:10px;" @click="modifyRiderCancel">取消</Button>
+            <Button type="primary" style="margin-right:10px" @click="modifyRiderClick">保存</Button>
+          </div>
+        </div>
+      </Modal>
       <Modal v-model="adjustmentModel"  title="费用调整" @on-visible-change="visibleChange">
         <Form  :label-width="110">
           <FormItem label="运输费用：">
@@ -271,6 +284,7 @@ export default {
     return {
       orderId:this.$route.query.id,
       index:0,
+      modifyRiderModal:false,//修改骑手弹窗
       userRemark:'',//用户备注
       adjustmentModel:false,
       remarkList:[],
@@ -479,6 +493,14 @@ export default {
         this.cancel()
       }
       
+    },
+    //修改骑手
+    modifyRiderClick(){
+      
+    },
+    //修改骑手弹窗关闭
+    modifyRiderCancel(){
+      this.modifyRiderModal=false
     },
     //刷新详情
     getDetailsRefresh(){

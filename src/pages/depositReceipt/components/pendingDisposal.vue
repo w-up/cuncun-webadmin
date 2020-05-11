@@ -20,26 +20,20 @@
         >
         <Button type="info" style="margin:0 8px 5px 0" >接单</Button>
       </Poptip>
-      <Poptip
-        confirm
-        title="确认拒单吗?"
-        @on-ok="receiptOk1"
-        >
-      <Button type="error" style="margin:0 8px 5px 0" >拒单</Button>
-      </Poptip>
+      <Button type="error" style="margin:0 8px 5px 0" @click="refusalOfOrdersModal=true">拒单</Button>
       <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
     </div>
     <Modal v-model="refusalOfOrdersModal"  title="拒单理由">
-      <div style="text-align:center">
-          <h4 style="margin-bottom:8px">请输入拒单理由.</h4 style="margin-bottom:8px">
-          <Input  type="textarea" :rows="4" style="width:400px" placeholder="请输入拒单理由" />
-      </div>
+      <Form   :label-width="80" >
+          <FormItem label="拒单理由">
+              <Input  placeholder="请输入" v-model="reason" style="width:300px"></Input>
+          </FormItem>
+        </Form>
       <div slot="footer">
         <div style="">
-          <Button type="text" style="margin-right:10px;">取消</Button>
-          <Button type="primary" style="margin-right:10px">确定</Button>
+          <Button type="text" style="margin-right:10px;" @click="typeCancel">取消</Button>
+          <Button type="primary" style="margin-right:10px" @click="receiptOk1">确定</Button>
         </div>
-        
       </div>
     </Modal>
   </div>
@@ -51,6 +45,7 @@ export default {
   name: 'pendingDisposal',
   data () {
     return {
+      reason:'',
       refusalOfOrdersModal:false,
       orderId:'',
       caseColumns:[
@@ -155,14 +150,20 @@ export default {
     },
     receiptOk1(){
       let data ={
-        ids:this.orderId
+        ids:this.orderId,
+        reason:this.reason
       }
       getRefuse(data).then(res=>{
         this.$Message.success('成功');
+        this.typeCancel()
         this.$emit('detailsRefresh','1')
       }).catch(err => {
         this.$Message.error(err.response.data.message)
       })
+    },
+    typeCancel(){
+      this.refusalOfOrdersModal=false
+      this.reason=''
     },
   }
 }

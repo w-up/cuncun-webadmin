@@ -257,7 +257,10 @@ export default {
           }
           v.packCode = v.pack.code
           v.orderNo = v.depositOrder.orderNo
-          v.categoryName = v.category.name
+          if (v.category) {
+            v.categoryName = v.category.name
+          }
+          
           v.typeName=v.type.name
           if (v.withdrawOrder) {
             v.withdrawOrderId=v.withdrawOrder.orderNo

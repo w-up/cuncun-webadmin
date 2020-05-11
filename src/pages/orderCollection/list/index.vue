@@ -37,7 +37,7 @@
       <Tabs  style="margin-top:20px" @on-click="tabsClick">
         <TabPane label="全部" name=""></TabPane>
         <TabPane label="待付款" name="waitpay"></TabPane>
-        <TabPane label="待处理" name="init"></TabPane>
+        <TabPane label="待受理" name="init"></TabPane>
         <TabPane label="待分配拣货员" name="accept"></TabPane>
         <TabPane label="拣货作业中" name="collect"></TabPane>
         <TabPane label="待发货" name="waitsend"></TabPane>
@@ -50,7 +50,7 @@
         <Table border ref="selection" :columns="columnsList" :data="dataList" @on-selection-change="tableChangeClick">
           <template slot-scope="{ row, index }" slot="type">
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(188, 190, 191);cursor: default" v-if="row.status.code == 'cancel'">已取消</Button>
-            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#FF8768;cursor: default" v-if="row.status.code == 'init'">待处理</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#FF8768;cursor: default" v-if="row.status.code == 'init'">待受理</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(74, 210, 142);cursor: default" v-if="row.status.code == 'waitpay'">待支付</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#68B0EF;cursor: default" v-if="row.status.code == 'collect'">拣货作业中</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#ff9900;cursor: default" v-if="row.status.code == 'accept'">待分配拣货员</Button>

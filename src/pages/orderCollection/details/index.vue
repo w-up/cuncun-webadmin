@@ -29,6 +29,12 @@
             <FormItem label="返送地址：">
                 <span>{{orderList.addressName}}</span>
             </FormItem>
+            <FormItem label="拣货员：">
+                <span>{{orderList.pickmanName}}</span>
+            </FormItem>
+            <FormItem label="申请时间：">
+                <span>{{orderList.timeCreated}}</span>
+            </FormItem>
             <!-- <FormItem label="取件时间：">
                 <span>{{orderList.time}}</span>
             </FormItem> -->
@@ -100,7 +106,7 @@
         <Button :disabled='type=="init"?true:type=="collect"?true:type=="accept"?true:type=="waitsend"?true:type=="waitsign"?true:type=="finish"?true:type=="cancel"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='waitpay'?'primary':'dashed'">待付款<Icon type="ios-arrow-forward" /></Button>
         <Button :disabled='type=="collect"?true:type=="accept"?true:type=="waitsend"?true:type=="waitsign"?true:type=="finish"?true:type=="cancel"?true:false'  
-          :type="type=='init'?'primary':'dashed'" style="margin:0 8px 5px 0">待处理<Icon type="ios-arrow-forward" /></Button>
+          :type="type=='init'?'primary':'dashed'" style="margin:0 8px 5px 0">待受理<Icon type="ios-arrow-forward" /></Button>
           <Button :disabled='type=="collect"?true:type=="waitsend"?true:type=="waitsign"?true:type=="finish"?true:type=="cancel"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='accept'?'primary':'dashed'">待分配拣货员<Icon type="ios-arrow-forward" /></Button>
         <Button :disabled='type=="waitsend"?true:type=="waitsign"?true:type=="finish"?true:type=="cancel"?true:false' 
@@ -170,10 +176,11 @@ import { getWithdrawDetail,
 getWithdrawRemarkList,
 getWithdrawRemarkDel,
 getWithdrawRemarkSave,
-getWithdrawFeeAdjust
+getWithdrawFeeAdjust,
+timeDate 
  } from "@/api/account";
 import pendingPayment from '../components/pendingPayment' //待付款
-import pendingDisposal from '../components/pendingDisposal' // 待处理
+import pendingDisposal from '../components/pendingDisposal' // 待受理
 import assignPicking from '../components/assignPicking'//拣货作业中
 import picking from '../components/picking'//拣货作业中
 import waitingList from '../components/waitingList'//待录单
@@ -235,7 +242,7 @@ export default {
         },
         {
           value:'init',
-          label:'待处理',
+          label:'待受理',
         },
         {
           value:'collect',
@@ -272,6 +279,7 @@ export default {
       getWithdrawDetail(this.$route.query.id).then(res=>{
         var arr = res.data
         arr.addressName = arr.area.province+' '+arr.area.city+' '+arr.area.name+' '+arr.address
+        arr.timeCreated = timeDate(arr.timeCreated)
         this.type = arr.status.code
         this.orderList = arr
         

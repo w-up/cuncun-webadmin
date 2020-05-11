@@ -4,7 +4,7 @@
       <p slot="title">仓储订单列表</p>
       <Form inline :label-width="80" >
           <FormItem label="订单号" >
-            <Input  placeholder="请输入" style="width:200px"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="list.orderNo"></Input>
           </FormItem>
           <FormItem label="用户ID" >
             <Input  placeholder="请输入" style="width:200px"></Input>
@@ -15,8 +15,15 @@
           <FormItem label="用户姓名" >
             <Input  placeholder="请输入" style="width:200px"></Input>
           </FormItem>
+          <FormItem label="订单状态" >
+            <Select  slot="extra"  style="width:200px;" v-model="list.status">
+              <Option value="waitcheck" >待审查</Option>
+              <Option value="waitpay" >待支付</Option>
+              <Option value="payed" >已支付</Option>
+            </Select>
+          </FormItem>
           <FormItem >
-            <Button type="warning" icon="ios-search" style="">搜索</Button>
+            <Button type="warning" icon="ios-search" style="" @click="getList">搜索</Button>
           </FormItem>
       </Form>
       <div style="margin-top:20px">
@@ -63,6 +70,10 @@ export default {
       total: 0,
       pageSize: 10,
       pageNumber: 0,
+      list:{
+        orderNo:'',
+        status:'',
+      },
       columnsList:[
         {
           type: 'selection',
@@ -151,6 +162,8 @@ export default {
   methods:{
     getList(){
       let data ={
+        status:this.list.status,
+        orderNo:this.list.orderNo,
         pageNumber:this.pageNumber,
         pageSize:this.pageSize,
       }

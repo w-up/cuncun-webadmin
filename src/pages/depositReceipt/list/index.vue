@@ -38,7 +38,7 @@
       </Form>
       <Tabs  style="margin-top:20px" @on-click="tabsClick">
         <TabPane label="全部" name=" "></TabPane>
-        <TabPane label="待处理" name="init"></TabPane>
+        <TabPane label="待受理" name="init"></TabPane>
         <TabPane label="待分配骑手" name="assign"></TabPane>
         <TabPane label="待取货" name="fetch"></TabPane>
         <TabPane label="回库中" name="delivery"></TabPane>
@@ -54,7 +54,7 @@
         <Table border ref="selection" :columns="columnsList" :data="dataList" @on-selection-change="tableChangeClick">
           <template slot-scope="{ row, index }" slot="type">
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(188, 190, 191);cursor: default" v-if="row.status.code == 'cancel'">已取消</Button>
-            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#FF8768;cursor: default" v-if="row.status.code == 'init'">待处理</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#FF8768;cursor: default" v-if="row.status.code == 'init'">待受理</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(74, 210, 142);cursor: default" v-if="row.status.code == 'waitpay'">待支付</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#68B0EF;cursor: default" v-if="row.status.code == 'inputwork'">入库中</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#ff9900;cursor: default" v-if="row.status.code == 'assign'">待分配骑手</Button>
@@ -78,11 +78,12 @@
       </div>
       <div class="page" style="margin-top:20px;display:flex;justify-content:space-between">
         <div class="operationBtn">
-          <Button type="success" @click="RefuseToAccept(true)">接单</Button>
-          <Button type="error" @click="RefuseToAccept(false)">拒单</Button>
-          <Button type="info">导出取件单</Button>
-          <Button type="info">导出上架单</Button>
-          <Button type="warning" @click="assignRidersClick">分配骑手</Button>
+          <Button type="success" @click="RefuseToAccept(true)" style="margin-bottom:5px">接单</Button>
+          <Button type="error" @click="RefuseToAccept(false)" style="margin-bottom:5px">拒单</Button>
+          <Button type="info" style="margin-bottom:5px">导出取件单</Button>
+          <Button type="info" style="margin-bottom:5px">导出上架单</Button>
+          <Button type="info" style="margin-bottom:5px" @click="exportData()">导出列表</Button>
+          <Button type="warning" @click="assignRidersClick" style="margin-bottom:5px">分配骑手</Button>
         </div>
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
       </div>
@@ -105,11 +106,15 @@
         v-model="typeModal"
         :mask-closable="false">
         <div style="height:100px;line-height:100px">
-          <h2 v-show="type" style="text-align: center">是否确认将已选中的订单全部接单</h2>
-          <h2 v-show="!type" style="text-align: center">是否确认将已选中的订单全部拒单</h2>
+          <h2 v-show="type" style="text-align: center">是否确认将已选中的订单全部接单?</h2>
+          <h2 v-show="!type" style="text-align: center">是否确认将已选中的订单全部拒单?</h2>
         </div>
-        
-        <div slot="footer" style="text-align: right;">
+        <Form v-show="!type"  :label-width="80" >
+          <FormItem label="拒单理由">
+              <Input  placeholder="请输入" v-model="reason" style="width:300px"></Input>
+          </FormItem>
+        </Form>
+        <div slot="footer" style="text-align: right;margin-top:10px" >
           <Button type="text" @click="typeCancel">取消</Button>
           <Button type="primary" @click="typeOk">确定</Button>
         </div>
@@ -131,6 +136,7 @@ export default {
       pageNumber: 0,
       type:true,
       typeModal:false,
+      reason:'',//拒单理由
       columnsList:[
         {
           type: 'selection',
@@ -376,8 +382,10 @@ export default {
           this.$Message.error(err.response.data.message)
         })
       }else{
+        data.reason=this.reason
         getRefuse(data).then(res=>{
           this.$Message.success('成功');
+          this.reason=''
           this.getList()
           this.typeModal=false
         }).catch(err => {
@@ -386,6 +394,11 @@ export default {
       }
       
     },
+     exportData (type) {
+      this.$refs.selection.exportCsv({
+          filename: '存单列表'
+      });
+    }
   }
 }
 </script>
@@ -393,6 +406,5 @@ export default {
 <style lang="less">
   .operationBtn button{
     margin-right: 20px;
-    
   }
 </style>
