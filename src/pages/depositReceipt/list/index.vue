@@ -500,8 +500,8 @@ export default {
     margin-right: 20px;
   }
   .adad{
-    width: 500px;
-    height: 500px;
+    width: 100%;
+    height: 2000px;
     background-color: aqua
   }
 </style>
