@@ -54,7 +54,7 @@
       <div class="page" style="margin-top:20px;display:flex;justify-content:space-between">
         <div class="operationBtn">
           <!-- <Button type="success" @click="modal1=true">添加物品</Button> -->
-          <Button type="info">导出到Excel</Button>
+          <Button type="primary" style="margin:0 8px 5px 0" @click="exportData()">导出列表</Button>
         </div>
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
       </div>
@@ -220,6 +220,87 @@ export default {
         //   align: 'center'
         // },
       ],
+      columnsList1:[
+        {
+          title: '序号',
+          key: 'num',
+          width: 70,
+          align: 'center'
+        },
+        {
+          title: '用户ID',
+          key: 'userId',
+          width: 220,
+          align: 'center'
+        },
+        {
+          title: '存单编号',
+          key: 'orderNo',
+          width: 190,
+          align: 'center'
+        },
+        {
+          title: '箱子编号',
+          key: 'packCode',
+          width: 180,
+          align: 'center'
+        },
+        {
+          title: '物品编号',
+          key: 'code',
+          width: 120,
+          align: 'center'
+        },
+        {
+          title: '物品名称',
+          key: 'name',
+          width: 125,
+          align: 'center'
+        },
+        {
+          title: '所在库位',
+          key: 'storeCode',
+          width: 120,
+          align: 'center'
+        },
+        {
+          title: '物品归类',
+          key: 'categoryName',
+          width: 150,
+          align: 'center'
+        },
+        {
+          title: '展示区域',
+          key: 'typeName',
+          width: 100,
+          align: 'center'
+        },
+        {
+          title: '标签',
+          key: 'tags',
+          width: 100,
+          align: 'center'
+        },
+        {
+          title: '流转状态',
+          key: 'storeStatusCode',
+          width: 120,
+          align: 'center'
+        },
+        {
+          title: '取单编号',
+          key: 'withdrawOrderId',
+          width: 190,
+          align: 'center'
+        },
+        // {
+        //   title: '操作',
+        //   slot: 'operation',
+        //   width: 100,
+        //   fixed: 'left',
+        //   align: 'center'
+        // },
+      ],
       dataList:[
       ],
       searchList:{
@@ -260,7 +341,7 @@ export default {
           if (v.category) {
             v.categoryName = v.category.name
           }
-          
+          v.storeStatusCode = v.storeStatus.name
           v.typeName=v.type.name
           if (v.withdrawOrder) {
             v.withdrawOrderId=v.withdrawOrder.orderNo
@@ -289,6 +370,13 @@ export default {
     imgClick(img){
       this.img = img
       this.imgModal=true
+    },
+    exportData (type) {
+      this.$refs.selection.exportCsv({
+          filename: '库存物品列表',
+          columns: this.columnsList1,
+          data:this.dataList
+      });
     }
   }
 }

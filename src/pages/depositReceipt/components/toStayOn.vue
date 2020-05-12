@@ -17,6 +17,9 @@
             <Input  placeholder="请输入"  v-show="boxStorehouse==true" v-model="row.storeCode" @on-change="boxData[index].storeCode= row.storeCode"></Input>
             <div v-show="boxStorehouse==false">{{row.storeCode}}</div>
           </template>
+          <template slot-scope="{ row, index }" slot="operation1">
+            <Button type="text" size="small"  style="margin-right: 5px;color:#19be6b;" @click="detailsClick(row)">详情</Button>
+          </template>
         </Table>
         <div style="margin-top:20px">
           <Button type="success" style="margin:0 8px 5px 0"  @click="boxStorehouseClick">{{boxStorehouse==true?'保存库位':'编辑库位'}} </Button>
@@ -103,6 +106,42 @@
         </div>
       </div>
     </Modal>
+    <Modal v-model="boxModal"  title="添加/编辑纸箱" @on-visible-change="boxModalChange">
+      <Form ref="boxList" :model="boxList" :rules="ruleValidate" :label-width="150">
+        <FormItem label="纸箱编号" prop="code">
+            <Input v-model="boxList.code" placeholder="请输入" style="width:300px"></Input>
+        </FormItem>
+        <FormItem label="纸箱类型">
+            <Select placeholder="请选择" @on-change="boxTypeChange(boxList.type)" style="width:300px" v-model="boxList.type">
+                <Option value="A">拍照</Option>
+                <Option value="B">不拍照</Option>
+            </Select>
+        </FormItem>
+        <FormItem label="纸箱名称" prop="boxId">
+            <Select transfer v-model="boxList.boxId" style="width:300px">
+              <Option v-for="item in boxTypeList" :value="item.id" :key="item.value">{{ item.name }}</Option>
+            </Select>
+        </FormItem>
+        <FormItem label="纸箱重量(kg)" prop="weight">
+            <Input v-model="boxList.weight" placeholder="请输入" style="width:300px"></Input>
+        </FormItem>
+        <FormItem label="安检状态" prop="auditStatus" >
+            <Select placeholder="请选择" v-model="boxList.auditStatus" style="width:300px">
+                <Option value="pass">通过</Option>
+                <Option value="fail">未通过</Option>
+            </Select>
+        </FormItem>
+        <FormItem label="管理员备注" >
+            <Input v-model="boxList.auditRemark" placeholder="请输入" style="width:300px"></Input>
+        </FormItem>
+      </Form>        
+      <div slot="footer">
+        <div style="">
+          <Button type="text" style="margin-right:10px;" @click="boxCancel">取消</Button>
+          <Button type="primary" style="margin-right:10px" @click="boxClickOk">保存</Button>
+        </div>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -117,7 +156,8 @@ getDepositGoodsPicList,
 timeDate,
 getGoodsTree,
 getDepositGoodsSet,
-getCompleteFinish
+getCompleteFinish,
+getPackAdd
  } from "@api/account";
 export default {
   name: 'pendingDisposal',
@@ -138,6 +178,32 @@ export default {
       file: null,//图片状态
       img:'',//图片
       headers:this.$store.state.headers,
+      boxList:{//编辑信息
+        id:'',
+        depositOrderId:'',
+        code:'',
+        boxId:'',
+        weight:'',
+        auditStatus:'',
+        auditRemark:'',
+        type:'',
+      },
+      ruleValidate: {//纸箱信息验证
+        code: [
+            { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        boxId: [
+            { required: true, message: '请选择', trigger: 'blur' }
+        ],
+        weight: [
+            { required: true, message: '请输入', trigger: 'blur' }
+        ],
+        auditStatus: [
+            { required: true, message: '请选择', trigger: 'blur' }
+        ],
+      },
+      boxModal:false,//纸箱编辑弹窗
+      boxTypeList:[],//纸箱类型
       caseColumns:[
         {
           title: '物品编号',
@@ -208,10 +274,10 @@ export default {
           slot: 'inspectType'
         },
         {
-          title: '备注',
+          title: '库位',
           align:'center',
-          minWidth:100,
-          slot: 'remarks'
+          width:100,
+          slot: 'operation'
         },
         {
           title: '物品数量',
@@ -219,12 +285,19 @@ export default {
           width:70,
           key: 'goodsCount'
         },
-        {
-          title: '库位',
+        { 
+          title: '备注',
           align:'center',
-          width:100,
-          slot: 'operation'
+          minWidth:100,
+          slot: 'remarks'
         },
+        // {
+        //   title: '操作',
+        //   align:'center',
+        //   fixed: 'right',
+        //   width:100,
+        //   slot: 'operation1'
+        // },
       ],
       data: [
         
@@ -245,6 +318,7 @@ export default {
   methods:{
     getData(id){
       this.orderId=id
+      this.boxList.depositOrderId=id
       this.dataList(id)
       this.GoodsTree()
     },
@@ -457,6 +531,64 @@ export default {
         this.$Message.success('成功');
       }).catch(err => {
         this.$Message.error(err.response.data.message)
+      })
+    },
+    //纸箱编辑
+    detailsClick(row){
+      this.boxTypeChange(row.type)
+      this.boxList.id=row.id
+      this.boxList.code=row.code
+      this.boxList.boxId=row.box.id
+      this.boxList.weight=row.weight+''
+      this.boxList.auditStatus=row.auditStatus
+      this.boxList.auditRemark=row.remark
+      this.boxList.type=row.type
+      this.boxModal=true
+    },
+    //箱子添加编辑保存
+    boxClickOk(){
+      this.$refs['boxList'].validate((valid) => {
+          if (valid) {
+            getPackAdd(this.boxList).then(res=>{
+              this.boxCancel()
+              this.dataList()
+              this.$Message.success('成功');
+            }).catch(err => {
+              this.$Message.error(err.response.data.message)
+            })
+          } else {
+              this.$Message.error('请检查内容必填项是否全部填写!');
+          }
+      })
+    },
+    //箱子添加编辑取消
+    boxCancel(){
+      this.boxModal=false
+      this.boxList.id=''
+      this.boxList.code=''
+      this.boxList.boxId=''
+      this.boxList.weight=''
+      this.boxList.auditStatus=''
+      this.boxList.auditRemark=''
+      this.boxList.type=''
+      this.boxTypeList=[]
+    },
+    boxModalChange(key){
+      if (key==false) {
+        this.boxCancel()
+      }
+    },
+    //箱子类型选择
+    boxTypeChange(row){
+      this.boxList.boxId=''
+      let data ={
+        type:row
+      }
+      getBoxTypeList(data).then(res=>{
+        let arr = res.data
+        this.boxTypeList=arr
+
+        // this.boxList = arr 
       })
     },
     //此步骤已完成

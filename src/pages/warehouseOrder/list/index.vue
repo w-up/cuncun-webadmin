@@ -51,9 +51,9 @@
             confirm
             title="是否确认批量发送?"
             @on-ok="ok">
-            <Button type="success">批量发送</Button>
+            <Button type="success" style="margin:0 8px 5px 0">批量发送</Button>
           </Poptip>
-          
+          <Button type="primary" style="margin:0 8px 5px 0" @click="exportData()">导出列表</Button>
         </div>
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
       </div>
@@ -150,6 +150,68 @@ export default {
           align: 'center'
         },
       ],
+      columnsList1:[
+        {
+          title: '序号',
+          key: 'num',
+          width: 70,
+          align: 'center'
+        },
+        {
+          title: '订单状态',
+          key: 'statusCode',
+          width: 120,
+          align: 'center'
+        },
+        {
+          title: '订单号',
+          key: 'orderNo',
+          width: 270,
+          align: 'center'
+        },
+        {
+          title: 'SD箱数量',
+          key: 'boxSDnum',
+          width: 120,
+          align: 'center'
+        },
+        {
+          title: 'SD箱物品数量百分比',
+          key: 'contacts',
+          width: 170,
+          align: 'center'
+        },
+        {
+          title: 'EC箱数量',
+          key: 'boxECnum',
+          width: 125,
+          align: 'center'
+        },
+        {
+          title: '仓储费用/元',
+          key: 'fee',
+          width: 140,
+          align: 'center'
+        },
+        {
+          title: '费用周期',
+          key: 'time',
+          minWidth: 250,
+          align: 'center'
+        },
+        {
+          title: '用户ID',
+          key: 'userCode',
+          width: 220,
+          align: 'center'
+        },
+        {
+          title: '姓名',
+          key: 'userName',
+          width: 140,
+          align: 'center'
+        }
+      ],
       dataList:[
       ],
       selectionList:[],
@@ -176,6 +238,7 @@ export default {
           v.time = timeDate1(v.beginDate)+' - '+timeDate1(v.endDate)
           v.userCode = v.user.id
           v.userName = v.user.name
+          v.statusCode=v.status.name
         });
         this.total = res.data.total
         this.dataList = arr
@@ -223,6 +286,13 @@ export default {
           type:type
         }
       })
+    },
+    exportData (type) {
+      this.$refs.selection.exportCsv({
+          filename: '仓储订单列表',
+          columns: this.columnsList1,
+          data:this.dataList
+      });
     }
   }
 }

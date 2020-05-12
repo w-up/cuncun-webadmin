@@ -70,8 +70,9 @@
           <Button type="success" @click="RefuseToAccept(true)">接单</Button>
           <Button type="error" @click="RefuseToAccept(false)">拒单</Button>
           <Button type="warning" @click="assignRidersClick">分配拣货员</Button>
-          <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出配送单</Button>
-          <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出拣货单</Button>
+          <Button type="primary" style="margin:0 8px 5px 0" >导出配送单</Button>
+          <Button type="primary" style="margin:0 8px 5px 0" >导出拣货单</Button>
+          <Button type="primary" style="margin:0 8px 5px 0" @click="exportData()">导出列表</Button>
         </div>
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
       </div>
@@ -238,6 +239,104 @@ export default {
           align: 'center'
         },
       ],
+      columnsList1:[//导出
+        {
+          title: '序号',
+          key: 'num',
+          width: 70,
+          align: 'center'
+        },
+        {
+          title: '订单状态',
+          key: 'statusCode',
+          width: 140,
+          align: 'center'
+        },
+        {
+          title: '订单号',
+          key: 'orderNo',
+          width: 190,
+          align: 'center'
+        },
+        {
+          title: '联系人',
+          key: 'linkman',
+          width: 160,
+          align: 'center'
+        },
+        {
+          title: '联系电话',
+          key: 'mobile',
+          width: 125,
+          align: 'center'
+        },
+        {
+          title: '返送地址',
+          key: 'addressName',
+          minWidth: 240,
+          align: 'center'
+        },
+        {
+          title: '订单重量',
+          key: 'totalWeight',
+          width: 100,
+          align: 'center'
+        },
+        {
+          title: '返送数量',
+          key: 'packNum',
+          width: 100,
+          align: 'center'
+        },
+        {
+          title: '箱子数量',
+          key: 'packNum',
+          width: 100,
+          align: 'center'
+        },
+        {
+          title: '箱子总重量',
+          key: 'packWeight',
+          width: 120,
+          align: 'center'
+        },
+        {
+          title: '物品数量',
+          key: 'goodsNum',
+          width: 100,
+          align: 'center'
+        },
+        {
+          title: '物品总重量',
+          key: 'goodsWeight',
+          width: 120,
+          align: 'center'
+        },
+        {
+          title: '物流费用',
+          key: 'deliveryFee',
+          width: 100,
+          align: 'center'
+        },
+        {
+          title: '物流单号',
+          key: 'waybillNo',
+          minWidth: 160,
+          align: 'center'
+        },
+        {
+          title: '用户ID',
+          key: 'userId',
+          minWidth: 220,
+          align: 'center'
+        },
+        {
+          title: '拣货员',
+          key: 'pickmanName',
+          width: 125,
+          align: 'center'
+        },
+      ],
       dataList:[
 
       ],
@@ -280,6 +379,7 @@ export default {
           num ++ 
           v.num = num
           v.type=v.status.code
+          v.statusCode = v.status.name
           if (v.area) {
             v.addressName = v.area.province+' '+v.area.city+' '+v.area.name+' '+v.address
           }else{
@@ -397,6 +497,13 @@ export default {
           id: id
         }
       })
+    },
+    exportData (type) {
+      this.$refs.selection.exportCsv({
+          filename: '取单列表',
+          columns: this.columnsList1,
+          data:this.dataList
+      });
     }
   }
 }

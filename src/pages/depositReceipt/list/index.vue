@@ -2,6 +2,9 @@
   <div>
     <Card>
       <p slot="title">存单列表</p>
+      <!-- <div class="adad" id="demo">
+
+      </div> -->
       <Form inline :label-width="80" >
           <FormItem label="订单号" >
             <Input  placeholder="请输入" style="width:200px" v-model="searchList.orderNo"></Input>
@@ -88,6 +91,7 @@
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
       </div>
     </Card>
+
     <Modal
         v-model="assignRidersModal"
         title="分配骑手"
@@ -230,6 +234,86 @@ export default {
           align: 'center'
         },
       ],
+      columnsList1:[//导出表头
+        {
+          title: '序号',
+          key: 'num',
+          width: 70,
+          align: 'center'
+        },
+        {
+          title: '订单状态',
+          key: 'statusCode',
+          width: 120,
+          align: 'center'
+        },
+        {
+          title: '支付状态',
+          key: 'paymentCode',
+          width: 120,
+          align: 'center'
+        },
+        {
+          title: '订单号',
+          key: 'orderNo',
+          width: 180,
+          align: 'center'
+        },
+        {
+          title: '联系人',
+          key: 'linkman',
+          width: 160,
+          align: 'center'
+        },
+        {
+          title: '联系电话',
+          key: 'mobile',
+          width: 125,
+          align: 'center'
+        },
+        {
+          title: '取件地址',
+          key: 'address',
+          minWidth: 240,
+          align: 'center'
+        },
+        {
+          title: '取件日期',
+          key: 'bookFetchDate',
+          width: 120,
+          align: 'center'
+        },
+        {
+          title: '取件时间',
+          key: 'time',
+          width: 100,
+          align: 'center'
+        },
+        {
+          title: '预估数量',
+          key: 'prepareBoxNum',
+          width: 100,
+          align: 'center'
+        },
+        {
+          title: '物流费用',
+          key: 'prepaid',
+          width: 100,
+          align: 'center'
+        },
+        {
+          title: '骑手姓名',
+          key: 'diliveryManName',
+          width: 120,
+          align: 'center'
+        },
+        {
+          title: '用户ID',
+          key: 'userID',
+          width: 125,
+          align: 'center'
+        },
+      ],
       dataList:[
       ],
       assignRidersModal:false,
@@ -280,6 +364,12 @@ export default {
         arr.forEach(v => {
           num ++ 
           v.num = num
+          v.statusCode = v.status.name
+          v.namecode1 = v.prepaidStatus.code =='payed'?'完成-':'未完成-'
+          v.namecode2 = v.adjustPayStatus.code =='waitSettle'?'未完成-':'完成-'
+          v.namecode3= v.adjustPayStatus.code =='payed'?'完成':'未完成'
+          v.paymentCode= v.namecode1 + v.namecode2+v.namecode3
+         
           v.time = v.bookFetchTime[0]+' ~ '+v.bookFetchTime[1]
         });
         this.total = res.data.total
@@ -396,9 +486,11 @@ export default {
     },
      exportData (type) {
       this.$refs.selection.exportCsv({
-          filename: '存单列表'
+          filename: '存单列表',
+          columns: this.columnsList1,
+          data:this.dataList
       });
-    }
+    },
   }
 }
 </script>
@@ -406,5 +498,10 @@ export default {
 <style lang="less">
   .operationBtn button{
     margin-right: 20px;
+  }
+  .adad{
+    width: 500px;
+    height: 500px;
+    background-color: aqua
   }
 </style>
