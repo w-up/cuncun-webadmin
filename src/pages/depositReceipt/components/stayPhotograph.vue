@@ -129,7 +129,7 @@
         </div>
       </div>
     </Modal>
-    <Modal v-model="boxModal"  title="添加/编辑纸箱" @on-visible-change="boxModalChange">
+    <Modal v-model="boxModal"  title="添加/编辑纸箱" @on-visible-change="boxModalChange" :mask-closable='false'>
       <Form ref="boxList" :model="boxList" :rules="ruleValidate" :label-width="150">
         <FormItem label="纸箱编号" prop="code">
             <Input v-model="boxList.code" placeholder="请输入" style="width:300px"></Input>

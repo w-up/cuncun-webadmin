@@ -618,3 +618,13 @@ export function getUserList (data) {
         params:data 
     });
 }
+//用户列地址
+export function getUserAddressList (id) {
+    return request({
+        url: '/server/data/admin/user/addr/list',
+        method: 'get',
+        params:{
+            userId:id
+        } 
+    });
+}

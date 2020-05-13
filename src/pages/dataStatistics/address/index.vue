@@ -8,78 +8,85 @@
         <Table border ref="selection" :columns="columnsList" :data="dataList">
         </Table>
       </div>
-      <div class="page" style="margin-top:20px;display:flex;justify-content:space-between">
-        <div class="operationBtn">
-        </div>
-        <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
-      </div>
     </Card>
   </div>
 </template>
 
 <script>
+import { getUserAddressList } from "@api/account";
 export default {
   // name: 'home',
   data () {
     return {
-      total: 0,
-      pageSize: 10,
-      pageNumber: 0,
       columnsList:[
         {
           title: '序号',
-          key: 'serialNumber',
+          key: 'num',
           width: 70,
           align: 'center'
         },
         {
           title: '收货人',
-          key: 'orderNumber',
+          key: 'linkman',
           width: 140,
           align: 'center'
         },
         {
           title: '收货电话',
-          key: 'contacts',
+          key: 'mobile',
           width: 180,
           align: 'center'
         },
         {
           title: '省',
-          key: 'phone',
+          key: 'province',
           width: 180,
           align: 'center'
         },
         {
           title: '市',
-          key: 'address',
+          key: 'city',
           width: 200,
           align: 'center'
         },
         {
           title: '区',
-          key: 'date',
+          key: 'district',
           width: 200,
           align: 'center'
         },
         {
           title: '详细地址',
-          key: 'datee',
+          key: 'address',
           minWidth: 200,
           align: 'center'
         },
       ],
       dataList:[
-        {}
+
       ],
     }
   },
   mounted () {
     //
+    this.getList()
   },
   methods:{
     getList(){
-
+      
+      getUserAddressList(this.$route.query.id).then(res=>{
+        let num = 0
+        let arr = res.data
+        arr.forEach(v => {
+          num ++
+          v.num = num
+          v.province = v.area.province
+          v.city = v.area.city
+          v.district = v.area.district
+        });
+        this.dataList =arr
+        
+      })
     },
     changePage (page) {
       this.pageNumber = page - 1

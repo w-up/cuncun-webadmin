@@ -74,13 +74,13 @@ export default {
         },
         {
           title: '性别',
-          key: 'phone',
+          key: 'gender',
           width: 100,
           align: 'center'
         },
         {
           title: '年龄',
-          key: 'address',
+          key: 'age',
           minWidth: 100,
           align: 'center'
         },
@@ -103,13 +103,13 @@ export default {
           align: 'center'
         },{
           title: '首次下单时间',
-          key: 'datea',
+          key: 'firstOrderTime',
           width: 200,
           align: 'center'
         },
         {
           title: '最后登录时间',
-          key: 'datet',
+          key: 'lastLoginTime',
           width: 200,
           align: 'center'
         },
@@ -156,7 +156,18 @@ export default {
           num++
           v.num = num
           v.regTime = timeDate(v.regTime)
+          if (v.firstOrderTime) {
+            v.firstOrderTime = timeDate(v.firstOrderTime)
+          }
+          if (v.lastLoginTime) {
+            v.lastLoginTime = timeDate(v.lastLoginTime)
+          }
+          // if (v.firstOrderTime =='NaN-NaN-NaN NaN:NaN:NaN') {
+          //   v.firstOrderTime=''
+          // }
         });
+        console.log(arr);
+        
         this.total = res.data.total
         this.dataList = arr
       })
