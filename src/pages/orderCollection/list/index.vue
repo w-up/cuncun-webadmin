@@ -14,7 +14,7 @@
             <Input  placeholder="请输入" style="width:200px" v-model="searchList.userAccountId"></Input>
           </FormItem>
           <FormItem label="用户姓名" >
-            <Input  placeholder="请输入" style="width:200px" v-model="searchList.orderNo"></Input>
+            <Input  placeholder="请输入" style="width:200px" ></Input>
           </FormItem>
           <FormItem label="联系电话" >
             <Input  placeholder="请输入" style="width:200px" v-model="searchList.linktel"></Input>
@@ -30,7 +30,8 @@
             <TimePicker  format="HH"   placeholder="结束时间" style="width: 100px" transfer :value="searchList.bookFetchHourEnd"  @on-change="searchList.bookFetchHourEnd=$event"></TimePicker>
           </FormItem> -->
           <FormItem >
-            <Button type="warning" icon="ios-search" style="" @click="getList()">搜索</Button>
+            <Button type="warning" icon="ios-search" style="" @click="searchClick()">搜索</Button>
+            <Button style="margin-left:10px" @click="emptySearchList">清空</Button>
           </FormItem>
       </Form>
       </Form>
@@ -123,10 +124,6 @@ export default {
         linkman:'',
         linktel:'',
         userAccountId:'',
-        bookFetchDateStart:'',
-        bookFetchDateEnd:'',
-        bookFetchHourStart:'',
-        bookFetchHourEnd:'',
       },
       columnsList:[
         {
@@ -354,10 +351,14 @@ export default {
     }
   },
   mounted () {
-    //
+    this.searchList=this.$store.state.orderCollectionSearchList
     this.getList()
   },
   methods:{
+    searchClick(){
+      this.$store.commit('getOrderCollectionSearchList',this.searchList)
+      this.getList()
+    },
     getList(){
       let data ={
         pageNumber:this.pageNumber,
@@ -367,10 +368,6 @@ export default {
         linkman:this.searchList.linkman,
         linktel:this.searchList.linktel,
         userAccountId:this.searchList.userAccountId,
-        bookFetchDateStart:this.searchList.bookFetchDateStart,
-        bookFetchDateEnd:this.searchList.bookFetchDateEnd,
-        bookFetchHourStart:this.searchList.bookFetchHourStart,
-        bookFetchHourEnd:this.searchList.bookFetchHourEnd,
       }
       getWithdrawList(data).then(res=>{
         var num = 0
@@ -498,6 +495,15 @@ export default {
         }
       })
     },
+    //清空搜索列表
+    emptySearchList(){
+      this.searchList.status=''
+      this.searchList.orderNo=''
+      this.searchList.linkman=''
+      this.searchList.linktel=''
+      this.searchList.userAccountId=''
+      this.$store.commit('getOrderCollectionSearchList',this.searchList)
+    },
     exportData (type) {
       this.$refs.selection.exportCsv({
           filename: '取单列表',
@@ -505,7 +511,10 @@ export default {
           data:this.dataList
       });
     }
-  }
+  },
+  destroyed(){
+    this.$store.commit('getOrderCollectionSearchList',this.searchList)
+  },
 }
 </script>
 

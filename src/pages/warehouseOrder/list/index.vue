@@ -16,7 +16,7 @@
             <Input  placeholder="请输入" style="width:200px"></Input>
           </FormItem>
           <FormItem label="订单状态" >
-            <Select  slot="extra"  style="width:200px;" v-model="list.status">
+            <Select    style="width:200px;" v-model="list.status">
               <Option value="waitcheck" >待审查</Option>
               <Option value="waitpay" >待支付</Option>
               <Option value="payed" >已支付</Option>

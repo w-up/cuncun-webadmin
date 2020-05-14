@@ -36,57 +36,57 @@
         </Card>
         <Card style="width:350px;margin-right:5px;margin-top:10px">
           <p slot="title">费用明细</p>
-          <Button slot="extra" v-show='type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:false' @click="adjustmentClick">调整费用</Button>
-          <div v-show='type=="waitpay"?true:type=="init"?true:type=="assign"?true:type=="fetch"?true:false'>
+          <Button slot="extra" v-show='type=="delivery"?true:false' @click="adjustmentClick">调整费用</Button>
+          <div v-show='type=="waitpay"?false:type=="init"?false:type=="assign"?false:type=="fetch"?false:type=="delivery"?false:true'>
             <Form  :label-width="110">
               <FormItem label="运输费用：">
-                  <span style="margin-left:120px">￥{{costList.transport}}</span>
+                  <span style="margin-left:100px">￥{{costList.transport}} {{costList.deliveryFeeNew<0?'-':'+'}} ￥{{costList.deliveryFeeNew}}</span>
               </FormItem>
               <FormItem label="打包费用：">
-                  <span style="margin-left:120px">￥{{costList.pack}}</span>
+                  <span style="margin-left:100px">￥{{costList.pack}} {{costList.packFeeNew<0?'-':'+'}} ￥{{costList.packFeeNew}}</span>
               </FormItem>
               <FormItem label="纸箱费用：">
-                  <span style="margin-left:120px">￥{{costList.case}}</span>
+                  <span style="margin-left:100px">￥{{costList.case}} {{costList.boxFeeNew<0?'-':'+'}} ￥{{costList.boxFeeNew}}</span>
               </FormItem>
-              <FormItem label="订单总价：" style="margin-bottom:45px" class="size20">
-                  <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.total}}</span>
+              <FormItem label="订单总费用：" style="margin-bottom:20px" class="size20">
+                  <span style="font-size: 15px;font-weight: 600;margin-left:100px">￥{{costList.total}} {{costList.settleFee<0?'-':'+'}} ￥{{costList.settleFee}}</span>
               </FormItem>
-              <FormItem label="实付定金：" class="size20">
-                  <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.actualPayment}}</span>
+              <FormItem label="实际付费用：" class="size20">
+                  <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.settleFee1}}</span>
               </FormItem>
             </Form>
           </div>
-          <div v-show='type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="ready"?true:type=="finish"?true:false' >
+          <div v-show='type=="waitpay"?true:type=="init"?true:type=="assign"?true:type=="fetch"?true:type=="delivery"?true:false' >
             <Form  :label-width="110">
               <FormItem label="运输费用：">
-                  <span style="margin-left:120px">￥{{costList.transport}}</span>
+                  <span style="margin-left:100px">￥{{costList.transport}} {{costList.deliveryFeeNew<0?'-':'+'}} ￥{{costList.deliveryFeeNew}}</span>
               </FormItem>
               <FormItem label="打包费用：">
-                  <span style="margin-left:120px">￥{{costList.pack}}</span>
+                  <span style="margin-left:100px">￥{{costList.pack}} {{costList.packFeeNew<0?'-':'+'}} ￥{{costList.packFeeNew}}</span>
               </FormItem>
               <FormItem label="纸箱费用：">
-                  <span style="margin-left:120px">￥{{costList.case}}</span>
+                  <span style="margin-left:100px">￥{{costList.case}} {{costList.boxFeeNew<0?'-':'+'}} ￥{{costList.boxFeeNew}}</span>
               </FormItem>
               <FormItem label="调整费用：">
-                  <span style="margin-left:120px">￥{{costList.adjustFee}}</span>
+                  <span style="margin-left:100px">￥{{costList.adjustFee}}</span>
               </FormItem>
-              <FormItem label="订单总价：" style="margin-bottom:20px" class="size20">
-                  <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.total}}</span>
+              <FormItem label="订单总费用：" style="margin-bottom:20px" class="size20">
+                  <span style="font-size: 15px;font-weight: 600;margin-left:100px">￥{{costList.total}} {{costList.settleFee<0?'-':'+'}} ￥{{costList.settleFee}}</span>
               </FormItem>
-              <FormItem label="已付定金：" class="size20">
-                  <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.actualPayment}}</span>
+              <FormItem label="已支付费用：" class="size20">
+                  <span style="font-size: 15px;font-weight: 600;margin-left:100px">￥{{costList.actualPayment}}</span>
               </FormItem>
-              <FormItem label="实付定金：" class="size20">
-                  <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.actualPayment}}</span>
+              <FormItem label="剩余待支付：" class="size20">
+                  <span style="font-size: 15px;font-weight: 600;margin-left:100px">￥{{costList.appendFee}}</span>
               </FormItem>
-              <FormItem label="未结算" v-show='type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:false'>
+              <FormItem :label="costList.adjustPayStatus=='waitSettle'?'待结算':'待支付'" v-show='costList.adjustPayStatus!="payed"&&type=="delivery"'>
                 <Poptip
                     confirm
                     transfer
                     title="是否确认发起结算?"
                     @on-ok="settleOk"
                     >
-                    <Button type="success" style="margin-left:120px">发起结算</Button>
+                    <Button type="success" style="margin-left:100px" v-show='type=="delivery"?true:false'>发起结算</Button>
                 </Poptip>
               </FormItem>
             </Form>
@@ -127,12 +127,12 @@
           </Form>
         </Card>
       </div>
-      <!-- <div style="margin:20px 0">
+      <div style="margin:20px 0">
         <div style="margin:20px 0"> 测试切换状态</div>
         <Select  slot="extra"  style="width:200px;" v-model="type">
           <Option v-for="item in stateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
-      </div> -->
+      </div>
       <div style="margin:20px 0">
         <Button :disabled='type=="init"?true:type=="assign"?true:type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='waitpay'?'primary':'dashed'">待付款<Icon type="ios-arrow-forward" /></Button>
@@ -188,19 +188,19 @@
       <Modal v-model="adjustmentModel"  title="费用调整" @on-visible-change="visibleChange">
         <Form  :label-width="110">
           <FormItem label="运输费用：">
-              <span style="margin-left:120px">￥{{costList.transport}}</span>
+              <span style="margin-left:100px">￥{{costList.transport}} + ￥{{costList.deliveryFeeNew}}</span>
           </FormItem>
           <FormItem label="打包费用：">
-              <span style="margin-left:120px">￥{{costList.pack}}</span>
+              <span style="margin-left:100px">￥{{costList.pack}} + ￥{{costList.packFeeNew}}</span>
           </FormItem>
           <FormItem label="纸箱费用：">
-              <span style="margin-left:120px">￥{{costList.case}}</span>
+              <span style="margin-left:100px">￥{{costList.case}} + ￥{{costList.boxFeeNew}}</span>
           </FormItem>
           <FormItem label="调整费用：">
-              <span style="margin-left:120px">￥{{costList.adjustFee}}</span>
+              <span style="margin-left:100px">￥{{costList.adjustFee}}</span>
           </FormItem>
-          <FormItem label="订单总价：" style="margin-bottom:20px" class="size20">
-              <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.total}}</span>
+          <FormItem label="订单总费用：" style="margin-bottom:20px" class="size20">
+              <span style="font-size: 15px;font-weight: 600;margin-left:100px">￥{{costList.total}} + ￥{{costList.settleFee}}</span>
           </FormItem>
           <FormItem label="费用调整：" >
             <div style="display:flex">
@@ -306,6 +306,7 @@ export default {
         adjustFee:'',
         total:'',
         actualPayment:'',
+        adjustPayStatus:'',
       },
       adjustmentCost:{
         id:this.$route.query.id,
@@ -375,6 +376,48 @@ export default {
         if (arr.diliveryManName) {
           this.orderList.diliveryManName=arr.diliveryManName
         }
+        if (arr.deliveryFeeNew) {
+           if(arr.deliveryFeeNew==0){
+
+          }else{
+            arr.deliveryFeeNew= arr.deliveryFeeNew - arr.deliveryFee
+          }
+        }else{
+          arr.deliveryFeeNew=0
+        }
+        if (arr.packFeeNew) {
+           if(arr.packFeeNew==0){
+
+          }else{
+            arr.packFeeNew= arr.packFeeNew - arr.packFee
+          }
+        }else{
+          arr.packFeeNew=0
+        }
+        if (arr.boxFeeNew) {
+           if(arr.boxFeeNew==0){
+
+          }else{
+            arr.boxFeeNew= arr.boxFeeNew - arr.boxFee
+          }
+        }else{
+          arr.boxFeeNew=0
+        }
+        arr.settleFee1= arr.settleFee
+        if (arr.settleFee) {
+          if(arr.settleFee==0){
+
+          }else{
+            arr.settleFee= arr.settleFee - arr.totalFee
+          }
+        }else{
+          arr.settleFee=0
+        }
+        this.costList.deliveryFeeNew= arr.deliveryFeeNew
+        this.costList.packFeeNew= arr.packFeeNew
+        this.costList.boxFeeNew= arr.boxFeeNew
+        this.costList.settleFee = arr.settleFee 
+        this.costList.appendFee = arr.appendFee 
         this.orderList.name=arr.user.name
         this.orderList.telephone=arr.user.mobile
         this.orderList.contacts=arr.linkman
@@ -386,7 +429,7 @@ export default {
         this.costList.total= arr.totalFee
         this.costList.adjustFee= arr.adjustFee
         this.costList.actualPayment= arr.prepaid
-        
+        this.costList.adjustPayStatus= arr.adjustPayStatus.code
         // console.log(arr);
         
       })

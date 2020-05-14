@@ -13,6 +13,32 @@ export default new Vuex.Store({
         headers:{
             Authorization:util.cookies.get('token'),
             'X-TENANT-ID':'cuncun:cc@2020'
+        },
+        depositReceiptSearchList:{
+            status:'',
+            orderNo:'',
+            linkman:'',
+            linktel:'',
+            userAccountId:'',
+            bookFetchDateStart:'',
+            bookFetchDateEnd:'',
+            bookFetchHourStart:'',
+            bookFetchHourEnd:'',
+        },
+        orderCollectionSearchList:{
+            status:'',
+            orderNo:'',
+            linkman:'',
+            linktel:'',
+            userAccountId:'',
         }
-    }
+    },
+    mutations: {
+        getDepositReceiptSearch:(state, list)=>{
+            state.depositReceiptSearchList=list
+        },
+        getOrderCollectionSearchList:(state, list)=>{
+            state.orderCollectionSearchList=list
+        },
+    },
 })

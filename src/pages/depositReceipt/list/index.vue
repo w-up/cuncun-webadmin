@@ -15,9 +15,9 @@
           <FormItem label="用户ID" >
             <Input  placeholder="请输入" style="width:200px" v-model="searchList.userAccountId"></Input>
           </FormItem>
-          <FormItem label="用户姓名" >
+          <!-- <FormItem label="用户姓名" >
             <Input  placeholder="请输入" style="width:200px" v-model="searchList.orderNo"></Input>
-          </FormItem>
+          </FormItem> -->
           <FormItem label="联系电话" >
             <Input  placeholder="请输入" style="width:200px" v-model="searchList.linktel"></Input>
           </FormItem>
@@ -36,7 +36,8 @@
             <TimePicker  format="HH"   placeholder="结束时间" style="width: 100px" transfer :value="searchList.bookFetchHourEnd"  @on-change="searchList.bookFetchHourEnd=$event"></TimePicker>
           </FormItem>
           <FormItem >
-            <Button type="warning" icon="ios-search" style="" @click="getList()">搜索</Button>
+            <Button type="warning" icon="ios-search" style="" @click="searchClick()">搜索</Button>
+            <Button style="margin-left:10px" @click="emptySearchList">清空</Button>
           </FormItem>
       </Form>
       <Tabs  style="margin-top:20px" @on-click="tabsClick">
@@ -341,9 +342,14 @@ export default {
   },
   mounted () {
     //
+    this.searchList=this.$store.state.depositReceiptSearchList
     this.getList()
   },
   methods:{
+    searchClick(){
+      this.$store.commit('getDepositReceiptSearch',this.searchList)
+      this.getList()
+    },
     getList(){
       let data ={
         pageNumber:this.pageNumber,
@@ -437,6 +443,19 @@ export default {
         }
       })
     },
+    //清空搜索列表
+    emptySearchList(){
+      this.searchList.status=''
+      this.searchList.orderNo=''
+      this.searchList.linkman=''
+      this.searchList.linktel=''
+      this.searchList.userAccountId=''
+      this.searchList.bookFetchDateStart=''
+      this.searchList.bookFetchDateEnd=''
+      this.searchList.bookFetchHourStart=''
+      this.searchList.bookFetchHourEnd=''
+      this.$store.commit('getDepositReceiptSearch',this.searchList)
+    },
     tableChangeClick(selection){
       this.selectionList = selection
     },
@@ -491,7 +510,10 @@ export default {
           data:this.dataList
       });
     },
-  }
+  },
+  destroyed(){
+    this.$store.commit('getDepositReceiptSearch',this.searchList)
+  },
 }
 </script>
 
