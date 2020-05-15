@@ -40,11 +40,11 @@
       <div style="margin-top:20px">
         <Table border ref="selection" :columns="columnsList" :data="dataList" >
           <template slot-scope="{ row, index }" slot="circulationType">
-            <Button type="warning" v-show="row.storeStatus.code=='withdraw'">已取回</Button>
-            <Button type="info" v-show="row.storeStatus.code=='store'">存储中</Button>
+            <Button type="warning" size="small" v-show="row.storeStatus.code=='withdraw'">已取回</Button>
+            <Button type="info" size="small" v-show="row.storeStatus.code=='store'">存储中</Button>
           </template>
           <template slot-scope="{ row, index }" slot="imgKey">
-            <Button type="success"  @click="imgClick(row.coverPic)">查看</Button>
+            <Button type="success" size="small" @click="imgClick(row.coverPic)">查看</Button>
           </template>
           <template slot-scope="{ row, index }" slot="operation">
             <Button type="text" size="small"  style="margin-right: 5px;color:#19be6b;">详情</Button>

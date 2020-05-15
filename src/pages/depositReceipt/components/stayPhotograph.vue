@@ -14,7 +14,7 @@
           </template>
           <template slot-scope="{ row, index }" slot="remarks">
             <Poptip :content="row.auditRemark" placement="top" transfer>
-              <Button type="primary">查看</Button>
+              <Button type="primary" size="small">查看</Button>
             </Poptip>
           </template>
           <template slot-scope="{ row, index }" slot="operation">
@@ -58,8 +58,8 @@
               <Input  placeholder="请输入"  v-model="row.tags" @on-change="data[index].tags= row.tags"></Input>
             </template>
             <template slot-scope="{ row, index }" slot="img">
-              <Button type="success" v-show="row.coverPic!=null" @click="imgClick(row.id,row.coverPic)">查看</Button>
-              <Button type="primary" v-show="row.coverPic==null"  @click="imgClick(row.id,'')">上传</Button>
+              <Button type="success" size="small" v-show="row.coverPic!=null" @click="imgClick(row.id,row.coverPic)">查看</Button>
+              <Button type="primary" size="small" v-show="row.coverPic==null"  @click="imgClick(row.id,'')">上传</Button>
             </template>
             <template slot-scope="{ row, index }" slot="kg">
               <Input  placeholder="请输入" v-model="row.weight" @on-change="data[index].weight= row.weight"></Input>

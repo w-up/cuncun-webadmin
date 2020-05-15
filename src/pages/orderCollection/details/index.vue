@@ -81,7 +81,7 @@
                         confirm
                         title="您确认删除此条备注吗?"
                         @on-ok="handleRemove(item)">
-                        <Button type="error" >删除</Button>
+                        <Button type="error" size="small">删除</Button>
                     </Poptip>
                   </Col>
               </Row>
