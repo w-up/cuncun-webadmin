@@ -186,34 +186,67 @@ export default {
     },
     //数据保存
     saveClick(){
-      for (const item of this.data) {
+      var data = this.data
+      for (let i = 0; i < data.length; i++) {
         let arr = {
           depositOrderId :this.orderId,
-          code:item.code,
-          boxId:item.boxId,
-          weight:item.weight,
-          auditStatus:item.auditStatus,
-          auditRemark:item.auditRemark,
+          code:data[i].code,
+          boxId:data[i].boxId,
+          weight:data[i].weight,
+          auditStatus:data[i].auditStatus,
+          auditRemark:data[i].auditRemark,
+          // auditStatus:data[i].auditStatus,
         }
-        if (item.id.length>10) {
-          arr.id=item.id
+        if (data[i].id.length>10) {
+          arr.id=data[i].id
         }
         getPackAdd(arr).then(res=>{
-
-          this.$Message.success('成功');
+          if (i+1==data.length) {
+            this.dataList()
+            this.$Message.success('成功');
+          }
         }).catch(err => {
           this.$Message.error(err.response.data.message)
         })
       }
+      // for (const item of this.data) {
+      //   let arr = {
+      //     depositOrderId :this.orderId,
+      //     code:item.code,
+      //     boxId:item.boxId,
+      //     weight:item.weight,
+      //     auditStatus:item.auditStatus,
+      //     auditRemark:item.auditRemark,
+      //   }
+      //   if (item.id.length>10) {
+      //     arr.id=item.id
+      //   }
+      //   getPackAdd(arr).then(res=>{
+
+      //     this.$Message.success('成功');
+      //   }).catch(err => {
+      //     this.$Message.error(err.response.data.message)
+      //   })
+      // }
     },
     //
     okDel(id){
-      getPackDel({id:id}).then(res=>{
-        this.$Message.success('删除成功');
-        this.dataList()
-      }).catch(err => {
-        this.$Message.error(err.response.data.message)
-      })
+      if (id.length>10) {
+        getPackDel({id:id}).then(res=>{
+          this.$Message.success('删除成功');
+          this.dataList()
+        }).catch(err => {
+          this.$Message.error(err.response.data.message)
+        })
+      }else{
+        for (let i = 0; i < this.data.length; i++) {
+          if (id==this.data[i].id) {
+            this.data.splice(i, 1)
+          }
+          
+        }
+      }
+      
     },
     stepComplete(){
       let data ={

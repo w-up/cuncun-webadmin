@@ -23,6 +23,7 @@
               confirm
               transfer
               title="您确认删除这条内容吗？"
+              @on-ok="okDel(row.id)"
             >
             <Button type="text" size="small"  style="margin-right: 5px;color:#ff9900;">删除</Button>
             </Poptip>
@@ -502,6 +503,14 @@ export default {
         this.$Message.warning('选中的箱子安检状态未通过,不能添加物品，请修改安检状态');
       }
     },
+    okDel(id){
+      getPackDel({id:id}).then(res=>{
+        this.$Message.success('删除成功');
+        this.dataList()
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
+      })
+    },
     //物品列表
     goodsList(){
       let data = {
@@ -622,7 +631,7 @@ export default {
       this.boxList.boxId=row.box.id
       this.boxList.weight=row.weight+''
       this.boxList.auditStatus=row.auditStatus
-      this.boxList.auditRemark=row.remark
+      this.boxList.auditRemark=row.auditRemark
       this.boxList.type=row.type
       this.boxModal=true
     },
