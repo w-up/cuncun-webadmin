@@ -392,7 +392,8 @@ export default {
           });
           let data ={
             diliveryManName:this.assignRidersList.name,
-            ids:id.join(',')
+            ids:id.join(','),
+            changeStatus:true
           }
           getAssign(data).then(res=>{
             this.$Message.success('成功');

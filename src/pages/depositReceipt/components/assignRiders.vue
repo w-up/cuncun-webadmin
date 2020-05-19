@@ -150,7 +150,8 @@ export default {
         if (valid) {
           let data ={
             diliveryManName:this.assignRidersList.name,
-            ids:this.orderId
+            ids:this.orderId,
+            changeStatus:true
           }
           getAssign(data).then(res=>{
             this.$Message.success('成功');
