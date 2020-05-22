@@ -40,16 +40,16 @@
           <div v-show='type=="waitpay"?false:type=="init"?false:type=="assign"?false:type=="fetch"?false:type=="delivery"?false:true'>
             <Form  :label-width="110">
               <FormItem label="运输费用：">
-                  <span style="margin-left:100px">￥{{costList.transport}} {{costList.deliveryFeeNew<0?'-':'+'}} ￥{{costList.deliveryFeeNew}}</span>
+                  <span style="margin-left:80px">￥{{costList.transport}} {{costList.deliveryFeeNew<0?'-':'+'}} ￥{{costList.deliveryFeeNew}}</span>
               </FormItem>
               <FormItem label="打包费用：">
-                  <span style="margin-left:100px">￥{{costList.pack}} {{costList.packFeeNew<0?'-':'+'}} ￥{{costList.packFeeNew}}</span>
+                  <span style="margin-left:80px">￥{{costList.pack}} {{costList.packFeeNew<0?'-':'+'}} ￥{{costList.packFeeNew}}</span>
               </FormItem>
               <FormItem label="纸箱费用：">
-                  <span style="margin-left:100px">￥{{costList.case}} {{costList.boxFeeNew<0?'-':'+'}} ￥{{costList.boxFeeNew}}</span>
+                  <span style="margin-left:80px">￥{{costList.case}} {{costList.boxFeeNew<0?'-':'+'}} ￥{{costList.boxFeeNew}}</span>
               </FormItem>
               <FormItem label="订单总费用：" style="margin-bottom:20px" class="size20">
-                  <span style="font-size: 15px;font-weight: 600;margin-left:100px">￥{{costList.total}} {{costList.settleFee<0?'-':'+'}} ￥{{costList.settleFee}}</span>
+                  <span style="font-size: 15px;font-weight: 600;margin-left:80px">￥{{costList.total}} {{costList.settleFee<0?'-':'+'}} ￥{{costList.settleFee}}</span>
               </FormItem>
               <FormItem label="实际付费用：" class="size20">
                   <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{costList.settleFee1}}</span>
@@ -59,25 +59,25 @@
           <div v-show='type=="waitpay"?true:type=="init"?true:type=="assign"?true:type=="fetch"?true:type=="delivery"?true:false' >
             <Form  :label-width="110">
               <FormItem label="运输费用：">
-                  <span style="margin-left:100px">￥{{costList.transport}} {{costList.deliveryFeeNew<0?'-':'+'}} ￥{{costList.deliveryFeeNew}}</span>
+                  <span style="margin-left:80px">￥{{costList.transport}} {{costList.deliveryFeeNew<0?'-':'+'}} ￥{{costList.deliveryFeeNew}}</span>
               </FormItem>
               <FormItem label="打包费用：">
-                  <span style="margin-left:100px">￥{{costList.pack}} {{costList.packFeeNew<0?'-':'+'}} ￥{{costList.packFeeNew}}</span>
+                  <span style="margin-left:80px">￥{{costList.pack}} {{costList.packFeeNew<0?'-':'+'}} ￥{{costList.packFeeNew}}</span>
               </FormItem>
               <FormItem label="纸箱费用：">
-                  <span style="margin-left:100px">￥{{costList.case}} {{costList.boxFeeNew<0?'-':'+'}} ￥{{costList.boxFeeNew}}</span>
+                  <span style="margin-left:80px">￥{{costList.case}} {{costList.boxFeeNew<0?'-':'+'}} ￥{{costList.boxFeeNew}}</span>
               </FormItem>
               <FormItem label="调整费用：">
-                  <span style="margin-left:100px">￥{{costList.adjustFee}}</span>
+                  <span style="margin-left:80px">￥{{costList.adjustFee}}</span>
               </FormItem>
               <FormItem label="订单总费用：" style="margin-bottom:20px" class="size20">
-                  <span style="font-size: 15px;font-weight: 600;margin-left:100px">￥{{costList.total}} {{costList.settleFee<0?'-':'+'}} ￥{{costList.settleFee}}</span>
+                  <span style="font-size: 15px;font-weight: 600;margin-left:80px">￥{{costList.total}} {{costList.settleFee<0?'-':'+'}} ￥{{costList.settleFee}}</span>
               </FormItem>
               <FormItem label="已支付费用：" class="size20">
-                  <span style="font-size: 15px;font-weight: 600;margin-left:100px">￥{{costList.actualPayment}}</span>
+                  <span style="font-size: 15px;font-weight: 600;margin-left:80px">￥{{costList.actualPayment}}</span>
               </FormItem>
               <FormItem label="剩余待支付：" class="size20">
-                  <span style="font-size: 15px;font-weight: 600;margin-left:100px">￥{{costList.appendFee}}</span>
+                  <span style="font-size: 15px;font-weight: 600;margin-left:80px">￥{{costList.appendFee}}</span>
               </FormItem>
               <FormItem :label="costList.adjustPayStatus=='waitSettle'?'待结算':'待支付'" v-show='costList.adjustPayStatus!="payed"&&type=="delivery"'>
                 <Poptip
@@ -175,7 +175,7 @@
       <Modal v-model="modifyRiderModal"  title="修改骑手">
         <Form  :label-width="110">
           <FormItem label="骑手姓名">
-            <Input  placeholder="请输入" style="width:200px"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="diliveryManName"></Input>
           </FormItem>
         </Form>
         <div slot="footer">
@@ -234,7 +234,8 @@ getRemarkAdd,
 getRemarkDel,
 getOrderDetail,
 getFeeAdjust,
-getFeeSettle } from "@api/account";
+getFeeSettle,
+getAssign } from "@api/account";
 import pendingPayment from '../components/pendingPayment' //待付款
 import pendingDisposal from '../components/pendingDisposal' // init
 import assignRiders from '../components/assignRiders'//待分配骑手
@@ -282,6 +283,7 @@ export default {
   },
   data () {
     return {
+      diliveryManName:'',
       orderId:this.$route.query.id,
       index:0,
       modifyRiderModal:false,//修改骑手弹窗
@@ -377,23 +379,23 @@ export default {
           this.orderList.diliveryManName=arr.diliveryManName
         }
         if (arr.deliveryFeeNew) {
-          arr.deliveryFeeNew= arr.deliveryFeeNew - arr.deliveryFee
+          arr.deliveryFeeNew= (arr.deliveryFeeNew - arr.deliveryFee).toFixed(2)
         }else{
           arr.deliveryFeeNew=0
         }
         if (arr.packFeeNew) {
-          arr.packFeeNew= arr.packFeeNew - arr.packFee
+          arr.packFeeNew= (arr.packFeeNew - arr.packFee).toFixed(2)
         }else{
           arr.packFeeNew=0
         }
         if (arr.boxFeeNew) {
-          arr.boxFeeNew= arr.boxFeeNew - arr.boxFee
+          arr.boxFeeNew= (arr.boxFeeNew - arr.boxFee).toFixed(2)
         }else{
           arr.boxFeeNew=0
         }
         arr.settleFee1= arr.settleFee
         if (arr.settleFee) {
-          arr.settleFee= arr.settleFee - arr.totalFee
+          arr.settleFee= (arr.settleFee - arr.totalFee).toFixed(2)
         }else{
           arr.settleFee=0
         }
@@ -523,10 +525,26 @@ export default {
     },
     //修改骑手
     modifyRiderClick(){
-      
+      if(this.diliveryManName!=''){
+        let data ={
+          diliveryManName:this.diliveryManName,
+          ids:this.orderId,
+        }
+        getAssign(data).then(res=>{
+          this.$Message.success('成功');
+          this.diliveryManName=''
+          this.OrderDetail()
+          this.modifyRiderModal=false
+        }).catch(err => {
+          this.$Message.error(err.response.data.message)
+        })
+        } else {
+            this.$Message.error('请输入骑手姓名');
+        }
     },
     //修改骑手弹窗关闭
     modifyRiderCancel(){
+      this.diliveryManName=''
       this.modifyRiderModal=false
     },
     //刷新详情

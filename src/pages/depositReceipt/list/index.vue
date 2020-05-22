@@ -275,7 +275,7 @@ export default {
         },
         {
           title: '取件地址',
-          key: 'address',
+          key: 'addressName',
           minWidth: 240,
           align: 'center'
         },
@@ -378,7 +378,11 @@ export default {
           v.namecode2 = v.adjustPayStatus.code =='waitSettle'?'未完成-':'完成-'
           v.namecode3= v.adjustPayStatus.code =='payed'?'完成':'未完成'
           v.paymentCode= v.namecode1 + v.namecode2+v.namecode3
-         
+         if (v.area) {
+            v.addressName = v.area.province+' '+v.area.city+' '+v.area.name+' '+v.address
+          }else{
+            v.addressName = v.address
+          }
           v.time = v.bookFetchTime[0]+' ~ '+v.bookFetchTime[1]
         });
         this.total = res.data.total

@@ -46,19 +46,19 @@
           <div>
             <Form  :label-width="110">
               <FormItem label="物流费用：">
-                  <span style="margin-left:120px">￥{{orderList.deliveryFee}}</span>
+                  <span style="margin-left:100px">￥{{orderList.deliveryFee}}</span>
               </FormItem>
               <FormItem label="调整费用：">
-                  <span style="margin-left:120px">￥{{orderList.adjustFee}}</span>
+                  <span style="margin-left:100px">￥{{orderList.adjustFee}}</span>
               </FormItem>
               <!-- <FormItem label="纸箱费用：">
-                  <span style="margin-left:120px">￥{{orderList.case}}</span>
+                  <span style="margin-left:100px">￥{{orderList.case}}</span>
               </FormItem> -->
               <FormItem label="订单总价：" style="margin-bottom:45px" class="size20">
-                  <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{orderList.totalFee}}</span>
+                  <span style="font-size: 15px;font-weight: 600;margin-left:100px">￥{{orderList.totalFee}}</span>
               </FormItem>
               <FormItem :label="orderList.payStatus=='payed'?'已付金额':'待付金额'" class="size20">
-                  <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{orderList.totalFee}}</span>
+                  <span style="font-size: 15px;font-weight: 600;margin-left:100px">￥{{orderList.totalFee}}</span>
               </FormItem>
             </Form>
           </div>

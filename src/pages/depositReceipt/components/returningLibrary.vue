@@ -92,11 +92,11 @@ export default {
           minWidth:160,
           slot: 'caseName'
         },
-        {
-          title: '纸箱重量(KG)',
-          minWidth:150,
-          slot: 'caseKg'
-        },
+        // {
+        //   title: '纸箱重量(KG)',
+        //   minWidth:150,
+        //   slot: 'caseKg'
+        // },
         // {
         //   title: '安检状态',
         //   align:'center',
@@ -203,7 +203,7 @@ export default {
           depositOrderId :this.orderId,
           code:data[i].code,
           boxId:data[i].boxId,
-          weight:data[i].weight,
+          // weight:data[i].weight,
           // auditStatus:data[i].auditStatus,
         }
         if (data[i].id.length>10) {
@@ -212,6 +212,7 @@ export default {
         getPackAdd(arr).then(res=>{
           if (i+1==data.length) {
             this.dataList()
+            this.$emit('detailsRefresh','1')
             this.$Message.success('成功');
           }
         }).catch(err => {
