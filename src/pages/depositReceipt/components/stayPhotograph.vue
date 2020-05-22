@@ -521,7 +521,12 @@ export default {
       getDepositGoodsList(data).then(res=>{
         let arr = res.data
         arr.forEach(v => {
-          v.showTime= timeDate(new Date(v.showTime))
+          if (v.showTime) {
+            v.showTime= timeDate(new Date(v.showTime))
+          }else{
+            v.showTime=''
+          }
+          
           if (v.showTime=='1970-01-01 08:00:00') {
             v.showTime=''
           }
