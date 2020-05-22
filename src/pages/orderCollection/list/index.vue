@@ -19,6 +19,12 @@
           <FormItem label="联系电话" >
             <Input  placeholder="请输入" style="width:200px" v-model="searchList.linktel"></Input>
           </FormItem>
+          <FormItem label="拣货员" >
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.pickmanName"></Input>
+          </FormItem>
+          <FormItem label="物流单号" >
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.waybillNo"></Input>
+          </FormItem>
           <!-- <FormItem label="返送日期" >
             <DatePicker  type="date"  placeholder="开始日期" style="width: 200px" transfer :value="searchList.bookFetchDateStart"  @on-change="searchList.bookFetchDateStart=$event"></DatePicker>
             <span style="margin:0 10px">~</span>
@@ -126,6 +132,8 @@ export default {
         linkman:'',
         linktel:'',
         userAccountId:'',
+        pickmanName:'',
+        waybillNo:'',
       },
       columnsList:[
         {
@@ -281,12 +289,12 @@ export default {
           width: 100,
           align: 'center'
         },
-        {
-          title: '返送数量',
-          key: 'packNum',
-          width: 100,
-          align: 'center'
-        },
+        // {
+        //   title: '返送数量',
+        //   key: 'packNum',
+        //   width: 100,
+        //   align: 'center'
+        // },
         {
           title: '箱子数量',
           key: 'packNum',
@@ -296,7 +304,7 @@ export default {
         {
           title: '箱子总重量',
           key: 'packWeight',
-          width: 120,
+          width: 120, 
           align: 'center'
         },
         {
@@ -370,6 +378,8 @@ export default {
         linkman:this.searchList.linkman,
         linktel:this.searchList.linktel,
         userAccountId:this.searchList.userAccountId,
+        pickmanName:this.searchList.pickmanName,
+        waybillNo:this.searchList.waybillNo,
       }
       getWithdrawList(data).then(res=>{
         var num = 0
@@ -504,6 +514,8 @@ export default {
       this.searchList.linkman=''
       this.searchList.linktel=''
       this.searchList.userAccountId=''
+      this.searchList.pickmanName=''
+      this.searchList.waybillNo=''
       this.$store.commit('getOrderCollectionSearchList',this.searchList)
     },
     exportData (type) {

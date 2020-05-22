@@ -3,6 +3,7 @@
     <div style="display:flex;"> 
       <Card style="width:38%;margin-right:5px;margin-top:10px">
         <p slot="title">纸箱列表</p>
+        <p slot="extra" style="color:red">双击纸箱列表添加物品</p>
         <Table border :columns="columns" :data="boxData" @on-row-dblclick="oneOnRowClick" :row-class-name="rowClassName">
           <template slot-scope="{ row, index }" slot="inspectType">
             <Icon type="md-checkmark-circle" v-show="row.auditStatus=='pass'" size='24' color="#19be6b" />
@@ -96,7 +97,7 @@
       
     </div>
     <div style="margin-top:20px">
-      <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
+      <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd"><Icon type="ios-download-outline"></Icon>导出取件单</Button>
     </div>
     <Modal v-model="refusalOfOrdersModal"  title="照片上传" @on-visible-change="visibleChange">
       <div style="text-align: center">
@@ -175,6 +176,7 @@ getDepositGoodsSet,
 getPackAdd,
 getDepositGoodsShow
  } from "@api/account";
+ import util from '@/libs/util';
 export default {
   name: 'pendingDisposal',
   data () {
@@ -672,7 +674,10 @@ export default {
           return 'demo-table-info-row';
       } 
       return '';
-    }
+    },
+    asdasssssd(){
+      window.open("http://cuncun.admin.iisu.cn/export/depositReceipt.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
+    },
   }
 }
 </script>

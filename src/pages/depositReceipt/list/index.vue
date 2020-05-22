@@ -22,7 +22,7 @@
             <Input  placeholder="请输入" style="width:200px" v-model="searchList.linktel"></Input>
           </FormItem>
           <FormItem label="骑手姓名" >
-            <Input  placeholder="请输入" style="width:200px" ></Input>
+            <Input  placeholder="请输入" style="width:200px"  v-model="searchList.diliveryManName"></Input>
           </FormItem>
           <FormItem label="取件日期" >
             <DatePicker  type="date"  placeholder="开始日期" style="width: 200px" transfer :value="searchList.bookFetchDateStart"  @on-change="searchList.bookFetchDateStart=$event"></DatePicker>
@@ -127,7 +127,7 @@
 </template>
 
 <script>
-import util from '@/libs/util';
+import util from '@/libs/util'; 
 import { getdepositPrderList,
 getAccept,
 getRefuse,
@@ -338,6 +338,7 @@ export default {
         bookFetchDateEnd:'',
         bookFetchHourStart:'',
         bookFetchHourEnd:'',
+        diliveryManName:''
       }
     }
   },
@@ -364,6 +365,7 @@ export default {
         bookFetchDateEnd:this.searchList.bookFetchDateEnd,
         bookFetchHourStart:this.searchList.bookFetchHourStart,
         bookFetchHourEnd:this.searchList.bookFetchHourEnd,
+        diliveryManName:this.searchList.diliveryManName
       }
       getdepositPrderList(data).then(res=>{
         var num = 0
@@ -456,6 +458,7 @@ export default {
       this.searchList.bookFetchDateEnd=''
       this.searchList.bookFetchHourStart=''
       this.searchList.bookFetchHourEnd=''
+      this.searchList.diliveryManName=''
       this.$store.commit('getDepositReceiptSearch',this.searchList)
     },
     tableChangeClick(selection){

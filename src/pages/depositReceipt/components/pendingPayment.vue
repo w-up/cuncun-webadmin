@@ -13,13 +13,14 @@
     </Card>
   </div>
   <div style="margin-top:20px">
-    <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
+    <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline" @click="asdasssssd"></Icon>导出取件单</Button>
   </div>
 </div>
   
 </template>
 
 <script>
+import util from '@/libs/util';
 import { getBoxList4Order,getGoodsList4Order } from "@api/account";
 export default {
   name: 'pendingPayment',
@@ -111,6 +112,9 @@ export default {
         });
         this.dataGoods =arr
       })
+    },
+    asdasssssd(){
+      window.open("http://cuncun.admin.iisu.cn/export/depositReceipt.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
     },
   }
 }

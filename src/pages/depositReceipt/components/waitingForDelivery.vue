@@ -20,7 +20,7 @@
       >
         <Button type="success" style="margin:0 8px 5px 0" >此步骤已完成</Button>
       </Poptip>
-      <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
+      <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd"><Icon type="ios-download-outline"></Icon>导出取件单</Button>
     </div>
     <Modal v-model="refusalOfOrdersModal"  title="拒单理由">
       <div style="text-align:center">
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import util from '@/libs/util';
 import { getBoxList4Order,getGoodsList4Order,getCompleteDelivery } from "@api/account";
 export default {
   name: 'pendingDisposal',
@@ -144,6 +145,9 @@ export default {
       }).catch(err => {
         this.$Message.error(err.response.data.message)
       })
+    },
+    asdasssssd(){
+      window.open("http://cuncun.admin.iisu.cn/export/depositReceipt.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
     },
   }
 }

@@ -57,8 +57,8 @@
               <FormItem label="订单总价：" style="margin-bottom:45px" class="size20">
                   <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{orderList.totalFee}}</span>
               </FormItem>
-              <FormItem label="待付金额：" class="size20">
-                  <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{type=="waitpay"?orderList.totalFee:''}}</span>
+              <FormItem :label="orderList.payStatus=='payed'?'已付金额':'待付金额'" class="size20">
+                  <span style="font-size: 15px;font-weight: 600;margin-left:120px">￥{{orderList.totalFee}}</span>
               </FormItem>
             </Form>
           </div>
@@ -280,8 +280,10 @@ export default {
         var arr = res.data
         arr.addressName = arr.area.province+' '+arr.area.city+' '+arr.area.name+' '+arr.address
         arr.timeCreated = timeDate(arr.timeCreated)
+        arr.payStatus = arr.payStatus.code
         this.type = arr.status.code
         this.orderList = arr
+        console.log(this.orderList);
         
       })
     },

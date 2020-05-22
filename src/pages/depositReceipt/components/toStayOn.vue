@@ -3,6 +3,7 @@
     <div style="display:flex;"> 
       <Card style="width:38%;margin-right:5px;margin-top:10px">
         <p slot="title">纸箱列表</p>
+        <p slot="extra" style="color:red">双击纸箱列表添加物品</p>
         <Table border :columns="columns" :data="boxData" @on-row-dblclick="oneOnRowClick" :row-class-name="rowClassName">
           <template slot-scope="{ row, index }" slot="inspectType">
             <Icon type="md-checkmark-circle" v-show="row.auditStatus=='pass'" size='24' color="#19be6b" />
@@ -64,6 +65,16 @@
           <template slot-scope="{ row, index }" slot="imgRemarks">
             <Input :disabled="goodsInformation==true?false:true"  placeholder="请输入" v-model="row.auditRemark" @on-change="data[index].auditRemark= row.auditRemark"></Input>
           </template>
+          <template slot-scope="{ row, index }" slot="operation1">
+            <Poptip
+                confirm
+                transfer
+                title="是否确认继承纸箱库位？"
+                @on-ok="clickGoods(row.id)"
+              >
+              <Button type="text" size="small"  style="margin-right: 5px;color:#ff9900;" v-show="row.storeAlone==true">回归库位</Button>
+              </Poptip>
+          </template>
         </Table>
         <div style="margin-top:20px">
           <Button type="success" style="margin:0 8px 5px 0" @click="goodsStorehouseClick">{{goodsStorehouse==true?'保存库位':'编辑库位'}}</Button>
@@ -80,7 +91,7 @@
       >
         <Button type="success" style="margin:0 8px 5px 0" >此步骤已完成</Button>
       </Poptip>
-      <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
+      <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd"><Icon type="ios-download-outline"></Icon>导出取件单</Button>
     </div>
     <Modal v-model="refusalOfOrdersModal"  title="照片上传" @on-visible-change="visibleChange">
       <div style="text-align: center">
@@ -157,8 +168,10 @@ timeDate,
 getGoodsTree,
 getDepositGoodsSet,
 getCompleteFinish,
-getPackAdd
+getPackAdd,
+getDoodsReturn2pack
  } from "@api/account";
+ import util from '@/libs/util';
 export default {
   name: 'pendingDisposal',
   data () {
@@ -259,6 +272,13 @@ export default {
           minWidth:140,
           slot: 'imgRemarks'
         },
+        {
+          title: '操作',
+          align:'center',
+          fixed: 'right',
+          width:100,
+          slot: 'operation1'
+        },
       ],
       columns: [
         {
@@ -291,13 +311,13 @@ export default {
           minWidth:100,
           slot: 'remarks'
         },
-        // {
-        //   title: '操作',
-        //   align:'center',
-        //   fixed: 'right',
-        //   width:100,
-        //   slot: 'operation1'
-        // },
+        {
+          title: '操作',
+          align:'center',
+          fixed: 'right',
+          width:100,
+          slot: 'operation1'
+        },
       ],
       data: [
         
@@ -561,6 +581,18 @@ export default {
           }
       })
     },
+    //
+    clickGoods(id){
+      let data ={
+        id:id
+      }
+      getDoodsReturn2pack(data).then(res=>{
+        this.$Message.success('成功');
+        this.goodsList()
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
+      })
+    },
     //箱子添加编辑取消
     boxCancel(){
       this.boxModal=false
@@ -608,7 +640,10 @@ export default {
           return 'demo-table-info-row';
       } 
       return '';
-    }
+    },
+    asdasssssd(){
+      window.open("http://cuncun.admin.iisu.cn/export/depositReceipt.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
+    },
   }
 }
 </script>

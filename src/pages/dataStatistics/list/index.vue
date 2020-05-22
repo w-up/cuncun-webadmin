@@ -7,6 +7,9 @@
            <FormItem label="手机号" >
             <Input  placeholder="请输入" style="width:200px" v-model="list.mobile"></Input>
           </FormItem>
+          <FormItem label="手机号" >
+            <Input  placeholder="请输入" style="width:200px" v-model="list.name"></Input>
+          </FormItem>
           <FormItem label="注册时间" >
             <DatePicker  type="date"  placeholder="开始日期" style="width: 200px" transfer :value="list.regDateBegin"  @on-change="list.regDateBegin=$event"></DatePicker>
             <span style="margin:0 10px">~</span>
@@ -52,6 +55,7 @@ export default {
         regDateBegin:'',
         regDateEnd:'',
         mobile:'',
+        name:''
       },
       columnsList:[
         {
@@ -166,6 +170,7 @@ export default {
         regDateBegin:this.list.regDateBegin,
         regDateEnd:this.list.regDateEnd,
         mobile:this.list.mobile,
+        name:this.list.name,
       }
       getUserList(data).then(res=>{
         let num = 0

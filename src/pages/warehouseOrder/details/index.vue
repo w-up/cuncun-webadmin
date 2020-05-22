@@ -36,7 +36,7 @@
           <FormItem >
             <Form  :label-width="100"  style="">
               <FormItem label="备注" style="">
-                <Input  type="textarea" :rows="4" style="width:400px" placeholder="请输入" />
+                <Input  type="textarea" :rows="4" style="width:400px" placeholder="请输入" v-model="list.settleFeeReason"/>
                 <!-- <Button type="success" style="margin-left:20px">保存</Button> -->
               </FormItem>
             </Form>
@@ -219,6 +219,7 @@ export default {
             getStorageOrderFeeAdjust(data).then(res=>{
               if (i==list.length-1) {
                 this.$Message.success('成功');
+                this.getList()
                 this.getPacksList()
                 this.tableType = !this.tableType
               }

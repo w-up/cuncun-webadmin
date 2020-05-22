@@ -285,7 +285,14 @@ export function getDepositGoodsSet (data) {
         data
     });
 }
-
+//存单物品库位
+export function getDoodsReturn2pack (data) {
+    return request({
+        url: '/server/data/admin/goods/store/return2pack',
+        method: 'post',
+        data
+    });
+}
 
 //取单
 //取单列表

@@ -127,12 +127,12 @@
           </Form>
         </Card>
       </div>
-      <!-- <div style="margin:20px 0">
+      <div style="margin:20px 0">
         <div style="margin:20px 0"> 测试切换状态</div>
         <Select  slot="extra"  style="width:200px;" v-model="type">
           <Option v-for="item in stateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
-      </div> -->
+      </div>
       <div style="margin:20px 0">
         <Button :disabled='type=="init"?true:type=="assign"?true:type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='waitpay'?'primary':'dashed'">待付款<Icon type="ios-arrow-forward" /></Button>
@@ -377,39 +377,23 @@ export default {
           this.orderList.diliveryManName=arr.diliveryManName
         }
         if (arr.deliveryFeeNew) {
-           if(arr.deliveryFeeNew==0){
-
-          }else{
-            arr.deliveryFeeNew= arr.deliveryFeeNew - arr.deliveryFee
-          }
+          arr.deliveryFeeNew= arr.deliveryFeeNew - arr.deliveryFee
         }else{
           arr.deliveryFeeNew=0
         }
         if (arr.packFeeNew) {
-           if(arr.packFeeNew==0){
-
-          }else{
-            arr.packFeeNew= arr.packFeeNew - arr.packFee
-          }
+          arr.packFeeNew= arr.packFeeNew - arr.packFee
         }else{
           arr.packFeeNew=0
         }
         if (arr.boxFeeNew) {
-           if(arr.boxFeeNew==0){
-
-          }else{
-            arr.boxFeeNew= arr.boxFeeNew - arr.boxFee
-          }
+          arr.boxFeeNew= arr.boxFeeNew - arr.boxFee
         }else{
           arr.boxFeeNew=0
         }
         arr.settleFee1= arr.settleFee
         if (arr.settleFee) {
-          if(arr.settleFee==0){
-
-          }else{
-            arr.settleFee= arr.settleFee - arr.totalFee
-          }
+          arr.settleFee= arr.settleFee - arr.totalFee
         }else{
           arr.settleFee=0
         }

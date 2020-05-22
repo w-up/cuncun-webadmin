@@ -14,7 +14,7 @@
     </div>
     <div style="margin-top:20px">
       <Button type="info" style="margin:0 8px 5px 0" @click="assignRidersClick">分配骑手</Button>
-      <Button type="primary" style="margin:0 8px 5px 0" ><Icon type="ios-download-outline"></Icon>导出取件单</Button>
+      <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd"><Icon type="ios-download-outline"></Icon>导出取件单</Button>
     </div>
     <Modal
         v-model="assignRidersModal"
@@ -35,6 +35,7 @@
 
 <script>
 import { getBoxList4Order,getGoodsList4Order,getAssign } from "@api/account";
+import util from '@/libs/util';
 export default {
   name: 'pendingDisposal',
   data () {
@@ -166,6 +167,9 @@ export default {
             this.$Message.error('请输入骑手姓名');
         }
       })
+    },
+    asdasssssd(){
+      window.open("http://cuncun.admin.iisu.cn/export/depositReceipt.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
     },
   }
 }
