@@ -84,8 +84,7 @@
         <div class="operationBtn">
           <Button type="success" @click="RefuseToAccept(true)" style="margin-bottom:5px">接单</Button>
           <Button type="error" @click="RefuseToAccept(false)" style="margin-bottom:5px">拒单</Button>
-          <Button type="info" style="margin-bottom:5px">导出取件单</Button>
-          <Button type="info" style="margin-bottom:5px">导出上架单</Button>
+          <Button type="info" style="margin-bottom:5px" @click="asdasssssd()">导出取件单</Button>
           <Button type="info" style="margin-bottom:5px" @click="exportData()">导出列表</Button>
           <Button type="warning" @click="assignRidersClick" style="margin-bottom:5px">分配骑手</Button>
         </div>
@@ -128,6 +127,7 @@
 </template>
 
 <script>
+import util from '@/libs/util';
 import { getdepositPrderList,
 getAccept,
 getRefuse,
@@ -136,6 +136,7 @@ export default {
   // name: 'home',
   data () {
     return {
+      token:util.cookies.get('token1'),
       total: 0,
       pageSize: 10,
       pageNumber: 0,
@@ -503,6 +504,13 @@ export default {
         })
       }
       
+    },
+    asdasssssd(){
+      let id=[]
+      this.selectionList.forEach(v => {
+        id.push(v.id)
+      });
+      window.open("http://cuncun.admin.iisu.cn/export/depositReceipt.html?id="+id.join(',')+'&token='+this.token);  
     },
      exportData (type) {
       this.$refs.selection.exportCsv({

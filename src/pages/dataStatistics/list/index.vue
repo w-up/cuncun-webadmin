@@ -61,6 +61,12 @@ export default {
           align: 'center'
         },
         {
+          title: '用户ID',
+          key: 'id',
+          width: 240,
+          align: 'center'
+        },
+        {
           title: '昵称',
           key: 'nickName',
           width: 160,
@@ -90,12 +96,12 @@ export default {
           width: 200,
           align: 'center'
         },
-        {
-          title: '注册来源',
-          key: 'datee',
-          width: 200,
-          align: 'center'
-        },
+        // {
+        //   title: '注册来源',
+        //   key: 'datee',
+        //   width: 200,
+        //   align: 'center'
+        // },
         {
           title: '注册时间',
           key: 'regTime',
@@ -111,6 +117,18 @@ export default {
           title: '最后登录时间',
           key: 'lastLoginTime',
           width: 200,
+          align: 'center'
+        },
+        {
+          title: '在库物品余量',
+          key: 'age11',
+          minWidth: 140,
+          align: 'center'
+        },
+        {
+          title: '存储费用',
+          key: 'age111',
+          minWidth: 100,
           align: 'center'
         },
         {

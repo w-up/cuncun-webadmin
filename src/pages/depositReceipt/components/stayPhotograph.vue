@@ -3,6 +3,7 @@
     <div style="display:flex;"> 
       <Card style="width:38%;margin-right:5px;margin-top:10px">
         <p slot="title">纸箱列表</p>
+        <p slot="extra" style="color:red">双击纸箱列表添加物品</p>
         <Table border :columns="columns" :data="boxData" @on-row-dblclick="oneOnRowClick" :row-class-name="rowClassName">
           <template slot-scope="{ row, index }" slot="num">
             <div v-show="boxEdit==false">{{row.code}}</div>
@@ -132,30 +133,30 @@
     </Modal>
     <Modal v-model="boxModal"  title="添加/编辑纸箱" @on-visible-change="boxModalChange" :mask-closable='false'>
       <Form ref="boxList" :model="boxList" :rules="ruleValidate" :label-width="150">
-        <FormItem label="纸箱编号" prop="code">
+        <FormItem label="纸箱编号" prop="code" style="margin-bottom:20px">
             <Input v-model="boxList.code" placeholder="请输入" style="width:300px"></Input>
         </FormItem>
-        <FormItem label="纸箱类型">
+        <FormItem label="纸箱类型" style="margin-bottom:20px">
             <Select placeholder="请选择" @on-change="boxTypeChange(boxList.type)" style="width:300px" v-model="boxList.type">
                 <Option value="A">拍照</Option>
                 <Option value="B">不拍照</Option>
             </Select>
         </FormItem>
-        <FormItem label="纸箱名称" prop="boxId">
+        <FormItem label="纸箱名称" prop="boxId" style="margin-bottom:20px">
             <Select transfer v-model="boxList.boxId" style="width:300px">
               <Option v-for="item in boxTypeList" :value="item.id" :key="item.value">{{ item.name }}</Option>
             </Select>
         </FormItem>
-        <FormItem label="纸箱重量(kg)" prop="weight">
+        <FormItem label="纸箱重量(kg)" prop="weight" style="margin-bottom:20px">
             <Input v-model="boxList.weight" placeholder="请输入" style="width:300px"></Input>
         </FormItem>
-        <FormItem label="安检状态" prop="auditStatus" >
+        <FormItem label="安检状态" prop="auditStatus" style="margin-bottom:20px">
             <Select placeholder="请选择" v-model="boxList.auditStatus" style="width:300px">
                 <Option value="pass">通过</Option>
                 <Option value="fail">未通过</Option>
             </Select>
         </FormItem>
-        <FormItem label="管理员备注" >
+        <FormItem label="管理员备注" style="margin-bottom:20px">
             <Input v-model="boxList.auditRemark" placeholder="请输入" style="width:300px"></Input>
         </FormItem>
       </Form>        

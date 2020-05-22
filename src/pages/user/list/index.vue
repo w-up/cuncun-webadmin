@@ -56,6 +56,12 @@ export default {
           align: 'center'
         },
         {
+          title: '用户ID',
+          key: 'id',
+          width: 240,
+          align: 'center'
+        },
+        {
           title: '昵称',
           key: 'nickName',
           width: 180,

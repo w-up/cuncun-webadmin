@@ -29,48 +29,68 @@
       </Card>
       <Card style="margin-right:5px;margin-top:10px;box-sizing:border-box;width:60%" >
         <p slot="title">物品列表</p>
-        <Table border :columns="caseColumns" :data="data">
-          <template slot-scope="{ row, index }" slot="num">
-            <Input :disabled="goodsInformation==true?false:true" placeholder="请输入" v-model="row.code" @on-change="data[index].code= row.code"></Input>
-          </template>
-          <template slot-scope="{ row, index }" slot="name">
-            <Input :disabled="goodsInformation==true?false:true" placeholder="请输入" v-model="row.name" @on-change="data[index].name= row.name"></Input>
-          </template>
-          <template slot-scope="{ row, index }" slot="storehouse">
-            <div v-show="goodsStorehouse==false">{{row.storeCode}}</div>
-            <Input v-show="goodsStorehouse==true"  placeholder="请输入" v-model="row.storeCode" @on-change="data[index].storeCode= row.storeCode"></Input>
-          </template>
-          <template slot-scope="{ row, index }" slot="exhibition">
-            <Select :disabled="goodsInformation==true?false:true" transfer v-model="row.type" @on-change="data[index].type= row.type">
-              <Option  value="bookcase" >书架</Option>
-              <Option  value="armoire" >衣柜</Option>
-              <Option  value="shoebox" >鞋柜</Option>
-              <Option  value="storeroom" >储藏室</Option>
-              <Option  value="sundries" >杂物室</Option>
-            </Select>
-          </template>
-          <template slot-scope="{ row, index }" slot="classification">
-             <Cascader :disabled="goodsInformation==true?false:true" transfer :data="categoryList" trigger="hover" v-model="row.categoryId" @on-change="onChangeCascader(index, $event)"></Cascader>
-          </template>
-          <template slot-scope="{ row, index }" slot="label">
-            <Input :disabled="goodsInformation==true?false:true"  placeholder="请输入"  v-model="row.tags" @on-change="data[index].tags= row.tags"></Input>
-          </template>
-          <template slot-scope="{ row, index }" slot="img">
-            <Button type="success" size="small" v-show="row.coverPic!=null" @click="imgClick(row.id,row.coverPic)">查看</Button>
-            <Button type="primary" size="small" v-show="row.coverPic==null"  @click="imgClick(row.id,'')">上传</Button>
-          </template>
-          <template slot-scope="{ row, index }" slot="kg">
-            <Input :disabled="goodsInformation==true?false:true" placeholder="请输入" v-model="row.weight" @on-change="data[index].weight= row.weight"></Input>
-          </template>
-          <template slot-scope="{ row, index }" slot="imgRemarks">
-            <Input :disabled="goodsInformation==true?false:true"  placeholder="请输入" v-model="row.auditRemark" @on-change="data[index].auditRemark= row.auditRemark"></Input>
-          </template>
-        </Table>
-        <div style="margin-top:20px">
-          <Button type="success" style="margin:0 8px 5px 0" @click="goodsStorehouseClick">{{goodsStorehouse==true?'保存库位':'编辑库位'}}</Button>
-          <Button type="success" style="margin:0 8px 5px 0" @click="saveItemsClick">{{goodsInformation==true?'保存信息':'编辑信息'}}</Button>
-          <Button type="info" style="margin:0 8px 5px 0" v-show="goodsInformation==true" @click="addGoodsClick">添加一行</Button>
-          <Button type="warning" style="margin:0 8px 5px 0" @click="publishMessage">发布信息</Button>
+        <div v-show="boxType=='A'">
+          <Table border :columns="caseColumns" :data="data">
+            <template slot-scope="{ row, index }" slot="num">
+              <Input :disabled="goodsInformation==true?false:true" placeholder="请输入" v-model="row.code" @on-change="data[index].code= row.code"></Input>
+            </template>
+            <template slot-scope="{ row, index }" slot="name">
+              <Input :disabled="goodsInformation==true?false:true" placeholder="请输入" v-model="row.name" @on-change="data[index].name= row.name"></Input>
+            </template>
+            <template slot-scope="{ row, index }" slot="storehouse">
+              <div v-show="goodsStorehouse==false">{{row.storeCode}}</div>
+              <Input v-show="goodsStorehouse==true"  placeholder="请输入" v-model="row.storeCode" @on-change="data[index].storeCode= row.storeCode"></Input>
+            </template>
+            <template slot-scope="{ row, index }" slot="exhibition">
+              <Select :disabled="goodsInformation==true?false:true" transfer v-model="row.type" @on-change="data[index].type= row.type">
+                <Option  value="bookcase" >书架</Option>
+                <Option  value="armoire" >衣柜</Option>
+                <Option  value="shoebox" >鞋柜</Option>
+                <Option  value="storeroom" >储藏室</Option>
+                <Option  value="sundries" >杂物室</Option>
+              </Select>
+            </template>
+            <template slot-scope="{ row, index }" slot="classification">
+              <Cascader :disabled="goodsInformation==true?false:true" transfer :data="categoryList" trigger="hover" v-model="row.categoryId" @on-change="onChangeCascader(index, $event)"></Cascader>
+            </template>
+            <template slot-scope="{ row, index }" slot="label">
+              <Input :disabled="goodsInformation==true?false:true"  placeholder="请输入"  v-model="row.tags" @on-change="data[index].tags= row.tags"></Input>
+            </template>
+            <template slot-scope="{ row, index }" slot="img">
+              <Button type="success" size="small" v-show="row.coverPic!=null" @click="imgClick(row.id,row.coverPic)">查看</Button>
+              <Button type="primary" size="small" v-show="row.coverPic==null"  @click="imgClick(row.id,'')">上传</Button>
+            </template>
+            <template slot-scope="{ row, index }" slot="kg">
+              <Input :disabled="goodsInformation==true?false:true" placeholder="请输入" v-model="row.weight" @on-change="data[index].weight= row.weight"></Input>
+            </template>
+            <template slot-scope="{ row, index }" slot="imgRemarks">
+              <Input :disabled="goodsInformation==true?false:true"  placeholder="请输入" v-model="row.auditRemark" @on-change="data[index].auditRemark= row.auditRemark"></Input>
+            </template>
+            <template slot-scope="{ row, index }" slot="operation1">
+              <Poptip
+                confirm
+                transfer
+                title="您确认删除这条内容吗？"
+                @on-ok="okGoodsDel(row.id)"
+              >
+                <Button type="text" size="small"  style="margin-right: 5px;color:#ff9900;">删除</Button>
+              </Poptip>
+            </template>
+          </Table>
+          <div style="margin-top:20px">
+            <Button type="success" style="margin:0 8px 5px 0" @click="goodsStorehouseClick">{{goodsStorehouse==true?'保存库位':'编辑库位'}}</Button>
+            <Button type="success" style="margin:0 8px 5px 0" @click="saveItemsClick">{{goodsInformation==true?'保存信息':'编辑信息'}}</Button>
+            <Button type="info" style="margin:0 8px 5px 0" v-show="goodsInformation==true" @click="addGoodsClick">添加一行</Button>
+            <Button type="warning" style="margin:0 8px 5px 0" @click="publishMessage">发布信息</Button>
+          </div>
+        </div>
+        <div v-show="boxType=='B'">
+          <p slot="title">请输入箱内物品信息</p>
+          <Input  type="textarea" :rows="6" placeholder="" v-model="remark"/>
+          <div style="margin-top:20px">
+            <Button type="success" style="margin:0 8px 5px 0" @click="saveItemsClick('2')">保存</Button>
+            <!-- <Button type="warning" style="margin:0 8px 5px 0" @click="publishMessage">发布信息</Button> -->
+          </div>
         </div>
       </Card>
       
@@ -198,6 +218,8 @@ export default {
             { required: true, message: '请选择', trigger: 'blur' }
         ],
       },
+      boxType:'',//箱子类型
+      remark:'',//不拍照箱子输入信息
       boxModal:false,//纸箱编辑弹窗
       boxTypeList:[],//纸箱类型
       caseColumns:[
@@ -254,6 +276,13 @@ export default {
           align:'center',
           minWidth:140,
           slot: 'imgRemarks'
+        },
+        {
+          title: '操作',
+          align:'center',
+          fixed: 'right',
+          width:100,
+          slot: 'operation1'
         },
       ],
       columns: [
@@ -450,11 +479,19 @@ export default {
     },
     //选中某一条箱子
     oneOnRowClick(data,index){
-      this.listColor=index
-      this.rowClassName()
       if (data.auditStatus=='pass') {
+        this.listColor=index
+        this.rowClassName()
         this.packId=data.id
-        this.goodsList()
+        this.boxType= data.box.type.code
+        if (data.box.type.code=='A') {
+          this.goodsList()
+        }else{
+          this.remark=data.remark
+        }
+        
+      }else if (data.auditStatus=='fail'){
+        this.packId=''
       }else if (data.auditStatus=='fail'){
         this.packId=''
         this.data=[]
@@ -528,6 +565,14 @@ export default {
           } else {
               this.$Message.error('请检查内容必填项是否全部填写!');
           }
+      })
+    },
+    okGoodsDel(id){
+      getDepositGoodsDel({id:id}).then(res=>{
+        this.goodsList()
+        this.$Message.success('成功');
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
       })
     },
     //箱子添加编辑取消

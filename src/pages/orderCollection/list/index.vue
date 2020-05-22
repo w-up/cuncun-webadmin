@@ -71,8 +71,8 @@
           <Button type="success" @click="RefuseToAccept(true)">接单</Button>
           <Button type="error" @click="RefuseToAccept(false)">拒单</Button>
           <Button type="warning" @click="assignRidersClick">分配拣货员</Button>
-          <Button type="primary" style="margin:0 8px 5px 0" >导出配送单</Button>
-          <Button type="primary" style="margin:0 8px 5px 0" >导出拣货单</Button>
+          <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd(1)">导出配送单</Button>
+          <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd(2)">导出拣货单</Button>
           <Button type="primary" style="margin:0 8px 5px 0" @click="exportData()">导出列表</Button>
         </div>
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
@@ -109,11 +109,13 @@
 </template>
 
 <script>
+import util from '@/libs/util';
 import { getWithdrawList,getWithdrawCollect,getWithdrawAccept,getWithdrawRefuse } from "@api/account";
 export default {
   // name: 'home',
   data () {
     return {
+      token:util.cookies.get('token1'),
       typeModal:false,//接单拒单
       total: 0,
       pageSize: 10,
@@ -510,7 +512,19 @@ export default {
           columns: this.columnsList1,
           data:this.dataList
       });
-    }
+    },
+    asdasssssd(key){
+      let id=[]
+      this.selectionList.forEach(v => {
+        id.push(v.id)
+      });
+      if (key==1) {
+        window.open("http://cuncun.admin.iisu.cn/export/takeSingle.html?id="+id.join(',')+'&token='+this.token);  
+      }else{
+        window.open("http://cuncun.admin.iisu.cn/export/picking.html?id="+id.join(',')+'&token='+this.token);  
+      }
+      
+    },
   },
   destroyed(){
     this.$store.commit('getOrderCollectionSearchList',this.searchList)

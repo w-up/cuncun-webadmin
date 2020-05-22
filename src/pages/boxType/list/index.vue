@@ -166,7 +166,7 @@ export default {
           align: 'center'
         },
         {
-          title: '存储费用/天',
+          title: '存储费用/月',
           key: 'storePerMonthFee',
           width: 200,
           align: 'center'

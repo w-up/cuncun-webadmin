@@ -61,6 +61,9 @@
               <template slot-scope="{ row, index }" slot="price">
                 <Input  placeholder="请输入" v-model="row.num" @on-change="logisticsData[index].num= row.num"></Input>
               </template>
+              <template slot-scope="{ row, index }" slot="price1">
+                <Input  placeholder="请输入" v-model="row.num1" @on-change="logisticsData[index].num1= row.num1"></Input>
+              </template>
             </Table>
             <Button type="success" style="margin-top:20px" @click="clickLogisticsFeeSetUp">保存</Button>
           </Card>
@@ -200,21 +203,25 @@ export default {
       depositReceipColumns: [
         {
           title: '项目',
-          key: 'name'
+          key: 'name',
+          align:'center'
         },
         {
           title: '值',
-          slot: 'price'
+          slot: 'price',
+          align:'center'
         },
       ],
       orderColumns:[
         {
           title: '项目',
-          key: 'name'
+          key: 'name',
+          align:'center'
         },
         {
           title: '数量',
-          slot: 'price'
+          slot: 'price',
+          align:'center'
         },
       ],
       goodsColumns: [
@@ -225,7 +232,8 @@ export default {
         },
         {
           title: '系数',
-          slot: 'price'
+          slot: 'price',
+          align:'center'
         },
       ],
       timeColumns: [
@@ -236,17 +244,25 @@ export default {
         },
         {
           title: '系数',
-          slot: 'price'
+          slot: 'price',
+          align:'center'
         },
       ],
       logisticsColumns: [
         {
           title: '项目',
-          key: 'name'
+          key: 'name',
+          align:'center'
         },
         {
-          title: '价格',
-          slot: 'price'
+          title: '江浙沪',
+          slot: 'price',
+          align:'center'
+        },
+        {
+          title: '其他',
+          slot: 'price1',
+          align:'center'
         },
       ],
       depositReceiptData:[
@@ -303,11 +319,13 @@ export default {
       logisticsData:[
         {
           name:'首公斤',
-          num:''
+          num:'',
+          num1:'',
         },
         {
           name:'额外每公斤',
-          num:''
+          num:'',
+          num1:''
         },
       ],
       orderData:[
@@ -337,10 +355,15 @@ export default {
         this.depositReceiptData[1].num = arr.startKmPrice
         this.depositReceiptData[2].num = arr.extraKmPrice
       })
-      getLogisticsFeeSetUpList().then(res=>{
+      getLogisticsFeeSetUpList({region:'JZH'}).then(res=>{
         let arr = res.data
         this.logisticsData[0].num=arr.startKgPrice+''
         this.logisticsData[1].num=arr.extraKgPrice+''
+      })
+      getLogisticsFeeSetUpList({region:'other'}).then(res=>{
+        let arr = res.data
+        this.logisticsData[0].num1=arr.startKgPrice+''
+        this.logisticsData[1].num1=arr.extraKgPrice+''
       })
       getGoodsNumSetUpList().then(res=>{
         let arr = res.data
@@ -394,8 +417,20 @@ export default {
       var data={
         'wp[startKgPrice]':this.logisticsData[0].num,
         'wp[extraKgPrice]':this.logisticsData[1].num,
+        region:'JZH'
       }
       getLogisticsFeeSetUpSave(data).then(res=>{
+        // this.$Message.success('保存成功');
+        
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
+      })
+      var list={
+        'wp[startKgPrice]':this.logisticsData[0].num1,
+        'wp[extraKgPrice]':this.logisticsData[1].num1,
+        region:'other'
+      }
+      getLogisticsFeeSetUpSave(list).then(res=>{
         this.$Message.success('保存成功');
         
       }).catch(err => {
