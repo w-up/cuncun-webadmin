@@ -8,7 +8,11 @@
         <template slot-scope="{ row, index }" slot="img1">
             <Button type="primary" size="small"  @click="imgClick(row.img)">查看</Button>
         </template>
-      </Table>
+      </Table> 
+    </div>
+    <div style="margin-top:10px"> 
+      <!-- <Button type="warning" style="margin:0 8px 5px 0" @click="assignRidersClick">分配拣货员</Button> -->
+      <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd"><Icon type="ios-download-outline"></Icon>导出配送单</Button>
     </div>
     <Modal
         v-model="imgModal"
@@ -22,6 +26,7 @@
 </template>
 
 <script>
+import util from '@/libs/util';
 import { getWithdrawGoodsList } from "@api/account";
 export default {
   name: 'pendingPayment',
@@ -109,7 +114,15 @@ export default {
     imgClick(img){
       this.img = img
       this.imgModal=true
-    }
+    },
+    asdasssssd(key){
+      if (key==1) {
+        window.open("http://cuncun.admin.iisu.cn/export/takeSingle.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
+      }else{
+        window.open("http://cuncun.admin.iisu.cn/export/picking.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
+      }
+      
+    },
   }
 }
 </script>

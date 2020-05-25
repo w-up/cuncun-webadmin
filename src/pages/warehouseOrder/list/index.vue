@@ -32,6 +32,7 @@
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#FF8768;cursor: default" v-if="row.status.code == 'waitcheck'">待审查</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:rgb(74, 210, 142);cursor: default" v-if="row.status.code == 'payed'">已支付</Button>
             <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#68B0EF;cursor: default" v-if="row.status.code == 'waitpay'">待支付</Button>
+            <Button type="text" size="small"  style="color:#ffffff;backgroundColor:#ff9900;cursor: default" v-if="row.status.code == 'overdue7'">逾期</Button>
           </template>
           <template slot-scope="{ row, index }" slot="operation">
             <Button type="text" size="small"   style="margin-right: 5px;color:#19be6b;" @click="detailsClick(row.id,row.status.code)">审查详情</Button>

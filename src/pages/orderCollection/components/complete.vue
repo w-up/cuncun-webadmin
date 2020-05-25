@@ -10,6 +10,10 @@
         </template>
       </Table>
     </div>
+    <div style="margin-top:10px"> 
+      <!-- <Button type="warning" style="margin:0 8px 5px 0" @click="assignRidersClick">分配拣货员</Button> -->
+      <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd"><Icon type="ios-download-outline"></Icon>导出配送单</Button>
+    </div>
     <Modal
         v-model="imgModal"
         title="照片"
@@ -22,6 +26,7 @@
 </template>
 
 <script>
+import util from '@/libs/util';
 import { getWithdrawGoodsList } from "@api/account";
 export default {
   name: 'pendingPayment',
@@ -109,6 +114,9 @@ export default {
     imgClick(img){
       this.img = img
       this.imgModal=true
+    },
+    asdasssssd(key){
+      window.open("http://cuncun.admin.iisu.cn/export/takeSingle.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
     },
   }
 }

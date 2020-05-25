@@ -58,12 +58,18 @@
           <Button type="info" style="margin-top:20px" @click="tableTypeClick" v-show="this.type">{{tableType==true?'保存':'修改费用'}}</Button>
         </Card>
       </div>
+      <Poptip
+        confirm
+        title="是否确认发送订单?"
+        @on-ok="saveData">
+        <Button type="success" style="margin-top:10px" v-show="this.type">发送订单</Button>
+      </Poptip>
     </Card>
   </div>
 </template>
 
 <script>
-import { getStorageOrderDetail,timeDate1,getStorageOrderFeeAdjust,getStorageOrderPacksList } from "@/api/account";
+import { getStorageOrderDetail,timeDate1,getStorageOrderFeeAdjust,getStorageOrderPacksList,getStorageOrderSend2user } from "@/api/account";
 export default {
   // name: 'home',
   data () {
@@ -71,6 +77,7 @@ export default {
       id:this.$route.query.id,
       type:false,
       tableType:false,
+
       list:{},
       columns:[
         {
@@ -167,6 +174,11 @@ export default {
       getStorageOrderDetail(this.$route.query.id).then(res=>{
         let arr = res.data
         arr.time = timeDate1(arr.beginDate)+' - '+timeDate1(arr.endDate)
+        if (arr.status.code=='waitcheck') {
+          this.type=true
+        }else{
+          this.type=false
+        }
         this.dataCost[0].aa = arr.boxSDnum
         this.dataCost[0].bb = arr.boxSDprice
         this.dataCost[2].aa = arr.boxECnum
@@ -182,6 +194,14 @@ export default {
         }
         
         this.list = arr
+      })
+    },
+    saveData(){
+      getStorageOrderSend2user(this.id).then(res=>{
+        this.$Message.success('成功');
+        this.getList()
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
       })
     },
     getPacksList(){

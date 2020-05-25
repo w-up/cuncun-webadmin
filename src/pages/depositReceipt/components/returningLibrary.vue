@@ -138,12 +138,9 @@ export default {
           if (v.auditStatus) {
             v.auditStatus=v.auditStatus.code
           }
-          
           if (v.box) {
-            v.boxId=v.box.id
             v.type=v.box.type.code
           }
-          
           v.boxList=[]
           this.boxTypeChange(v)
         });
@@ -172,7 +169,11 @@ export default {
         this.data.forEach(v => {
           if (v.id==row.id) {
             v.boxList=arr
+            if (v.box) {
+              v.boxId=v.box.id
+            }
           }
+          
         });
         // this.boxList = arr 
       })
