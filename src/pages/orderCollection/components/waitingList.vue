@@ -187,10 +187,6 @@ export default {
       })
     },
     asdasssssd(key){
-      let id=[]
-      this.selectionList.forEach(v => {
-        id.push(v.id)
-      });
       if (key==1) {
         window.open("http://cuncun.admin.iisu.cn/export/takeSingle.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
       }else{

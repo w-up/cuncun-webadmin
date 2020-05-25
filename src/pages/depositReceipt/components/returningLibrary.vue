@@ -225,7 +225,12 @@ export default {
       if (id.length>10) {
         getPackDel({id:id}).then(res=>{
           this.$Message.success('删除成功');
-          this.dataList()
+          for (let i = 0; i < this.data.length; i++) {
+            if (id==this.data[i].id) {
+              this.data.splice(i, 1)
+            }
+            
+          }
         }).catch(err => {
           this.$Message.error(err.response.data.message)
         })

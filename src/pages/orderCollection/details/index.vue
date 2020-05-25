@@ -96,12 +96,12 @@
           </Form>
         </Card>
       </div>
-      <!-- <div style="margin:20px 0">
+      <div style="margin:20px 0">
         <div style="margin:20px 0"> 测试切换状态</div>
         <Select  slot="extra"  style="width:200px;" v-model="type">
           <Option v-for="item in stateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
-      </div> -->
+      </div>
       <div style="margin:20px 0">
         <Button :disabled='type=="init"?true:type=="collect"?true:type=="accept"?true:type=="waitsend"?true:type=="waitsign"?true:type=="finish"?true:type=="cancel"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='waitpay'?'primary':'dashed'">待付款<Icon type="ios-arrow-forward" /></Button>

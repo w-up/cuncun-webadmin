@@ -92,7 +92,7 @@
           <div style="margin-top:20px">
             <Button type="success" style="margin:0 8px 5px 0" @click="saveItemsClick('2')">保存</Button>
             <!-- <Button type="warning" style="margin:0 8px 5px 0" @click="publishMessage">发布信息</Button> -->
-          </div>
+          </div> 
         </div>
       </Card>
       
@@ -405,6 +405,7 @@ export default {
             if (i==this.data.length-1) {
               this.$Message.success('保存成功')
               this.goodsList()
+              this.dataList()
             }
           }).catch(err => {
             this.$Message.error(err.response.data.message)

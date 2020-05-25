@@ -27,7 +27,7 @@
                 <span>{{orderList.phone}}</span>
             </FormItem>
             <FormItem label="取件地址：">
-                <span>{{orderList.address}}</span>
+                <span>{{orderList.addressName}}</span>
             </FormItem>
             <FormItem label="取件时间：">
                 <span>{{orderList.time}}</span>
@@ -292,6 +292,7 @@ export default {
       remarkList:[],
       type:'',
       orderList:{
+        addressName:'',
         orderNumber:'',
         name:'',
         phone:'',
@@ -372,6 +373,8 @@ export default {
       getOrderDetail(this.$route.query.id).then(res=>{
         var arr = res.data
         this.type=arr.status.code
+         arr.addressName = arr.area.province+' '+arr.area.city+' '+arr.area.name+' '+arr.address
+         this.orderList.addressName=arr.addressName
         this.orderList.orderNumber=arr.orderNo
         // this.orderList.name=arr.linkman
         this.orderList.phone=arr.mobile

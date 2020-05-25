@@ -80,7 +80,7 @@
           </Table>
           <div style="margin-top:20px">
             <Button type="success" style="margin:0 8px 5px 0" @click="goodsStorehouseClick">{{goodsStorehouse==true?'保存库位':'编辑库位'}}</Button>
-            <Button type="success" style="margin:0 8px 5px 0" @click="saveItemsClick">{{goodsInformation==true?'保存信息':'编辑信息'}}</Button>
+            <Button type="success" style="margin:0 8px 5px 0" @click="saveItemsClick('1')">{{goodsInformation==true?'保存信息':'编辑信息'}}</Button>
             <Button type="info" style="margin:0 8px 5px 0" v-show="goodsInformation==true" @click="addGoodsClick">添加一行</Button>
             <Button type="warning" style="margin:0 8px 5px 0" @click="publishMessage">发布信息</Button>
           </div>
@@ -174,7 +174,8 @@ timeDate,
 getGoodsTree,
 getDepositGoodsSet,
 getPackAdd,
-getDepositGoodsShow
+getDepositGoodsShow,
+getUpdateRemark
  } from "@api/account";
  import util from '@/libs/util';
 export default {
@@ -240,7 +241,7 @@ export default {
         {
           title: '库位',
           align:'center',
-          width:110,
+          width:150,
           slot: 'storehouse'
         },
         {
@@ -303,7 +304,7 @@ export default {
         {
           title: '库位',
           align:'center',
-          width:100,
+          width:150,
           slot: 'operation'
         },
         {
@@ -388,35 +389,47 @@ export default {
       })
     },
     //物品保存
-    saveItemsClick(){
-      if (this.goodsInformation==true) {
-        for (let i = 0; i < this.data.length; i++) {
-          let data = {
-            id:this.data[i].id,
-            depositOrderId:this.orderId,
-            packId:this.packId,
-            categoryId:this.data[i].categoryId[1],
-            code:this.data[i].code,
-            name:this.data[i].name,
-            weight:Number(this.data[i].weight) ,
-            type:this.data[i].type,
-            tags:this.data[i].tags,
-            auditRemark:this.data[i].auditRemark,
-          }
-          getDepositGoodsSave(data).then(res=>{
-            if (i==this.data.length-1) {
-              this.goodsList()
-              this.$Message.success('保存成功')
-              this.goodsInformation=!this.goodsInformation
+    saveItemsClick(key){
+      if (key==1) {
+        if (this.goodsInformation==true) {
+          for (let i = 0; i < this.data.length; i++) {
+            let data = {
+              id:this.data[i].id,
+              depositOrderId:this.orderId,
+              packId:this.packId,
+              categoryId:this.data[i].categoryId[1],
+              code:this.data[i].code,
+              name:this.data[i].name,
+              weight:Number(this.data[i].weight) ,
+              type:this.data[i].type,
+              tags:this.data[i].tags,
+              auditRemark:this.data[i].auditRemark,
             }
-          }).catch(err => {
-            this.$Message.error(err.response.data.message)
-          })
+            getDepositGoodsSave(data).then(res=>{
+              if (i==this.data.length-1) {
+                this.goodsList()
+                this.dataList()
+                this.$Message.success('保存成功')
+                this.goodsInformation=!this.goodsInformation
+              }
+            }).catch(err => {
+              this.$Message.error(err.response.data.message)
+            })
+          }
+        }else{
+          this.goodsInformation=!this.goodsInformation
         }
       }else{
-        this.goodsInformation=!this.goodsInformation
+        let data ={
+          id:this.packId,
+          remark:this.remark
+        }
+        getUpdateRemark(data).then(res=>{
+          this.$Message.success('保存成功')
+        }).catch(err => {
+          this.$Message.error(err.response.data.message)
+        })
       }
-      
       
     },
     //纸箱编辑保存
