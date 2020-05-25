@@ -84,9 +84,9 @@
         </div>
         <div v-show="boxType=='B'">
           <p slot="title">请输入箱内物品信息</p>
-          <Input  type="textarea" :rows="6" placeholder="" v-model="remark"/>
+          <Input  type="textarea" :rows="6" placeholder="" v-model="remark" disabled/>
           <div style="margin-top:20px">
-            <Button type="success" style="margin:0 8px 5px 0" @click="saveItemsClick('2')">保存</Button>
+            <!-- <Button type="success" style="margin:0 8px 5px 0" @click="saveItemsClick('2')">保存</Button> -->
             <!-- <Button type="warning" style="margin:0 8px 5px 0" @click="publishMessage">发布信息</Button> -->
           </div> 
         </div>
