@@ -83,6 +83,7 @@ export default {
           v.province = v.area.province
           v.city = v.area.city
           v.district = v.area.district
+          v.address = v.plotName + v.address 
         });
         this.dataList =arr
         

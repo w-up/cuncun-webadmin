@@ -5,7 +5,7 @@
       <div style="display:flex;flex-wrap: wrap">
         <Card style="width:49%;margin-right:20px;margin-bottom:20px">
           <p slot="title">一级分类</p>
-          <p slot="extra" style="color:red">双击一级分类添加二级分类</p>
+          <p slot="extra" style="color:red">双击一级分类查看二级分类</p>
           <Button type="success" icon="md-add" style="" @click="oneClick('')">添加</Button>
           <div style="margin-top:20px">
             <Table border ref="selection" :columns="columnsListOne" :data="dataListOne" @on-row-dblclick="oneOnRowClick" :row-class-name="rowClassName">

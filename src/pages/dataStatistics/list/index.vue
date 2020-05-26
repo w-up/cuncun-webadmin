@@ -125,13 +125,13 @@ export default {
         },
         {
           title: '在库物品余量',
-          key: 'age11',
+          key: 'goodsCount',
           minWidth: 140,
           align: 'center'
         },
         {
           title: '存储费用',
-          key: 'age111',
+          key: 'storageFee',
           minWidth: 100,
           align: 'center'
         },
@@ -171,6 +171,7 @@ export default {
         regDateEnd:this.list.regDateEnd,
         mobile:this.list.mobile,
         name:this.list.name,
+        count:true,
       }
       getUserList(data).then(res=>{
         let num = 0
@@ -189,8 +190,6 @@ export default {
           //   v.firstOrderTime=''
           // }
         });
-        console.log(arr);
-        
         this.total = res.data.total
         this.dataList = arr
       })
