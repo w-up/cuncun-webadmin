@@ -41,6 +41,13 @@
               <div v-show="goodsStorehouse==false">{{row.storeCode}}</div>
               <Input v-show="goodsStorehouse==true"  placeholder="请输入" v-model="row.storeCode" @on-change="data[index].storeCode= row.storeCode"></Input>
             </template>
+            <template slot-scope="{ row, index }" slot="Storage">
+              <div v-show="goodsStorehouse==false">{{row.alone=='false'?'否':'是'}}</div>
+              <Select v-show="goodsStorehouse==true" transfer v-model="row.alone" @on-change="data[index].alone= row.alone">
+                <Option  value="false" >否</Option>
+                <Option  value="true" >是</Option>
+              </Select>
+            </template>
             <template slot-scope="{ row, index }" slot="exhibition">
               <Select :disabled="goodsInformation==true?false:true" transfer v-model="row.type" @on-change="data[index].type= row.type">
                 <Option  value="bookcase" >书架</Option>
@@ -73,8 +80,8 @@
                   title="是否确认继承纸箱库位？"
                   @on-ok="clickGoods(row.id)"
                 >
-                <Button type="text" size="small"  style="margin-right: 5px;color:#ff9900;" v-show="row.storeAlone==true">回归库位</Button>
-                </Poptip>
+                <Button type="text" size="small"  style="margin-right: 5px;color:#FF5151;" v-show="row.storeAlone==true">回归库位</Button>
+              </Poptip>
             </template>
           </Table>
           <div style="margin-top:20px">
@@ -248,6 +255,12 @@ export default {
           align:'center',
           width:150,
           slot: 'storehouse'
+        },
+        {
+          title: '是否独立存储',
+          align:'center',
+          width:150,
+          slot: 'Storage'
         },
         {
           title: '展示区域',
@@ -471,6 +484,7 @@ export default {
           let arr = {
             id:this.data[i].id,
             code:this.data[i].storeCode,
+            alone:this.data[i].alone,
           }
           getDepositGoodsSet(arr).then(res=>{
             if (i==this.data.length-1) {
@@ -527,6 +541,7 @@ export default {
         let arr = res.data
         arr.forEach(v => {
           v.timeCreated= timeDate(new Date(v.timeCreated))
+          v.alone = v.storeAlone+''
           if (v.type) {
             v.type=v.type.code
           }
