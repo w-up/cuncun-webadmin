@@ -188,7 +188,7 @@ export default {
         },
         {
           title: '取件地址',
-          key: 'address',
+          key: 'addressName',
           minWidth: 240,
           align: 'center'
         },
@@ -379,7 +379,11 @@ export default {
           v.namecode3= v.adjustPayStatus.code =='payed'?'完成':'未完成'
           v.paymentCode= v.namecode1 + v.namecode2+v.namecode3
          if (v.area) {
-            v.addressName = v.area.province+' '+v.area.city+' '+v.area.name+' '+v.address
+            if (v.plotName) {
+              v.addressName = v.area.province+' '+v.area.city+' '+v.area.name+' '+v.plotName+' '+v.address
+            }else{
+              v.addressName = v.area.province+' '+v.area.city+' '+v.area.name+' '+v.address
+            }
           }else{
             v.addressName = v.address
           }

@@ -373,7 +373,7 @@ export default {
       getOrderDetail(this.$route.query.id).then(res=>{
         var arr = res.data
         this.type=arr.status.code
-         arr.addressName = arr.area.province+' '+arr.area.city+' '+arr.area.name+' '+arr.address
+         arr.addressName = arr.area.province+' '+arr.area.city+' '+arr.area.name+' '+arr.plotName+' '+arr.address
          this.orderList.addressName=arr.addressName
         this.orderList.orderNumber=arr.orderNo
         // this.orderList.name=arr.linkman
@@ -416,7 +416,11 @@ export default {
         this.costList.pack= arr.packFee
         this.costList.case= arr.boxFee
         this.costList.total= arr.totalFee
-        this.costList.adjustFee= arr.adjustFee
+        if (arr.adjustFee) {
+          this.costList.adjustFee= arr.adjustFee
+        }else{
+          this.costList.adjustFee = 0
+        }
         this.costList.actualPayment= arr.prepaid
         this.costList.adjustPayStatus= arr.adjustPayStatus.code
         // console.log(arr);

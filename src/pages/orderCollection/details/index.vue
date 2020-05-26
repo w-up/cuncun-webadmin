@@ -278,13 +278,11 @@ export default {
     getList(){
       getWithdrawDetail(this.$route.query.id).then(res=>{
         var arr = res.data
-        arr.addressName = arr.area.province+' '+arr.area.city+' '+arr.area.name+' '+arr.address
+        arr.addressName = arr.area.province+' '+arr.area.city+' '+arr.area.name+' '+arr.plotName+' '+arr.address
         arr.timeCreated = timeDate(arr.timeCreated)
         arr.payStatus = arr.payStatus.code
         this.type = arr.status.code
         this.orderList = arr
-        console.log(this.orderList);
-        
       })
     },
     //评论数据

@@ -390,7 +390,11 @@ export default {
           v.type=v.status.code
           v.statusCode = v.status.name
           if (v.area) {
-            v.addressName = v.area.province+' '+v.area.city+' '+v.area.name+' '+v.address
+            if (v.plotName) {
+              v.addressName = v.area.province+' '+v.area.city+' '+v.area.name+' '+v.plotName+' '+v.address
+            }else{
+              v.addressName = v.area.province+' '+v.area.city+' '+v.area.name+' '+v.address
+            }
           }else{
             v.addressName = v.address
           }
