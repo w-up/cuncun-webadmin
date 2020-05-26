@@ -12,7 +12,8 @@
     </div>
     <div style="margin-top:10px"> 
       <!-- <Button type="warning" style="margin:0 8px 5px 0" @click="assignRidersClick">分配拣货员</Button> -->
-      <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd"><Icon type="ios-download-outline"></Icon>导出配送单</Button>
+      <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd(2)"><Icon type="ios-download-outline"></Icon>导出拣货单</Button>
+      <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd(1)"><Icon type="ios-download-outline"></Icon>导出配送单</Button>
     </div>
     <Modal
         v-model="imgModal"
