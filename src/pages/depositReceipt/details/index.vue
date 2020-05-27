@@ -73,20 +73,20 @@
               <FormItem label="订单总费用：" style="margin-bottom:20px" class="size20">
                   <span style="font-size: 15px;font-weight: 600;margin-left:80px">￥{{costList.total}} {{costList.settleFee<0?'-':'+'}} ￥{{costList.settleFee}}</span>
               </FormItem>
-              <FormItem label="已支付费用：" class="size20">
+              <FormItem :label="type=='waitpay'?'待付定金：':'已支付费用：'" class="size20">
                   <span style="font-size: 15px;font-weight: 600;margin-left:80px">￥{{costList.actualPayment}}</span>
               </FormItem>
-              <FormItem label="剩余待支付：" class="size20">
+              <FormItem label="剩余待支付：" class="size20" v-show="type!='waitpay'">
                   <span style="font-size: 15px;font-weight: 600;margin-left:80px">￥{{costList.appendFee}}</span>
               </FormItem>
               <FormItem :label="costList.adjustPayStatus=='waitSettle'?'待结算':'待支付'" v-show='costList.adjustPayStatus!="payed"&&type=="delivery"'>
                 <Poptip
-                    confirm
-                    transfer
-                    title="是否确认发起结算?"
-                    @on-ok="settleOk"
-                    >
-                    <Button type="success" style="margin-left:100px" v-show='type=="delivery"?true:false'>发起结算</Button>
+                  confirm
+                  transfer
+                  title="是否确认发起结算?"
+                  @on-ok="settleOk"
+                  >
+                  <Button type="success" style="margin-left:100px" v-show='type=="delivery"?true:false'>发起结算</Button>
                 </Poptip>
               </FormItem>
             </Form>
@@ -127,12 +127,12 @@
           </Form>
         </Card>
       </div>
-      <!-- <div style="margin:20px 0">
+      <div style="margin:20px 0">
         <div style="margin:20px 0"> 测试切换状态</div>
         <Select  slot="extra"  style="width:200px;" v-model="type">
           <Option v-for="item in stateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
-      </div> -->
+      </div>
       <div style="margin:20px 0">
         <Button :disabled='type=="init"?true:type=="assign"?true:type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='waitpay'?'primary':'dashed'">待付款<Icon type="ios-arrow-forward" /></Button>
@@ -307,6 +307,7 @@ export default {
         pack:'',
         case:'',
         adjustFee:'',
+        settleFee1:'',
         total:'',
         actualPayment:'',
         adjustPayStatus:'',
@@ -383,22 +384,34 @@ export default {
         }
         if (arr.deliveryFeeNew) {
           arr.deliveryFeeNew= (arr.deliveryFeeNew - arr.deliveryFee).toFixed(2)
+          if ( arr.deliveryFeeNew<0) {
+            arr.deliveryFeeNew=-arr.deliveryFeeNew
+          }
         }else{
           arr.deliveryFeeNew=0
         }
         if (arr.packFeeNew) {
           arr.packFeeNew= (arr.packFeeNew - arr.packFee).toFixed(2)
+          if ( arr.packFeeNew<0) {
+            arr.packFeeNew=-arr.packFeeNew
+          }
         }else{
           arr.packFeeNew=0
         }
         if (arr.boxFeeNew) {
           arr.boxFeeNew= (arr.boxFeeNew - arr.boxFee).toFixed(2)
+          if ( arr.boxFeeNew<0) {
+            arr.boxFeeNew=-arr.boxFeeNew
+          }
         }else{
           arr.boxFeeNew=0
         }
-        arr.settleFee1= arr.settleFee
+        this.costList.settleFee1= arr.settleFee
         if (arr.settleFee) {
           arr.settleFee= (arr.settleFee - arr.totalFee).toFixed(2)
+          if ( arr.settleFee<0) {
+            arr.settleFee=-arr.settleFee
+          }
         }else{
           arr.settleFee=0
         }
