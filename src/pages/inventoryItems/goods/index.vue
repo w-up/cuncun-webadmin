@@ -16,20 +16,21 @@
             <Input  placeholder="请输入" style="width:200px" v-model="searchList.packCode"></Input>
           </FormItem>
           <FormItem label="流转状态" >
-            <Select  style="width:200px" v-model="searchList.storeStatus">
+            <Select clearable style="width:200px" v-model="searchList.storeStatus">
                 <Option  value="store">存储中</Option>
-                <Option  value="withdraw">取回</Option>
+                <Option  value="withdraw">已取回</Option>
+                <Option  value="fetch">取回中</Option>
             </Select>
           </FormItem>
           <!-- <FormItem label="取单编号" >
             <Input  placeholder="请输入" style="width:200px" ></Input>
           </FormItem> -->
-          <FormItem label="箱子类型" >
+          <!-- <FormItem label="箱子类型" >
             <Select  style="width:200px" v-model="searchList.storeStatus">
                 <Option  value="A">拍照</Option>
                 <Option  value="B">不拍照</Option>
             </Select>
-          </FormItem>
+          </FormItem> -->
           <!-- <FormItem label="物品归类" >
             <Input  placeholder="请输入" style="width:200px" ></Input>
           </FormItem> -->
@@ -40,8 +41,9 @@
       <div style="margin-top:20px">
         <Table border ref="selection" :columns="columnsList" :data="dataList" >
           <template slot-scope="{ row, index }" slot="circulationType">
-            <Button type="warning" size="small" v-show="row.storeStatus.code=='withdraw'">已取回</Button>
+            <Button type="success" size="small" v-show="row.storeStatus.code=='withdraw'">已取回</Button>
             <Button type="info" size="small" v-show="row.storeStatus.code=='store'">存储中</Button>
+            <Button type="warning" size="small" v-show="row.storeStatus.code=='fetch'">取回中</Button>
           </template>
           <template slot-scope="{ row, index }" slot="imgKey">
             <Button type="success" size="small" @click="imgClick(row.coverPic)">查看</Button>

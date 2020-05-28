@@ -223,8 +223,9 @@ export default {
           arr.id=data[i].id
         }
         getPackAdd(arr).then(res=>{
+          data[i].id = res.data.id
           if (i+1==data.length) {
-            this.dataList()
+            // this.dataList()
             this.$emit('detailsRefresh','1')
             this.$Message.success('成功');
           }

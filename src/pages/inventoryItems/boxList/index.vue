@@ -1,31 +1,39 @@
 <template>
   <div>
     <Card>
-      <p slot="title">仓储物品列表</p>
+      <p slot="title">仓储箱子列表</p>
       <Form inline :label-width="80" >
           <!-- <FormItem label="用户ID" >
             <Input  placeholder="请输入" style="width:200px" v-model="searchList.orderNo"></Input>
           </FormItem> -->
-          <FormItem label="存单编号" >
-            <Input  placeholder="请输入" style="width:200px" v-model="searchList.orderNo"></Input>
+          <FormItem label="订单号" >
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.depositOrderNo"></Input>
           </FormItem>
           <FormItem label="库位号" >
             <Input  placeholder="请输入" style="width:200px" v-model="searchList.storeCode"></Input>
           </FormItem>
           <FormItem label="箱子编号" >
-            <Input  placeholder="请输入" style="width:200px" v-model="searchList.packCode"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.code"></Input>
           </FormItem>
           <FormItem label="流转状态" >
-            <Select  style="width:200px" v-model="searchList.storeStatus">
+            <Select clearable  style="width:200px" v-model="searchList.storeStatus"> 
                 <Option  value="store">存储中</Option>
-                <Option  value="withdraw">取回</Option>
+                <Option  value="withdraw">已取回</Option>
+                <Option  value="fetch">取回中</Option>
+            </Select>
+          </FormItem>
+          <FormItem label="审核状态" >
+            <Select clearable  style="width:200px" v-model="searchList.auditStatus">
+                <Option  value="wait">待审核</Option>
+                <Option  value="pass">已通过</Option>
+                <Option  value="fail">未通过</Option>
             </Select>
           </FormItem>
           <!-- <FormItem label="取单编号" >
             <Input  placeholder="请输入" style="width:200px" ></Input>
           </FormItem> -->
           <FormItem label="箱子类型" >
-            <Select  style="width:200px" v-model="searchList.storeStatus">
+            <Select clearable  style="width:200px" v-model="searchList.type">
                 <Option  value="A">拍照</Option>
                 <Option  value="B">不拍照</Option>
             </Select>
@@ -40,11 +48,13 @@
       <div style="margin-top:20px">
         <Table border ref="selection" :columns="columnsList" :data="dataList" >
           <template slot-scope="{ row, index }" slot="circulationType">
-            <Button type="warning" size="small" v-show="row.storeStatus.code=='withdraw'">已取回</Button>
+            <Button type="success" size="small" v-show="row.storeStatus.code=='withdraw'">已取回</Button>
             <Button type="info" size="small" v-show="row.storeStatus.code=='store'">存储中</Button>
+            <Button type="warning" size="small" v-show="row.storeStatus.code=='fetch'">取回中</Button>
           </template>
-          <template slot-scope="{ row, index }" slot="imgKey">
-            <Button type="success" size="small" @click="imgClick(row.coverPic)">查看</Button>
+          <template slot-scope="{ row, index }" slot="type">
+            <Button type="success" size="small" v-show="row.auditStatus=='pass'">已通过</Button>
+            <Button type="error" size="small" v-show="row.auditStatus=='fail'">未通过</Button>
           </template>
           <template slot-scope="{ row, index }" slot="operation">
             <Button type="text" size="small"  style="margin-right: 5px;color:#19be6b;">详情</Button>
@@ -59,58 +69,6 @@
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
       </div>
     </Card>
-    <Modal
-        v-model="modal1"
-        title="物品"
-      >
-      <Form  :label-width="80" >
-          <FormItem label="用户ID" >
-            <Select  style="width:250px">
-                <Option  value="1">111</Option>
-                <Option  value="2">222</Option>
-            </Select>
-          </FormItem>
-          <FormItem label="存单编号" >
-            <Select  style="width:250px">
-                <Option  value="1">111</Option>
-                <Option  value="2">222</Option>
-            </Select>
-          </FormItem>
-          <FormItem label="物品编号" >
-            <Input  placeholder="请输入" style="width:250px"></Input>
-          </FormItem>
-          <FormItem label="物品名称" >
-            <Input  placeholder="请输入" style="width:250px"></Input>
-          </FormItem>
-          <FormItem label="库位号" >
-            <Input  placeholder="请输入" style="width:250px"></Input>
-          </FormItem>
-          <FormItem label="箱子编号" >
-            <Select  style="width:250px">
-                <Option  value="1">111</Option>
-                <Option  value="2">222</Option>
-            </Select>
-          </FormItem>
-          <FormItem label="物品归类" >
-            <Select  style="width:250px">
-                <Option  value="1">111</Option>
-                <Option  value="2">222</Option>
-            </Select>
-          </FormItem>
-          <FormItem label="展示区域" >
-            <Select  style="width:250px">
-                <Option  value="1">111</Option>
-                <Option  value="2">222</Option>
-            </Select>
-          </FormItem>
-          <FormItem label="标签" >
-            <Input  placeholder="请输入" style="width:250px"></Input>
-          </FormItem>
-          <FormItem label="图片" >
-            <Button icon="ios-cloud-upload-outline">上传</Button>
-          </FormItem>
-      </Form>  
-    </Modal>
     <Modal v-model="imgModal"  title="图片" >
       <div style="text-align: center">
         <viewer > 
@@ -122,14 +80,13 @@
 </template>
 
 <script>
-import { getInventoryItemsList } from "@api/account";
+import { getInventoryBoxList } from "@api/account";
 export default {
   // name: 'home',
   data () {
     return {
       img:'',
       imgModal:false,
-      modal1:false,
       total: 0,
       pageSize: 10,
       pageNumber: 0,
@@ -159,45 +116,33 @@ export default {
           align: 'center'
         },
         {
-          title: '物品编号',
-          key: 'code',
-          width: 120,
+          title: '箱子名称',
+          key: 'boxName',
+          width: 180,
           align: 'center'
         },
         {
-          title: '物品名称',
-          key: 'name',
-          width: 125,
-          align: 'center'
-        },
-        {
-          title: '图片',
-          slot: 'imgKey',
-          minWidth: 100,
+          title: '箱子类型',
+          key: 'boxType',
+          width: 130,
           align: 'center'
         },
         {
           title: '所在库位',
           key: 'storeCode',
-          width: 120,
+          minWidth: 120,
           align: 'center'
         },
         {
-          title: '物品归类',
-          key: 'categoryName',
-          width: 150,
+          title: '管理员备注',
+          key: 'auditRemark',
+          minWidth: 180,
           align: 'center'
         },
         {
-          title: '展示区域',
-          key: 'typeName',
-          width: 100,
-          align: 'center'
-        },
-        {
-          title: '标签',
-          key: 'tags',
-          width: 100,
+          title: '箱内物品备注',
+          key: 'remark',
+          minWidth: 180,
           align: 'center'
         },
         {
@@ -207,18 +152,17 @@ export default {
           align: 'center'
         },
         {
-          title: '取单编号',
-          key: 'withdrawOrderId',
-          width: 190,
+          title: '安检状态',
+          slot: 'type',
+          width: 120,
           align: 'center'
         },
-        // {
-        //   title: '操作',
-        //   slot: 'operation',
-        //   width: 100,
-        //   fixed: 'left',
-        //   align: 'center'
-        // },
+        {
+          title: '取单编号',
+          key: 'withdrawOrderId',
+          minWidth: 190,
+          align: 'center'
+        },
       ],
       columnsList1:[
         {
@@ -246,39 +190,33 @@ export default {
           align: 'center'
         },
         {
-          title: '物品编号',
-          key: 'code',
-          width: 120,
+          title: '箱子名称',
+          key: 'boxName',
+          width: 130,
           align: 'center'
         },
         {
-          title: '物品名称',
-          key: 'name',
-          width: 125,
+          title: '箱子类型',
+          key: 'boxType',
+          width: 130,
           align: 'center'
         },
         {
           title: '所在库位',
           key: 'storeCode',
-          width: 120,
+          minWidth: 120,
           align: 'center'
         },
         {
-          title: '物品归类',
-          key: 'categoryName',
-          width: 150,
+          title: '管理员备注',
+          key: 'auditRemark',
+          minWidth: 180,
           align: 'center'
         },
         {
-          title: '展示区域',
-          key: 'typeName',
-          width: 100,
-          align: 'center'
-        },
-        {
-          title: '标签',
-          key: 'tags',
-          width: 100,
+          title: '箱内物品备注',
+          key: 'remark',
+          minWidth: 180,
           align: 'center'
         },
         {
@@ -288,9 +226,15 @@ export default {
           align: 'center'
         },
         {
+          title: '安检状态',
+          key: 'auditStatusName',
+          width: 120,
+          align: 'center'
+        },
+        {
           title: '取单编号',
           key: 'withdrawOrderId',
-          width: 190,
+          minWidth: 190,
           align: 'center'
         },
         // {
@@ -305,10 +249,12 @@ export default {
       ],
       searchList:{
         storeStatus:'',
-        orderNo:'',
+        depositOrderNo:'',
         boxType:'',
+        type:'',
         storeCode:'',
-        packCode:'',
+        code:'',
+        auditStatus:'',
       }
     }
   },
@@ -322,12 +268,14 @@ export default {
         pageNumber:this.pageNumber,
         pageSize:this.pageSize,
         storeStatus:this.searchList.storeStatus,
-        orderNo:this.searchList.orderNo,
+        depositOrderNo:this.searchList.depositOrderNo,
+        code:this.searchList.code,
         boxType:this.searchList.boxType,
         storeCode:this.searchList.storeCode,
-        storeStatus:this.searchList.storeStatus,
+        type:this.searchList.type,
+        auditStatus:this.searchList.auditStatus,
       }
-      getInventoryItemsList(data).then(res=>{
+      getInventoryBoxList(data).then(res=>{
         var num = 0
         let arr = res.data.data
         arr.forEach(v => {
@@ -336,13 +284,20 @@ export default {
           if (v.user) {
             v.userId=v.user.id
           }
-          v.packCode = v.pack.code
-          v.orderNo = v.depositOrder.orderNo
-          if (v.category) {
-            v.categoryName = v.category.name
+          if (v.auditStatus!=null) {
+            v.auditStatus = v.auditStatus.code
+            v.auditStatusName = v.auditStatus.name
+          }else{
+            v.auditStatus = ''
+            v.auditStatusName = ''
           }
+          if (v.box) {
+            v.boxName = v.box.name
+            v.boxType = v.box.type.name
+          }
+          v.packCode = v.code
+          v.orderNo = v.depositOrder.orderNo
           v.storeStatusCode = v.storeStatus.name
-          v.typeName=v.type.name
           if (v.withdrawOrder) {
             v.withdrawOrderId=v.withdrawOrder.orderNo
           }
@@ -351,7 +306,7 @@ export default {
         this.total = res.data.total
         this.dataList = arr
         
-      })
+       })
     },
     //选择状态
     tabsClick(name){
@@ -373,7 +328,7 @@ export default {
     },
     exportData (type) {
       this.$refs.selection.exportCsv({
-          filename: '库存物品列表',
+          filename: '库存箱子列表',
           columns: this.columnsList1,
           data:this.dataList
       });

@@ -7,16 +7,16 @@
             <Input  placeholder="请输入" style="width:200px" v-model="list.orderNo"></Input>
           </FormItem>
           <FormItem label="用户ID" >
-            <Input  placeholder="请输入" style="width:200px"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="list.userCode"></Input>
           </FormItem>
           <FormItem label="费用周期" >
-            <Input  placeholder="请输入" style="width:200px"></Input>
+            <DatePicker type="daterange" placement="bottom-end" placeholder="请输入" style="width: 200px" :value="list.time"  @on-change="list.time=$event"></DatePicker>
           </FormItem>
           <FormItem label="用户姓名" >
-            <Input  placeholder="请输入" style="width:200px"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="list.userName"></Input>
           </FormItem>
           <FormItem label="订单状态" >
-            <Select    style="width:200px;" v-model="list.status">
+            <Select  clearable  style="width:200px;" v-model="list.status">
               <Option value="waitcheck" >待审查</Option>
               <Option value="waitpay" >待支付</Option>
               <Option value="payed" >已支付</Option>
@@ -74,6 +74,9 @@ export default {
       list:{
         orderNo:'',
         status:'',
+        userCode:'',
+        userName:'',
+        time:[]
       },
       columnsList:[
         {
@@ -106,12 +109,12 @@ export default {
           width: 120,
           align: 'center'
         },
-        {
-          title: 'SD箱物品数量百分比',
-          key: 'contacts',
-          width: 170,
-          align: 'center'
-        },
+        // {
+        //   title: 'SD箱物品数量百分比',
+        //   key: 'contacts',
+        //   width: 170,
+        //   align: 'center'
+        // },
         {
           title: 'EC箱数量',
           key: 'boxECnum',
@@ -176,12 +179,12 @@ export default {
           width: 120,
           align: 'center'
         },
-        {
-          title: 'SD箱物品数量百分比',
-          key: 'contacts',
-          width: 170,
-          align: 'center'
-        },
+        // {
+        //   title: 'SD箱物品数量百分比',
+        //   key: 'contacts',
+        //   width: 170,
+        //   align: 'center'
+        // },
         {
           title: 'EC箱数量',
           key: 'boxECnum',
@@ -226,7 +229,11 @@ export default {
     getList(){
       let data ={
         status:this.list.status,
+        userName:this.list.userName,
+        userCode:this.list.userCode,
         orderNo:this.list.orderNo,
+        beginDate:this.list.time[0],
+        endDate:this.list.time[1],
         pageNumber:this.pageNumber,
         pageSize:this.pageSize,
       }

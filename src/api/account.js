@@ -469,7 +469,14 @@ export function getInventoryItemsList (data) {
         params:data
     });
 }
-
+//库存箱子
+export function getInventoryBoxList (data) {
+    return request({
+        url: '/server/data/admin/pack/page',
+        method: 'get',
+        params:data
+    });
+}
 
 
 

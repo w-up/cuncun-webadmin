@@ -182,11 +182,11 @@ export default {
           this.type=false
         }
         this.dataCost[0].aa = arr.boxSDnum
-        this.dataCost[0].bb = arr.boxSDprice
+        this.dataCost[0].bb = arr.boxSDpriceNew
         this.dataCost[2].aa = arr.boxECnum
-        this.dataCost[2].bb = arr.boxECprice
+        this.dataCost[2].bb = arr.boxECpriceNew
         // arr.fee = Number(arr.boxECprice)+Number(arr.boxSDprice)
-        this.dataCost[0].ee = arr.fee
+        this.dataCost[0].ee = arr.settleFee
         if (arr.user) {
           arr.name = arr.user.name
           arr.mobile = arr.user.mobile
