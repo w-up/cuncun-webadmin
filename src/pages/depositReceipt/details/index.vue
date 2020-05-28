@@ -270,6 +270,7 @@ export default {
         this.$refs.waitingForDelivery.getData(this.$route.query.id)
       }else if(this.type=='delivery'){
         this.$refs.returningLibrary.getData(this.$route.query.id)
+        this.$refs.returningLibrary.getDetail(this.$route.query.id)
       }else if(this.type=='monitor'){
         this.$refs.securityCheck.getData(this.$route.query.id)
       }else if(this.type=='photo'){
@@ -579,6 +580,7 @@ export default {
       getFeeSettle(data).then(res=>{
         this.OrderDetail()
         this.$Message.success('成功');
+        this.$refs.returningLibrary.getDetail(this.$route.query.id)
       }).catch(err => {
         this.$Message.error(err.response.data.message)
       })

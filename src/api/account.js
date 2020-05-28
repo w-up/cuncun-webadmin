@@ -442,6 +442,14 @@ export function getStorageOrderSend2user(id) {
         }
     });
 }
+//批量发送
+export function getStorageOrderRemark(data) {
+    return request({
+        url: '/server/data/admin/storage/order/remark/save',
+        method: 'post',
+        data
+    });
+}
 //仓储订单改价格
 export function getStorageOrderFeeAdjust(data) {
     return request({

@@ -36,8 +36,10 @@
           <FormItem >
             <Form  :label-width="100"  style="">
               <FormItem label="备注" style="">
-                <Input  type="textarea" :rows="4" style="width:400px" placeholder="请输入" v-model="list.settleFeeReason"/>
-                <!-- <Button type="success" style="margin-left:20px">保存</Button> -->
+                <Input  type="textarea" :rows="4" style="width:400px" placeholder="请输入" v-model="list.remark"/>
+              </FormItem>
+              <FormItem label=" " style="">
+                <Button type="success" style="margin-top:10px" v-show="this.type" @click="clickRemark">保存评论</Button>
               </FormItem>
             </Form>
           </FormItem>
@@ -69,7 +71,7 @@
 </template>
 
 <script>
-import { getStorageOrderDetail,timeDate1,getStorageOrderFeeAdjust,getStorageOrderPacksList,getStorageOrderSend2user } from "@/api/account";
+import { getStorageOrderDetail,timeDate1,getStorageOrderFeeAdjust,getStorageOrderPacksList,getStorageOrderSend2user,getStorageOrderRemark } from "@/api/account";
 export default {
   // name: 'home',
   data () {
@@ -225,6 +227,19 @@ export default {
         });
         this.data=arr
         
+      })
+    },
+    //保存评论
+    clickRemark(){
+      let data = {
+        id:this.list.id,
+        remark:this.list.remark
+      }
+      getStorageOrderRemark(data).then(res=>{
+        this.$Message.success('成功');
+        this.getList()
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
       })
     },
     tableTypeClick(){

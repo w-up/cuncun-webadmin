@@ -15,9 +15,21 @@ export default [
     warehouseOrder,
     {
         path: '/inventoryItems',
-        title: '库存物品管理',
+        title: '库存管理',
         header: 'home',
         icon: 'md-cube',
+        children: [
+            {
+                path: '/inventoryItems/goods',
+                icon: 'md-cube',
+                title: '库存物品管理'
+            },
+            {
+                path: '/inventoryItems/boxList',
+                icon: 'md-cube',
+                title: '库存箱子管理'
+            }
+        ]
     },
     user,
     dataStatistics,

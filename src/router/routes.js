@@ -15,7 +15,7 @@ const frameIn = [
     {
         path: '/',
         redirect: {
-            name: 'depositReceipt-list'
+            name: 'depositReceipt'
         },
         component: BasicLayout,
         children: [
@@ -23,7 +23,7 @@ const frameIn = [
                 path: 'index',
                 name: 'index',
                 redirect: {
-                    name: 'depositReceipt-list'
+                    name: 'depositReceipt'
                 }
             },
             {
@@ -59,15 +59,50 @@ const frameIn = [
                     render: h => h()
                 }
             },
+            // {
+            //     path: 'inventoryItems',
+            //     name: 'inventoryItems',
+            //     meta: {
+            //         title: '库存物品管理',
+            //         auth: true
+            //     },
+            //     component: () => import('@/pages/inventoryItems')
+            // },
+            depositReceipt,
+            orderCollection,
+            warehouseOrder,
+            user,
+            //存单管理详情页
             {
-                path: 'inventoryItems',
-                name: 'inventoryItems',
+                path: '/depositReceipt/details',
+                name: 'depositReceipt-details',
                 meta: {
-                    title: '库存物品管理',
-                    auth: true
+                    title: '存单详情',
+                    closable: true,
                 },
-                component: () => import('@/pages/inventoryItems')
+                component: () => import('@/pages/depositReceipt/details')
             },
+            //取单管理详情页
+            {
+                path: '/orderCollection/details',
+                name: 'orderCollection-details',
+                meta: {
+                    title: '取单详情',
+                    closable: true,
+                },
+                component: () => import('@/pages/orderCollection/details')
+            },
+            //取单管理详情页
+            {
+                path: '/warehouseOrder/details',
+                name: 'warehouseOrder-details',
+                meta: {
+                    title: '仓储订单详情',
+                    closable: true,
+                },
+                component: () => import('@/pages/warehouseOrder/details')
+            },
+            boxType,
             {
                 path: 'classificationOfGoods',
                 name: 'classificationOfGoods',
@@ -88,13 +123,39 @@ const frameIn = [
             },
         ]
     },
+    {
+        path: '/inventoryItems',
+        name: 'inventoryItems',
+        redirect: {
+            name: 'inventoryItems-list'
+        },
+        meta: {
+            auth: true
+        },
+        component: BasicLayout,
+        children: [
+            {
+                path: 'goods',
+                name: 'goods',
+                meta: {
+                    title: '库存物品管理',
+                    auth: true
+                },
+                component: () => import('@/pages/inventoryItems/goods')
+            },
+            {
+                path: 'boxList',
+                name: 'boxList',
+                meta: {
+                    title: '库存箱子管理',
+                    auth: true
+                },
+                component: () => import('@/pages/inventoryItems/boxList')
+            }
+        ]
+    },
     // dashboard,
-    depositReceipt,
-    orderCollection,
-    warehouseOrder,
-    user,
     dataStatistics,
-    boxType,
     // setUp
 ];
 

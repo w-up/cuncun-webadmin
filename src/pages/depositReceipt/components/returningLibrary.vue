@@ -8,16 +8,16 @@
     <div style="margin:12px 0">
       <Table border :columns="columns" :data="data">
         <template slot-scope="{ row, index }" slot="caseNum">
-          <Input  placeholder="请输入" v-model="row.code" @on-change="data[index].code= row.code"></Input>
+          <Input :disabled='adjustPayStatus' placeholder="请输入" v-model="row.code" @on-change="data[index].code= row.code"></Input>
         </template>
         <template slot-scope="{ row, index }" slot="caseType">
-          <Select transfer @on-change="data[index].type= row.type;boxTypeChange(row)" v-model="row.type">
+          <Select :disabled='adjustPayStatus' transfer @on-change="data[index].type= row.type;boxTypeChange(row)" v-model="row.type">
             <Option  value="A" >拍照</Option>
             <Option  value="B" >不拍照</Option>
           </Select>
         </template>
         <template slot-scope="{ row, index }" slot="caseName">
-          <Select transfer v-model="row.boxId" @on-change="data[index].boxId= row.boxId">
+          <Select :disabled='adjustPayStatus' transfer v-model="row.boxId" @on-change="data[index].boxId= row.boxId">
             <Option v-for="item in row.boxList" :value="item.id" :key="item.value">{{ item.name }}</Option>
           </Select>
         </template>
@@ -37,13 +37,13 @@
             title="您确认删除这条内容吗？"
             @on-ok="okDel(row.id)"
           >
-          <Button type="text" size="small"  style="margin-right: 5px;color:#ff9900;">删除</Button>
+          <Button type="text" size="small"  style="margin-right: 5px;color:#ff9900;" :disabled='adjustPayStatus'>删除</Button>
           </Poptip>
         </template>
       </Table>
       <div style="margin-top:20px">
-        <Button type="info" style="margin:0 8px 5px 0" @click="addClick">添加一行</Button>
-        <Button type="success" style="margin:0 8px 5px 0" @click="saveClick">保存信息</Button>
+        <Button type="info" style="margin:0 8px 5px 0" :disabled='adjustPayStatus' @click="addClick">添加一行</Button>
+        <Button type="success" style="margin:0 8px 5px 0" :disabled='adjustPayStatus' @click="saveClick">保存信息</Button>
       </div>
       <div style="margin-top:20px">
         <Poptip
@@ -61,6 +61,7 @@
 
 <script>
 import { getBoxTypeList,
+getOrderDetail,
 getPackPage,
 getPackAdd,
 getPackDel,
@@ -72,6 +73,7 @@ export default {
   data () {
     return {
       num:0,
+      adjustPayStatus:false,
       orderId:'',
       columns: [
         {
@@ -123,6 +125,16 @@ export default {
       // this.boxList(id)
       this.orderId=id
       this.dataList(id)
+    },
+    getDetail(id){
+      getOrderDetail(id).then(res=>{
+        if (res.data.adjustPayStatus.code=='waitSettle') {
+          this.adjustPayStatus =false 
+        }else{
+          this.adjustPayStatus =true 
+        }
+        
+      })
     },
     // boxList(id){
       

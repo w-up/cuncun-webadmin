@@ -8,22 +8,11 @@ const pre = 'user-';
 
 export default {
     path: '/user',
-    name: '用户管理',
-    redirect: {
-        name: `${pre}list`
+    name: 'user',
+    meta: {
+        ...meta,
+        title: '用户管理',
+        closable: true
     },
-    meta,
-    component: BasicLayout,
-    children: [
-      {
-          path: 'list',
-          name: `${pre}list`,
-          meta: {
-              ...meta,
-              title: '用户列表',
-              closable: true
-          },
-          component: () => import('@/pages/user/list')
-      },
-    ]
+    component: () => import('@/pages/user/list')
 };
