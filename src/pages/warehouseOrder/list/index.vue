@@ -6,9 +6,9 @@
           <FormItem label="订单号" >
             <Input  placeholder="请输入" style="width:200px" v-model="list.orderNo"></Input>
           </FormItem>
-          <FormItem label="用户ID" >
+          <!-- <FormItem label="用户ID" >
             <Input  placeholder="请输入" style="width:200px" v-model="list.userCode"></Input>
-          </FormItem>
+          </FormItem> -->
           <FormItem label="费用周期" >
             <DatePicker type="daterange" placement="bottom-end" placeholder="请输入" style="width: 200px" :value="list.time"  @on-change="list.time=$event"></DatePicker>
           </FormItem>
