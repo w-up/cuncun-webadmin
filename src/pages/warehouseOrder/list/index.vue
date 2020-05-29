@@ -123,7 +123,7 @@ export default {
         },
         {
           title: '仓储费用/元',
-          key: 'fee',
+          key: 'settleFee',
           width: 140,
           align: 'center'
         },

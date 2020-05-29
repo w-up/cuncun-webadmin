@@ -10,6 +10,11 @@ export default {
             path: `${pre}list`,
             icon: 'md-options',
             title: '用户数据统计'
+        },
+        {
+            path: `${pre}incomeStatistics`,
+            icon: 'md-options',
+            title: '平台收入统计'
         }
     ]
 }

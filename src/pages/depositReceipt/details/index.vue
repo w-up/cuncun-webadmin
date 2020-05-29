@@ -32,6 +32,12 @@
             <FormItem label="取件时间：">
                 <span>{{orderList.time}}</span>
             </FormItem>
+            <FormItem label="取消时间：" v-show="type=='cancel'||type=='refuse'">
+                <span>{{orderList.statusTime}}</span>
+            </FormItem>
+            <FormItem label="取消原因：" v-show="type=='cancel'||type=='refuse'">
+                <span>{{orderList.statusRemark}}</span>
+            </FormItem>
           </Form>
         </Card>
         <Card style="width:350px;margin-right:5px;margin-top:10px">
@@ -71,7 +77,7 @@
                   <span style="margin-left:80px">￥{{costList.adjustFee}}</span>
               </FormItem>
               <FormItem label="订单总费用：" style="margin-bottom:20px" class="size20">
-                  <span style="font-size: 15px;font-weight: 600;margin-left:80px">￥{{costList.total}} {{costList.settleFee<0?'-':'+'}} ￥{{costList.settleFee}}</span>
+                  <span style="font-size: 15px;font-weight: 600;margin-left:80px">￥{{costList.total}} {{costList.settleFee2<0?'-':'+'}} ￥{{costList.settleFee}}</span>
               </FormItem>
               <FormItem :label="type=='waitpay'?'待付定金：':'已支付费用：'" class="size20">
                   <span style="font-size: 15px;font-weight: 600;margin-left:80px">￥{{costList.actualPayment}}</span>
@@ -127,28 +133,28 @@
           </Form>
         </Card>
       </div>
-      <div style="margin:20px 0">
+      <!-- <div style="margin:20px 0">
         <div style="margin:20px 0"> 测试切换状态</div>
         <Select  slot="extra"  style="width:200px;" v-model="type">
           <Option v-for="item in stateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
-      </div>
+      </div> -->
       <div style="margin:20px 0">
-        <Button :disabled='type=="init"?true:type=="assign"?true:type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
+        <Button :disabled='type=="init"?true:type=="assign"?true:type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:type=="cancel"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='waitpay'?'primary':'dashed'">待付款<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="assign"?true:type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
+        <Button :disabled='type=="assign"?true:type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:type=="cancel"?true:false' 
           :type="type=='init'?'primary':'dashed'" style="margin:0 8px 5px 0">待受理<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
+        <Button :disabled='type=="fetch"?true:type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:type=="cancel"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='assign'?'primary':'dashed'">待分配骑手<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
+        <Button :disabled='type=="delivery"?true:type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:type=="cancel"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='fetch'?'primary':'dashed'">待取货<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
+        <Button :disabled='type=="monitor"?true:type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:type=="cancel"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='delivery'?'primary':'dashed'">回库中<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
+        <Button :disabled='type=="photo"?true:type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:type=="cancel"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='monitor'?'primary':'dashed'">安检中<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
+        <Button :disabled='type=="ready"?true:type=="finish"?true:type=="cancel "?true:type=="refuse"?true:type=="cancel"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='photo'?'primary':'dashed'">拍照中<Icon type="ios-arrow-forward" /></Button>
-        <Button :disabled='type=="finish"?true:type=="cancel "?true:type=="refuse"?true:false' 
+        <Button :disabled='type=="finish"?true:type=="cancel "?true:type=="refuse"?true:type=="cancel"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='ready'?'primary':'dashed'">待上架<Icon type="ios-arrow-forward" /></Button>
         <Button :disabled='type=="cancel"?true:type=="refuse"?true:false' style="margin:0 8px 5px 0" :type="type=='finish'?'primary':'dashed'">已完成<Icon type="ios-arrow-forward" /></Button>
         <Button style="margin:0 8px 5px 0" :type="type=='cancel'||type=='refuse'?'primary':'dashed'">已取消<Icon type="ios-arrow-forward" /></Button>
@@ -165,6 +171,7 @@
           <stayPhotograph v-show="type=='photo'" ref="stayPhotograph" @detailsRefresh="getDetailsRefresh"></stayPhotograph>
           <toStayOn v-show="type=='ready'" ref="toStayOn" @detailsRefresh="getDetailsRefresh"></toStayOn>
           <complete v-show="type=='finish'" ref="complete" @detailsRefresh="getDetailsRefresh"></complete>
+          <cancel v-show="type=='cancel'||type=='refuse'" ref="cancel" @detailsRefresh="getDetailsRefresh"></cancel>
         </Card>
       </div>
       <!-- <div style="margin:10px 0">
@@ -235,7 +242,8 @@ getRemarkDel,
 getOrderDetail,
 getFeeAdjust,
 getFeeSettle,
-getAssign } from "@api/account";
+getAssign,
+timeDate } from "@api/account";
 import pendingPayment from '../components/pendingPayment' //待付款
 import pendingDisposal from '../components/pendingDisposal' // init
 import assignRiders from '../components/assignRiders'//待分配骑手
@@ -245,6 +253,7 @@ import securityCheck from '../components/securityCheck'//安检中
 import stayPhotograph from '../components/stayPhotograph'//待拍照
 import toStayOn from '../components/toStayOn'//待上架
 import complete from '../components/complete'//已完成
+import cancel from '../components/cancel'//已完成
 export default {
   // name: 'home',
   components: {
@@ -256,7 +265,8 @@ export default {
     securityCheck,
     stayPhotograph,
     toStayOn,
-    complete
+    complete,
+    cancel
   },
   watch: {
     type() {
@@ -279,6 +289,8 @@ export default {
         this.$refs.toStayOn.getData(this.$route.query.id)
       }else if(this.type=='finish'){
         this.$refs.complete.getData(this.$route.query.id)
+      }else if(this.type=='cancel'||this.type=='refuse'){
+        this.$refs.cancel.getData(this.$route.query.id)
       }
     },
   },
@@ -302,6 +314,8 @@ export default {
         telephone:'',
         address:'',
         time:'',
+        statusRemark:'',
+        statusTime:'',
       },
       costList:{
         transport:'',
@@ -312,6 +326,7 @@ export default {
         total:'',
         actualPayment:'',
         adjustPayStatus:'',
+        settleFee2:'',
       },
       adjustmentCost:{
         id:this.$route.query.id,
@@ -411,6 +426,7 @@ export default {
         if (arr.settleFee) {
           arr.settleFee= (arr.settleFee - arr.totalFee).toFixed(2)
           if ( arr.settleFee<0) {
+            arr.settleFee2 =arr.settleFee
             arr.settleFee=-arr.settleFee
           }
         }else{
@@ -418,6 +434,7 @@ export default {
         }
         this.costList.deliveryFeeNew= arr.deliveryFeeNew
         this.costList.packFeeNew= arr.packFeeNew
+        this.costList.settleFee2= arr.settleFee2
         this.costList.boxFeeNew= arr.boxFeeNew
         this.costList.settleFee = arr.settleFee 
         this.costList.appendFee = arr.appendFee 
@@ -434,6 +451,16 @@ export default {
           this.costList.adjustFee= arr.adjustFee
         }else{
           this.costList.adjustFee = 0
+        }
+        if (arr.statusRemark) {
+          this.orderList.statusRemark = arr.statusRemark
+        }else{
+          this.orderList.statusRemark = ''
+        }
+        if (arr.statusTime) {
+          this.orderList.statusTime = timeDate(arr.statusTime)
+        }else{
+          this.orderList.statusTime = ''
         }
         this.costList.actualPayment= arr.prepaid
         this.costList.adjustPayStatus= arr.adjustPayStatus.code

@@ -91,36 +91,49 @@ export default {
         {
           title: '箱子类型',
           key: 'packType',
-          align: 'center'
+          align: 'center',
+          width:100
         },
         {
           title: '箱子编号',
           key: 'packCode',
+          align: 'center',
+          width:120
+        },
+        {
+          title: '箱子名称',
+          key: 'boxName',
+          minWidth:170,
           align: 'center'
         },
         {
           title: '初始物品数量',
           key: 'initGoodsCount',
+          minWidth:120,
           align: 'center'
         },
         {
           title: '当前物品数量',
           key: 'nowGoodsCount',
+          minWidth:120,
           align: 'center'
         },
         {
           title: '占比',
           key: 'proportion',
-          align: 'center'
+          align: 'center',
+          width:80
         },
         {
           title: '原始仓储费用',
           key: 'fee',
+          minWidth:120,
           align: 'center'
         },
         {
           title: '实收仓储费用',
           slot: 'aaa',
+          minWidth:120,
           align: 'center'
 
         }
@@ -219,6 +232,7 @@ export default {
           if (v.nowGoodsCount==null) {
             v.nowGoodsCount=0
           }
+          v.boxName =v.pack.box.name
           if (v.nowGoodsCount==0 && v.initGoodsCount==0) {
             v.proportion='100%'
           }else{

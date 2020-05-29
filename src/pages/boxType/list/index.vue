@@ -18,11 +18,11 @@
           </template>
         </Table>
       </div>
-      <div class="page" style="margin-top:20px;display:flex;justify-content:space-between">
+      <!-- <div class="page" style="margin-top:20px;display:flex;justify-content:space-between">
         <div class="operationBtn">
         </div>
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
-      </div>
+      </div> -->
     </Card>
     <Modal v-model="boxModal"  title="箱子编辑" :mask-closable="false" @on-visible-change="visibleChange">
       <Form ref="formValidate" :model="list" :rules="ruleValidate" :label-width="140">
@@ -58,7 +58,7 @@
             action="/server/data/admin/box/save">
             <Button icon="ios-cloud-upload-outline">上传照片</Button>
           </Upload>
-          <img :src="img" alt="" style="width:100px">
+          <img :src="img" alt="" style="width:100px;margin-top:5px">
         </FormItem>
         <FormItem label="预览介绍" >
           <Upload
@@ -72,7 +72,7 @@
             action="/server/data/admin/box/save">
             <Button icon="ios-cloud-upload-outline">上传照片</Button>
           </Upload>
-          <img :src="sceneryPic" alt="" style="width:100px">
+          <img :src="sceneryPic" alt="" style="width:100px;margin-top:5px">
         </FormItem>
       </Form>
       <div slot="footer">
@@ -200,6 +200,7 @@ export default {
           v.specifications = v.length+'*'+v.width+'*'+v.height
         });
         this.dataList=arr
+        this.total = res.data.total
       })
     },
     boxClick(id){

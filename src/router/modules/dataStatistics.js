@@ -25,6 +25,16 @@ export default {
             },
             component: () => import('@/pages/dataStatistics/list')
         },
+        {
+            path: 'incomeStatistics',
+            name: `${pre}incomeStatistics`,
+            meta: {
+                ...meta,
+                title: '平台收入统计',
+                closable: true
+            },
+            component: () => import('@/pages/dataStatistics/incomeStatistics')
+        },
         //存单管理详情页
         {
             path: '/dataStatistics/address',
