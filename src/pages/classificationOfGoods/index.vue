@@ -173,7 +173,6 @@ export default {
   mounted () {
     //
     this.getList()
-    this.getList1()
   },
   methods:{
     getList(){
@@ -189,8 +188,6 @@ export default {
         });
         this.dataListOne = arr
       })
-    },
-    getList1(){
       getGoodsList({nodeLevel:2}).then(res=>{
         var arr = res.data
         var num = 0
@@ -200,6 +197,9 @@ export default {
         });
         this.dataListTwo = arr
       })
+    },
+    getList1(){
+      
     },
     oneClick(id){
       if (id=='') {
@@ -234,6 +234,7 @@ export default {
             getGoodsSave(this.list).then(res=>{
               this.$Message.success('保存成功');
               this.getList()
+              
               this.cancel()
             }).catch(err => {
               this.$Message.error(err.response.data.message)
@@ -262,13 +263,8 @@ export default {
     },
     del(id,key){
       getGoodsRemove(id).then(res=>{
-        this.$Message.success('保存成功');
-        if (key == 1) {
-          this.getList()
-        } else {
-          this.getList()
-          this.oneOnRowClick({id:this.parentId})
-        }
+        this.$Message.success('删除成功');
+        this.getList()
       }).catch(err => {
         this.$Message.error(err.response.data.message)
       })

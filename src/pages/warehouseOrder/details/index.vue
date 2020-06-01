@@ -234,9 +234,9 @@ export default {
           }
           v.boxName =v.pack.box.name
           if (v.nowGoodsCount==0 && v.initGoodsCount==0) {
-            v.proportion='100%'
+            v.proportion='0%'
           }else{
-            v.proportion = (( Number(v.nowGoodsCount)/Number(v.initGoodsCount) ).toFixed(0))*100+'%'
+            v.proportion = (( Number(v.nowGoodsCount)/Number(v.initGoodsCount) ).toFixed(1))*100+'%'
           }
         });
         this.data=arr

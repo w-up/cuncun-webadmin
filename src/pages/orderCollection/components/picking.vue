@@ -184,9 +184,9 @@ export default {
     },
     asdasssssd(key){
       if (key==1) {
-        window.open("http://cuncun.admin.iisu.cn/export/takeSingle.html?id="+this.orderId+'&token='+this.token);  
+        window.open("http://cuncun.admin.iisu.cn/export/takeSingle.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
       }else{
-        window.open("http://cuncun.admin.iisu.cn/export/picking.html?id="+this.orderId+'&token='+this.token);  
+        window.open("http://cuncun.admin.iisu.cn/export/picking.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
       }
     },
   }

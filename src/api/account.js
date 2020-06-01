@@ -635,7 +635,7 @@ export function getGoodsSave (data) {
 //物品分类保存
 export function getGoodsRemove (id) {
     return request({
-        url: '/server/data/admin/remove/'+id,
+        url: '/server/data/admin/category/remove/'+id,
         method: 'post'
     });
 }

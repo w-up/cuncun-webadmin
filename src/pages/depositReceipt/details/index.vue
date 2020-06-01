@@ -42,17 +42,17 @@
         </Card>
         <Card style="width:350px;margin-right:5px;margin-top:10px">
           <p slot="title">费用明细</p>
-          <Button slot="extra" v-show='type=="delivery"?true:false' @click="adjustmentClick">调整费用</Button>
+          <Button slot="extra" v-show='type=="delivery"?true:false' @click="adjustmentClick" :disabled="costList.adjustPayStatus=='waitSettle'?false:true">调整费用</Button>
           <div v-show='type=="waitpay"?false:type=="init"?false:type=="assign"?false:type=="fetch"?false:type=="delivery"?false:true'>
             <Form  :label-width="110">
               <FormItem label="运输费用：">
-                  <span style="margin-left:80px">￥{{costList.transport}} {{costList.deliveryFeeNew<0?'-':'+'}} ￥{{costList.deliveryFeeNew}}</span>
+                  <span style="margin-left:80px">￥{{costList.transport}} {{costList.deliveryFeeNew < 0?'-':'+'}} ￥{{costList.deliveryFeeNew}}</span>
               </FormItem>
               <FormItem label="打包费用：">
-                  <span style="margin-left:80px">￥{{costList.pack}} {{costList.packFeeNew<0?'-':'+'}} ￥{{costList.packFeeNew}}</span>
+                  <span style="margin-left:80px">￥{{costList.pack}} {{costList.packFeeNew < 0 ?'-':'+'}} ￥{{costList.packFeeNew}}</span>
               </FormItem>
               <FormItem label="纸箱费用：">
-                  <span style="margin-left:80px">￥{{costList.case}} {{costList.boxFeeNew<0?'-':'+'}} ￥{{costList.boxFeeNew}}</span>
+                  <span style="margin-left:80px">￥{{costList.case}} {{costList.boxFeeNew < 0 ?'-':'+'}} ￥{{costList.boxFeeNew}}</span>
               </FormItem>
               <FormItem label="订单总费用：" style="margin-bottom:20px" class="size20">
                   <span style="font-size: 15px;font-weight: 600;margin-left:80px">￥{{costList.total}} {{costList.settleFee<0?'-':'+'}} ￥{{costList.settleFee}}</span>
@@ -92,7 +92,7 @@
                   title="是否确认发起结算?"
                   @on-ok="settleOk"
                   >
-                  <Button type="success" style="margin-left:100px" v-show='type=="delivery"?true:false'>发起结算</Button>
+                  <Button type="success" style="margin-left:100px" v-show='type=="delivery"?true:false' :disabled="costList.adjustPayStatus=='waitSettle'?false:true">发起结算</Button>
                 </Poptip>
               </FormItem>
             </Form>
