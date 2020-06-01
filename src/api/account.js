@@ -73,7 +73,6 @@ export function getAccept (data) {
         data 
     });
 }
-
 //存单预计物品列表
 export function getGoodsList4Order (id) {
     return request({
@@ -376,6 +375,13 @@ export function getWithdrawGoodsList(id) {
         params:{
             orderId:id
         }
+    });
+}
+//取单物品列表
+export function getWithdrawItemsList(id) {
+    return request({
+        url: '/server/data/admin/withdraw/order/items/'+id,
+        method: 'get',
     });
 }
 //取单拣货完成

@@ -46,13 +46,13 @@
           <div v-show='type=="waitpay"?false:type=="init"?false:type=="assign"?false:type=="fetch"?false:type=="delivery"?false:true'>
             <Form  :label-width="110">
               <FormItem label="运输费用：">
-                  <span style="margin-left:80px">￥{{costList.transport}} {{costList.deliveryFeeNew < 0?'-':'+'}} ￥{{costList.deliveryFeeNew}}</span>
+                  <span style="margin-left:80px">￥{{costList.transport}} {{costList.deliveryFeeNew1 < 0?'-':'+'}} ￥{{costList.deliveryFeeNew}}</span>
               </FormItem>
               <FormItem label="打包费用：">
-                  <span style="margin-left:80px">￥{{costList.pack}} {{costList.packFeeNew < 0 ?'-':'+'}} ￥{{costList.packFeeNew}}</span>
+                  <span style="margin-left:80px">￥{{costList.pack}} {{costList.packFeeNew1 < 0 ?'-':'+'}} ￥{{costList.packFeeNew}}</span>
               </FormItem>
               <FormItem label="纸箱费用：">
-                  <span style="margin-left:80px">￥{{costList.case}} {{costList.boxFeeNew < 0 ?'-':'+'}} ￥{{costList.boxFeeNew}}</span>
+                  <span style="margin-left:80px">￥{{costList.case}} {{costList.boxFeeNew1 < 0 ?'-':'+'}} ￥{{costList.boxFeeNew}}</span>
               </FormItem>
               <FormItem label="订单总费用：" style="margin-bottom:20px" class="size20">
                   <span style="font-size: 15px;font-weight: 600;margin-left:80px">￥{{costList.total}} {{costList.settleFee<0?'-':'+'}} ￥{{costList.settleFee}}</span>
@@ -65,13 +65,13 @@
           <div v-show='type=="waitpay"?true:type=="init"?true:type=="assign"?true:type=="fetch"?true:type=="delivery"?true:false' >
             <Form  :label-width="110">
               <FormItem label="运输费用：">
-                  <span style="margin-left:80px">￥{{costList.transport}} {{costList.deliveryFeeNew<0?'-':'+'}} ￥{{costList.deliveryFeeNew}}</span>
+                  <span style="margin-left:80px">￥{{costList.transport}} {{costList.deliveryFeeNew1 < 0?'-':'+'}} ￥{{costList.deliveryFeeNew}}</span>
               </FormItem>
               <FormItem label="打包费用：">
-                  <span style="margin-left:80px">￥{{costList.pack}} {{costList.packFeeNew<0?'-':'+'}} ￥{{costList.packFeeNew}}</span>
+                  <span style="margin-left:80px">￥{{costList.pack}} {{costList.packFeeNew1 < 0 ?'-':'+'}} ￥{{costList.packFeeNew}}</span>
               </FormItem>
               <FormItem label="纸箱费用：">
-                  <span style="margin-left:80px">￥{{costList.case}} {{costList.boxFeeNew<0?'-':'+'}} ￥{{costList.boxFeeNew}}</span>
+                  <span style="margin-left:80px">￥{{costList.case}} {{costList.boxFeeNew1 < 0 ?'-':'+'}} ￥{{costList.boxFeeNew}}</span>
               </FormItem>
               <FormItem label="调整费用：">
                   <span style="margin-left:80px">￥{{costList.adjustFee}}</span>
@@ -323,6 +323,9 @@ export default {
         case:'',
         adjustFee:'',
         settleFee1:'',
+        deliveryFeeNew1:'',
+        packFeeNew1:'',
+        boxFeeNew1:'',
         total:'',
         actualPayment:'',
         adjustPayStatus:'',
@@ -401,6 +404,7 @@ export default {
         if (arr.deliveryFeeNew) {
           arr.deliveryFeeNew= (arr.deliveryFeeNew - arr.deliveryFee).toFixed(2)
           if ( arr.deliveryFeeNew<0) {
+            this.costList.deliveryFeeNew1 =arr.deliveryFeeNew
             arr.deliveryFeeNew=-arr.deliveryFeeNew
           }
         }else{
@@ -409,6 +413,7 @@ export default {
         if (arr.packFeeNew) {
           arr.packFeeNew= (arr.packFeeNew - arr.packFee).toFixed(2)
           if ( arr.packFeeNew<0) {
+            this.costList.packFeeNew1 =arr.packFeeNew
             arr.packFeeNew=-arr.packFeeNew
           }
         }else{
@@ -417,6 +422,7 @@ export default {
         if (arr.boxFeeNew) {
           arr.boxFeeNew= (arr.boxFeeNew - arr.boxFee).toFixed(2)
           if ( arr.boxFeeNew<0) {
+            this.costList.boxFeeNew1 =arr.boxFeeNew
             arr.boxFeeNew=-arr.boxFeeNew
           }
         }else{

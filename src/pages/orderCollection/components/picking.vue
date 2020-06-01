@@ -5,7 +5,7 @@
     <div style="margin:12px 0">
       <Table border :columns="columns" :data="data">
        <template slot-scope="{ row, index }" slot="img1">
-            <Button type="primary" size="small"  @click="imgClick(row.img)">查看</Button>
+            <Button type="primary" size="small" v-show="row.pic!=null" @click="imgClick(row.img)">查看</Button>
         </template>
       </Table>
     </div>
@@ -48,7 +48,7 @@
 
 <script>
 import util from '@/libs/util';
-import { getWithdrawGoodsList,getWithdrawCollect,getWithdrawWaitsend } from "@api/account";
+import { getWithdrawGoodsList,getWithdrawCollect,getWithdrawWaitsend,getWithdrawItemsList } from "@api/account";
 export default {
   name: 'pendingPayment',
   data () {
@@ -66,14 +66,14 @@ export default {
         {
           title: '所在库位',
           align:'center',
-          minWidth:150,
+          width:150,
           key: 'storeCode'
         },
         {
           title: '备注信息',
           align:'center',
           minWidth:160,
-          key: 'auditRemark'
+          key: 'remark'
         },
         {
           title: '箱子编号',
@@ -85,7 +85,7 @@ export default {
           title: 'Item SKU',
           align:'center',
           minWidth:120,
-          key: 'code'
+          key: 'goodsCode'
         },
         {
           title: '物品名称',
@@ -94,7 +94,7 @@ export default {
           key: 'name'
         },
         {
-          title: '物品重量',
+          title: '重量',
           align:'center',
           minWidth:150,
           key: 'weight'
@@ -124,19 +124,24 @@ export default {
   methods:{
     getData(id){
       this.orderId=id
-      getWithdrawGoodsList(this.orderId).then(res=>{
+      getWithdrawItemsList(this.orderId).then(res=>{
         var num = 0
-        var arr = res.data.data
+        var arr = res.data
         arr.forEach(v => {
           num++
           v.num=num
-          v.name = v.goods.name
-          v.code = v.goods.code
-          v.packCode = v.goods.pack.code
-          v.storeCode = v.goods.storeCode
-          v.weight = v.goods.weight
-          v.auditRemark = v.goods.auditRemark
-          v.img = v.goods.coverPic
+          if (v.item.code =='goods') {
+            v.code = v.goodsCode
+          }else{
+            v.code = v.packCode
+          }
+          // v.name = v.goods.name
+          // v.code = v.goods.code
+          // v.packCode = v.goods.pack.code
+          // v.storeCode = v.goods.storeCode
+          // v.weight = v.goods.weight
+          // v.auditRemark = v.goods.auditRemark
+          // v.img = v.goods.coverPic
         });
         this.data = arr
       })
