@@ -100,7 +100,7 @@ export default {
         {
           title: '用户ID',
           key: 'userId',
-          width: 220,
+          width: 150,
           align: 'center'
         },
         {
@@ -118,7 +118,7 @@ export default {
         {
           title: '箱子名称',
           key: 'boxName',
-          width: 180,
+          width: 250,
           align: 'center'
         },
         {
@@ -282,7 +282,7 @@ export default {
           num ++ 
           v.num = num
           if (v.user) {
-            v.userId=v.user.id
+            v.userId=v.user.code
           }
           if (v.auditStatus!=null) {
             v.auditStatus = v.auditStatus.code

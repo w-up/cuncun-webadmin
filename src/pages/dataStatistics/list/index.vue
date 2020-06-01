@@ -66,7 +66,7 @@ export default {
         },
         {
           title: '用户ID',
-          key: 'id',
+          key: 'code',
           width: 240,
           align: 'center'
         },

@@ -14,6 +14,7 @@
                 <Poptip
                   confirm
                   transfer
+                  @on-ok="del(row.id,1)"
                   title="您确认删除这条内容吗？"
                 >
                 <Button type="text" size="small"  style="margin-right: 5px;color:#ff9900;">删除</Button>
@@ -32,6 +33,7 @@
                 <Poptip
                   confirm
                   transfer
+                  @on-ok="del(row.id,2)"
                   title="您确认删除这条内容吗？"
                 >
                 <Button type="text" size="small"  style="margin-right: 5px;color:#ff9900;">删除</Button>
@@ -77,7 +79,7 @@
 </template>
 
 <script>
-import { getGoodsList,getGoodsSave } from "@api/account";
+import { getGoodsList,getGoodsSave,getGoodsRemove } from "@api/account";
 export default {
   // name: 'home',
   data () {
@@ -171,6 +173,7 @@ export default {
   mounted () {
     //
     this.getList()
+    this.getList1()
   },
   methods:{
     getList(){
@@ -186,6 +189,8 @@ export default {
         });
         this.dataListOne = arr
       })
+    },
+    getList1(){
       getGoodsList({nodeLevel:2}).then(res=>{
         var arr = res.data
         var num = 0
@@ -253,6 +258,19 @@ export default {
         } else {
           this.$Message.error('请全部填写!');
         }
+      })
+    },
+    del(id,key){
+      getGoodsRemove(id).then(res=>{
+        this.$Message.success('保存成功');
+        if (key == 1) {
+          this.getList()
+        } else {
+          this.getList()
+          this.oneOnRowClick({id:this.parentId})
+        }
+      }).catch(err => {
+        this.$Message.error(err.response.data.message)
       })
     },
     cancel(){

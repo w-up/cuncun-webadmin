@@ -72,10 +72,10 @@
             <FormItem label="管理员备注:">
               <Row style="margin-top:5px" v-for="(item, index) in remarkList" :key="index">
                   <Col span="18">
-                    <Input   type="textarea" :autosize="{minRows: 4,maxRows: 4}" v-model="item.content"/>
+                    <Input   type="textarea" :autosize="{minRows: 4,maxRows: 4}" v-model="item.content" :disabled='item.id.length<10?false:true' />
                   </Col>
                   <Col span="4" offset="1">
-                    <Button type="success" style="margin-bottom:10px;"  v-show="item.id.length<10" @click="handleSave(item)">保存</Button>
+                    <Button type="success" style="margin-bottom:10px;" size="small" v-show="item.id.length<10" @click="handleSave(item)">保存</Button>
                     <Poptip
                         transfer
                         confirm
@@ -226,7 +226,7 @@ export default {
       userRemark:'',//用户备注
       orderId:this.$route.query.id,
       adjustmentModel:false,
-      type:'待付款',
+      type:'',
       orderList:{},//基础信息
       adjustmentCost:{
         id:this.$route.query.id,
@@ -278,10 +278,11 @@ export default {
     getList(){
       getWithdrawDetail(this.$route.query.id).then(res=>{
         var arr = res.data
+        this.type = arr.status.code
         arr.addressName = arr.area.province+' '+arr.area.city+' '+arr.area.name+' '+arr.plotName+' '+arr.address
         arr.timeCreated = timeDate(arr.timeCreated)
         arr.payStatus = arr.payStatus.code
-        this.type = arr.status.code
+        
         this.orderList = arr
       })
     },

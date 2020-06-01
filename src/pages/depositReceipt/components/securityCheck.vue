@@ -191,6 +191,7 @@ export default {
     },
     //数据保存
     saveClick(){
+      this.type = true
       var data = this.data
       for (let i = 0; i < data.length; i++) {
         let arr = {
@@ -207,11 +208,14 @@ export default {
         }
         getPackAdd(arr).then(res=>{
           data[i].id = res.data.id
-          if (i+1==data.length) {
-            // this.dataList()
-            this.$Message.success('成功');
+          if (this.type == true) {
+            if (i+1==data.length) {
+              // this.dataList()
+              this.$Message.success('成功');
+            }
           }
         }).catch(err => {
+          this.type = false
           this.$Message.error(err.response.data.message)
         })
       }

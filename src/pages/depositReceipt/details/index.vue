@@ -108,10 +108,10 @@
               <Row style="margin-top:5px" v-for="(item, index) in remarkList"
                 :key="index">
                   <Col span="18">
-                    <Input   type="textarea" :autosize="{minRows: 4,maxRows: 4}" v-model="item.content"/>
+                    <Input   type="textarea" :autosize="{minRows: 4,maxRows: 4}" v-model="item.content" :disabled='item.id.length<10?false:true' />
                   </Col>
                   <Col span="4" offset="1">
-                    <Button type="success" style="margin-bottom:10px;"  v-show="item.id.length<10" @click="handleSave(item)">保存</Button>
+                    <Button type="success" style="margin-bottom:10px;" size="small" v-show="item.id.length<10" @click="handleSave(item)">保存</Button>
                     <Poptip
                         transfer
                         confirm

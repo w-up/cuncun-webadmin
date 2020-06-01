@@ -91,7 +91,6 @@
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
       </div>
     </Card>
-
     <Modal
         v-model="assignRidersModal"
         title="分配骑手"

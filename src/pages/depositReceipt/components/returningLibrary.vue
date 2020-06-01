@@ -75,6 +75,7 @@ export default {
       num:0,
       adjustPayStatus:false,
       orderId:'',
+      type:true,
       columns: [
         {
           title: '纸箱编号',
@@ -192,6 +193,7 @@ export default {
     },
     //数据保存
     saveClick(){
+      this.type = true
       // for (const item of this.data) {
       //   let arr = {
       //     depositOrderId :this.orderId,
@@ -224,12 +226,15 @@ export default {
         }
         getPackAdd(arr).then(res=>{
           data[i].id = res.data.id
-          if (i+1==data.length) {
-            // this.dataList()
-            this.$emit('detailsRefresh','1')
-            this.$Message.success('成功');
+          if (this.type ==true) {
+            if (i+1==data.length) {
+              // this.dataList()
+              this.$emit('detailsRefresh','1')
+              this.$Message.success('成功');
+            }
           }
         }).catch(err => {
+          this.type = false
           this.$Message.error(err.response.data.message)
         })
       }

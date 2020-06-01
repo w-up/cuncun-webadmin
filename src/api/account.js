@@ -632,6 +632,13 @@ export function getGoodsSave (data) {
         data 
     });
 }
+//物品分类保存
+export function getGoodsRemove (id) {
+    return request({
+        url: '/server/data/admin/remove/'+id,
+        method: 'post'
+    });
+}
 //用户列表
 export function getUserList (data) {
     return request({

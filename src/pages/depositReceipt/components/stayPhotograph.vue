@@ -417,6 +417,7 @@ export default {
           remark:this.remark
         }
         getUpdateRemark(data).then(res=>{
+          this.dataList()
           this.$Message.success('保存成功')
         }).catch(err => {
           this.$Message.error(err.response.data.message)

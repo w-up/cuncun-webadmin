@@ -206,7 +206,7 @@ export default {
         {
           title: '用户ID',
           key: 'userCode',
-          width: 220,
+          width: 150,
           align: 'center'
         },
         {
@@ -244,7 +244,7 @@ export default {
           num ++ 
           v.num = num
           v.time = timeDate1(v.beginDate)+' - '+timeDate1(v.endDate)
-          v.userCode = v.user.id
+          v.userCode = v.user.code
           v.userName = v.user.name
           v.statusCode=v.status.name
         });

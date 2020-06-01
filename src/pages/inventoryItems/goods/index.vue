@@ -145,7 +145,7 @@ export default {
         {
           title: '用户ID',
           key: 'userId',
-          width: 220,
+          width: 150,
           align: 'center'
         },
         {
@@ -163,7 +163,7 @@ export default {
         {
           title: '物品编号',
           key: 'code',
-          width: 120,
+          width: 190,
           align: 'center'
         },
         {
@@ -336,7 +336,7 @@ export default {
           num ++ 
           v.num = num
           if (v.user) {
-            v.userId=v.user.id
+            v.userId=v.user.code
           }
           v.packCode = v.pack.code
           v.orderNo = v.depositOrder.orderNo
