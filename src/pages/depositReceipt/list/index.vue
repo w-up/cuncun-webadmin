@@ -223,7 +223,7 @@ export default {
         },
         {
           title: '用户ID',
-          key: 'userID',
+          key: 'userId',
           width: 125,
           align: 'center'
         },
@@ -310,7 +310,7 @@ export default {
         },
         {
           title: '用户ID',
-          key: 'userID',
+          key: 'userId',
           width: 125,
           align: 'center'
         },
@@ -387,6 +387,7 @@ export default {
             v.addressName = v.address
           }
           v.time = v.bookFetchTime[0]+' ~ '+v.bookFetchTime[1]
+          v.userId=v.user.code
         });
         this.total = res.data.total
         this.dataList = arr
