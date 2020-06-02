@@ -3,7 +3,7 @@
     <div style="margin:12px 0">
       <Table border :columns="columns" :data="data">
         <template slot-scope="{ row, index }" slot="img1">
-            <Button type="primary" size="small" v-show="row.pic!=null" @click="imgClick(row.img)">查看</Button>
+            <Button type="primary" size="small" v-show="row.pic!=null" @click="imgClick(row.pic)">查看</Button>
         </template>
       </Table>
     </div>
@@ -25,7 +25,7 @@
     </div>
     <Modal v-model="refusalOfOrdersModal"  title="拒单理由">
       <div style="text-align:center">
-          <h4 style="margin-bottom:8px">请输入拒单理由.</h4 style="margin-bottom:8px">
+          <h4 style="margin-bottom:8px">请输入拒单理由.</h4>
           <Input  type="textarea" :rows="4" style="width:400px" placeholder="请输入拒单理由" />
       </div>
       <div slot="footer">

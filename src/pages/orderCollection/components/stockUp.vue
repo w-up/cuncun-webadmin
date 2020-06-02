@@ -6,7 +6,7 @@
     <div style="margin:12px 0">
       <Table border :columns="columns" :data="data">
         <template slot-scope="{ row, index }" slot="img1">
-            <Button type="primary" size="small" v-show="row.pic!=null" @click="imgClick(row.img)">查看</Button>
+            <Button type="primary" size="small" v-show="row.pic!=null" @click="imgClick(row.pic)">查看</Button>
         </template>
       </Table> 
     </div>
