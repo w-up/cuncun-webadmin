@@ -77,8 +77,8 @@
           <Button type="success" @click="RefuseToAccept(true)">接单</Button>
           <Button type="error" @click="RefuseToAccept(false)">拒单</Button>
           <Button type="warning" @click="assignRidersClick">分配拣货员</Button>
-          <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd(1)">导出配送单</Button>
-          <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd(2)">导出拣货单</Button>
+          <Button type="primary" style="margin:0 8px 5px 0" @click="pdfClick(1)">导出配送单</Button>
+          <Button type="primary" style="margin:0 8px 5px 0" @click="pdfClick(2)">导出拣货单</Button>
           <Button type="primary" style="margin:0 8px 5px 0" @click="exportData()">导出列表</Button>
         </div>
         <Page :total="total" show-total @on-change="changePage" show-sizer :page-size-opts="[10,20,50,100]" @on-page-size-change="pageSizeChange"></Page>
@@ -529,7 +529,7 @@ export default {
           data:this.dataList
       });
     },
-    asdasssssd(key){
+    pdfClick(key){
       let id=[]
       this.selectionList.forEach(v => {
         id.push(v.id)

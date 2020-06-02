@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd"><Icon type="ios-download-outline"></Icon>导出取件单</Button> -->
+    <!-- <Button type="primary" style="margin:0 8px 5px 0" @click="pdfClick"><Icon type="ios-download-outline"></Icon>导出取件单</Button> -->
     <!-- <Button type="success" style="margin:0 8px 5px 0">拣货完成</Button> -->
     <!-- <Button type="error" style="margin:0 8px 5px 0">拒单</Button> -->
     <div style="margin:12px 0">

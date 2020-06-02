@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd"><Icon type="ios-download-outline"></Icon>导出取件单</Button> -->
+    <!-- <Button type="primary" style="margin:0 8px 5px 0" @click="pdfClick"><Icon type="ios-download-outline"></Icon>导出取件单</Button> -->
     
     <!-- <Button type="error" style="margin:0 8px 5px 0">拒单</Button> -->
     <div style="margin:12px 0">
@@ -20,8 +20,8 @@
         @on-ok="ok">
         <Button type="success" style="margin:0 8px 5px 0">此步骤已完成</Button>
       </Poptip>
-      <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd(2)"><Icon type="ios-download-outline"></Icon>导出拣货单</Button>
-      <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd(1)"><Icon type="ios-download-outline"></Icon>导出配送单</Button>
+      <Button type="primary" style="margin:0 8px 5px 0" @click="pdfClick(2)"><Icon type="ios-download-outline"></Icon>导出拣货单</Button>
+      <Button type="primary" style="margin:0 8px 5px 0" @click="pdfClick(1)"><Icon type="ios-download-outline"></Icon>导出配送单</Button>
     </div>
     <Modal
         v-model="imgModal"
@@ -195,7 +195,7 @@ export default {
         this.$Message.error(err.response.data.message)
       })
     },
-    asdasssssd(key){
+    pdfClick(key){
       if (key==1) {
         window.open("http://cuncun.admin.iisu.cn/export/takeSingle.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
       }else{

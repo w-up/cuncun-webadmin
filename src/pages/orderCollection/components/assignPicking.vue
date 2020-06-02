@@ -20,7 +20,7 @@
         <Button type="success" style="margin:0 8px 5px 0">拣货完成</Button>
       </Poptip> -->
       <Button type="warning" style="margin:0 8px 5px 0" @click="assignRidersClick">分配拣货员</Button>
-      <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd"><Icon type="ios-download-outline"></Icon>导出拣货单</Button>
+      <Button type="primary" style="margin:0 8px 5px 0" @click="pdfClick"><Icon type="ios-download-outline"></Icon>导出拣货单</Button>
     </div>
     <Modal
         v-model="imgModal"
@@ -193,7 +193,7 @@ export default {
         this.$Message.error(err.response.data.message)
       })
     },
-    asdasssssd(key){
+    pdfClick(key){
       window.open("http://cuncun.admin.iisu.cn/export/picking.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
     },
   }

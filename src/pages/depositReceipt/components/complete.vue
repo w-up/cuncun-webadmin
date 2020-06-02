@@ -112,7 +112,7 @@
       
     </div>
     <div style="margin-top:20px">
-      <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd"><Icon type="ios-download-outline"></Icon>导出取件单</Button>
+      <Button type="primary" style="margin:0 8px 5px 0" @click="pdfClick"><Icon type="ios-download-outline"></Icon>导出取件单</Button>
     </div>
     <Modal v-model="refusalOfOrdersModal"  title="照片上传" @on-visible-change="visibleChange">
       <div style="text-align: center">
@@ -723,7 +723,7 @@ export default {
       } 
       return '';
     },
-    asdasssssd(){
+    pdfClick(){
       window.open("http://cuncun.admin.iisu.cn/export/depositReceipt.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
     },
   }

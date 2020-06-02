@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd"><Icon type="ios-download-outline"></Icon>导出取件单</Button> -->
+    <!-- <Button type="primary" style="margin:0 8px 5px 0" @click="pdfClick"><Icon type="ios-download-outline"></Icon>导出取件单</Button> -->
     <!-- <Button type="success" style="margin:0 8px 5px 0">拣货完成</Button> -->
     <!-- <Button type="error" style="margin:0 8px 5px 0">拒单</Button> -->
     <div style="margin:12px 0">
@@ -12,7 +12,7 @@
     </div>
     <div style="margin-top:10px"> 
       <!-- <Button type="warning" style="margin:0 8px 5px 0" @click="assignRidersClick">分配拣货员</Button> -->
-      <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd"><Icon type="ios-download-outline"></Icon>导出配送单</Button>
+      <Button type="primary" style="margin:0 8px 5px 0" @click="pdfClick"><Icon type="ios-download-outline"></Icon>导出配送单</Button>
     </div>
     <Modal
         v-model="imgModal"
@@ -124,7 +124,7 @@ export default {
       this.img = img
       this.imgModal=true
     },
-    asdasssssd(key){
+    pdfClick(key){
       window.open("http://cuncun.admin.iisu.cn/export/takeSingle.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
     },
   }

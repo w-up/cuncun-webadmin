@@ -21,7 +21,7 @@
         <Button type="info" style="margin:0 8px 5px 0" >接单</Button>
       </Poptip>
       <Button type="error" style="margin:0 8px 5px 0" @click="refusalOfOrdersModal=true">拒单</Button>
-      <Button type="primary" style="margin:0 8px 5px 0" @click="asdasssssd"><Icon type="ios-download-outline"></Icon>导出取件单</Button>
+      <Button type="primary" style="margin:0 8px 5px 0" @click="pdfClick"><Icon type="ios-download-outline"></Icon>导出取件单</Button>
     </div>
     <Modal v-model="refusalOfOrdersModal"  title="拒单理由">
       <Form   :label-width="80" >
@@ -166,7 +166,7 @@ export default {
       this.refusalOfOrdersModal=false
       this.reason=''
     },
-    asdasssssd(){
+    pdfClick(){
       window.open("http://cuncun.admin.iisu.cn/export/depositReceipt.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
     },
   }
