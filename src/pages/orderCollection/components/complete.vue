@@ -49,10 +49,10 @@ export default {
           key: 'storeCode'
         },
         {
-          title: '备注信息',
+          title: '箱子名称',
           align:'center',
           minWidth:160,
-          key: 'remark'
+          key: 'packName'
         },
         {
           title: '箱子编号',
@@ -70,7 +70,7 @@ export default {
           title: '物品名称',
           align:'center',
           minWidth:150,
-          key: 'name'
+          key: 'goodsName'
         },
         {
           title: '重量',
@@ -102,8 +102,12 @@ export default {
           v.num=num
           if (v.item.code =='goods') {
             v.code = v.goodsCode
+            v.goodsName = v.name
+            v.packName = ''
           }else{
             v.code = v.packCode
+            v.goodsName = ''
+            v.packName = v.name
           }
           // v.name = v.goods.name
           // v.code = v.goods.code

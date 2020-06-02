@@ -228,7 +228,12 @@ export default {
         arr.forEach(v => {
           num ++ 
           v.num = num
-          v.packType = v.packType.name
+           
+          if (v.packType.code =='B') {
+            v.packType ='经济SML'
+          } else {
+            v.packType ='标准'
+          }
           if (v.nowGoodsCount==null) {
             v.nowGoodsCount=0
           }

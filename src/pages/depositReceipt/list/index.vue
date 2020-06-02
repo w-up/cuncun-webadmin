@@ -40,7 +40,7 @@
             <Button style="margin-left:10px" @click="emptySearchList">清空</Button>
           </FormItem>
       </Form>
-      <Tabs  style="margin-top:20px" @on-click="tabsClick">
+      <Tabs  style="margin-top:20px" @on-click="tabsClick" v-model='searchList.status'>
         <TabPane label="全部" name=" "></TabPane>
         <TabPane label="待受理" name="init"></TabPane>
         <TabPane label="待分配骑手" name="assign"></TabPane>

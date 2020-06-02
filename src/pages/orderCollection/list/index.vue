@@ -41,7 +41,7 @@
           </FormItem>
       </Form>
       </Form>
-      <Tabs  style="margin-top:20px" @on-click="tabsClick">
+      <Tabs  style="margin-top:20px" @on-click="tabsClick" v-model='searchList.status'>
         <TabPane label="全部" name=" "></TabPane>
         <TabPane label="待付款" name="waitpay"></TabPane>
         <TabPane label="待受理" name="init"></TabPane>
