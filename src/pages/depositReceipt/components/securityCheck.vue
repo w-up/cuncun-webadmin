@@ -25,7 +25,7 @@
           <Input  placeholder="请输入" v-model="row.weight" @on-change="data[index].weight= row.weight"></Input>
         </template>
         <template slot-scope="{ row, index }" slot="remark">
-          <Input  placeholder="请输入" v-model="row.auditRemark" @on-change="data[index].auditRemark= row.auditRemark"></Input>
+          <Input  placeholder="请输入" v-model="row.auditRemark" show-word-limit maxlength="45" @on-change="data[index].auditRemark= row.auditRemark"></Input>
         </template>
         <template slot-scope="{ row, index }" slot="securityType">
           <Select transfer v-model="row.auditStatus" @on-change="data[index].auditStatus= row.auditStatus">

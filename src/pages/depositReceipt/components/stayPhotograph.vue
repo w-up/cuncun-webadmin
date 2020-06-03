@@ -88,7 +88,7 @@
         </div>
         <div v-show="boxType=='B'">
           <p slot="title">请输入箱内物品信息</p>
-          <Input  type="textarea" :rows="6" placeholder="" v-model="remark"/>
+          <Input  type="textarea" :rows="6" show-word-limit maxlength="45" placeholder="" v-model="remark"/>
           <div style="margin-top:20px">
             <Button type="success" style="margin:0 8px 5px 0" @click="saveItemsClick('2')">保存</Button>
             <!-- <Button type="warning" style="margin:0 8px 5px 0" @click="publishMessage">发布信息</Button> -->
@@ -157,7 +157,7 @@
             </Select>
         </FormItem>
         <FormItem label="管理员备注" style="margin-bottom:20px">
-            <Input v-model="boxList.auditRemark" placeholder="请输入" style="width:300px"></Input>
+            <Input v-model="boxList.auditRemark" placeholder="请输入" show-word-limit maxlength="45" style="width:300px"></Input>
         </FormItem>
       </Form>        
       <div slot="footer">
