@@ -235,6 +235,8 @@ export default {
           }else{
             if (this.file!=null) {
               this.upload()
+            }else if(this.file1!=null){
+              this.upload1()
             }else{
               getBoxTypeSave(this.list).then(res=>{
                 this.$Message.success('保存成功');
