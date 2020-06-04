@@ -18,8 +18,8 @@
             <Input  placeholder="请输入"  v-show="boxStorehouse==true" v-model="row.storeCode" @on-change="boxData[index].storeCode= row.storeCode"></Input>
             <div v-show="boxStorehouse==false">{{row.storeCode}}</div>
           </template>
-          <template slot-scope="{ row, index }" slot="operation1">
-            <Button type="text" size="small"  style="margin-right: 5px;color:#19be6b;" @click="detailsClick(row)">详情</Button>
+          <template slot-scope="{ row, index }" slot="ssusususu">
+            <Button type="text" size="small"  style="color:#19be6b;" @click="detailsClick(row)">详情</Button>
           </template>
         </Table>
         <div style="margin-top:20px">
@@ -314,7 +314,7 @@ export default {
         {
           title: '纸箱编号',
           align:'center',
-          width:100,
+          width:180,
           key: 'code'
         },
         {
@@ -345,9 +345,9 @@ export default {
         {
           title: '操作',
           align:'center',
-          fixed: 'right',
-          width:100,
-          slot: 'operation1'
+          fixed: 'left',
+          width:80,
+          slot: 'ssusususu'
         },
       ],
       data: [
@@ -569,6 +569,11 @@ export default {
     },
     //上传照片成功返回
     uploadSuccess(response, file, fileList){
+      this.data.forEach(v => {
+        if (v.id == this.uploadList.goodsId) {
+          v.coverPic = response.data
+        }
+      });
       this.file = null;
       this.$Message.success('保存成功')
       // this.goodsList()

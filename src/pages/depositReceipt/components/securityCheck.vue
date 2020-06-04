@@ -11,13 +11,13 @@
           <Input  placeholder="请输入" v-model="row.code" @on-change="data[index].code= row.code"></Input>
         </template>
         <template slot-scope="{ row, index }" slot="caseType">
-          <Select transfer @on-change="data[index].type= row.type;boxTypeChange(row)" v-model="row.type">
+          <Select transfer @on-change="data[index].type= row.type;boxTypeChange(row)" v-model="row.type" class="select">
             <Option  value="A" >拍照</Option>
             <Option  value="B" >不拍照</Option>
           </Select>
         </template>
         <template slot-scope="{ row, index }" slot="caseName">
-          <Select transfer v-model="row.boxId" @on-change="data[index].boxId= row.boxId">
+          <Select transfer v-model="row.boxId" @on-change="data[index].boxId= row.boxId" class="select">
             <Option v-for="item in row.boxList" :value="item.id" :key="item.value">{{ item.name }}</Option>
           </Select>
         </template>
@@ -28,7 +28,7 @@
           <Input  placeholder="请输入" v-model="row.auditRemark" show-word-limit maxlength="45" @on-change="data[index].auditRemark= row.auditRemark"></Input>
         </template>
         <template slot-scope="{ row, index }" slot="securityType">
-          <Select transfer v-model="row.auditStatus" @on-change="data[index].auditStatus= row.auditStatus">
+          <Select transfer v-model="row.auditStatus" @on-change="data[index].auditStatus= row.auditStatus" class="select">
             <Option  value="pass" >已通过</Option>
             <Option  value="fail" >未通过</Option>
           </Select>
@@ -89,22 +89,26 @@ export default {
           title: '纸箱类型',
           align:'center',
           minWidth:160,
+          key:'corol1',
           slot: 'caseType'
         },
         {
           title: '纸箱名称',
           align:'center',
           minWidth:160,
+          key:'corol2',
           slot: 'caseName'
         },
         {
           title: '纸箱重量(KG)',
           minWidth:150,
+          key:'corol3',
           slot: 'caseKg'
         },
         {
           title: '安检状态',
           align:'center',
+          key:'corol4',
           minWidth:150,
           slot: 'securityType'
         },
@@ -147,7 +151,11 @@ export default {
         var arr = res.data
         arr.forEach(v => {
           v.cellClassName={
-            corol: ''
+            corol: '',
+            corol1: '',
+            corol2: '',
+            corol3: '',
+            corol4: '',
           }
           if (v.auditStatus) {
             v.auditStatus=v.auditStatus.code
@@ -163,8 +171,7 @@ export default {
       })
     },
     caseNumCange(id,num){
-      // console.log(event,id,num);
-      
+
     },
     addClick(){
       this.num++
@@ -186,8 +193,6 @@ export default {
             if (v.box) {
               v.boxId=v.box.id
             }
-            // console.log(v);
-            
           }
         });
         // this.boxList = arr 
@@ -213,7 +218,11 @@ export default {
         getPackAdd(arr).then(res=>{
           data[i].id = res.data.id
           this.data[i].cellClassName={
-            corol: ''
+            corol: '',
+            corol1: '',
+            corol2: '',
+            corol3: '',
+            corol4: '',
           }
           if (this.type == true) {
             if (i+1==data.length) {
@@ -223,31 +232,16 @@ export default {
           }
         }).catch(err => {
           this.data[i].cellClassName={
-            corol: 'demo-table-info-cell-age'
+            corol: 'demo-table-info-cell-age',
+            corol1: 'demo-table-info-cell-age',
+            corol2: 'demo-table-info-cell-age',
+            corol3: 'demo-table-info-cell-age',
+            corol4: 'demo-table-info-cell-age',
           }
           this.type = false
           this.$Message.error(err.response.data.message)
         })
       }
-      // for (const item of this.data) {
-      //   let arr = {
-      //     depositOrderId :this.orderId,
-      //     code:item.code,
-      //     boxId:item.boxId,
-      //     weight:item.weight,
-      //     auditStatus:item.auditStatus,
-      //     auditRemark:item.auditRemark,
-      //   }
-      //   if (item.id.length>10) {
-      //     arr.id=item.id
-      //   }
-      //   getPackAdd(arr).then(res=>{
-
-      //     this.$Message.success('成功');
-      //   }).catch(err => {
-      //     this.$Message.error(err.response.data.message)
-      //   })
-      // }
     },
     //
     okDel(id){
@@ -287,8 +281,10 @@ export default {
 </script>
 <style lang="less">
 .ivu-table .demo-table-info-cell-age {
-  // background-color: #faa2a2;
   input{
+    border: 1px solid red;
+  }
+  .select{
     border: 1px solid red;
   }
 }

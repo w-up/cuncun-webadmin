@@ -22,6 +22,8 @@
         >
       <Button type="error" style="margin:0 8px 5px 0" >拒单</Button>
       </Poptip>
+      <Button type="primary" style="margin:0 8px 5px 0" @click="pdfClick(2)"><Icon type="ios-download-outline"></Icon>导出拣货单</Button>
+      <Button type="primary" style="margin:0 8px 5px 0" @click="pdfClick(1)"><Icon type="ios-download-outline"></Icon>导出配送单</Button>
     </div>
     <Modal v-model="refusalOfOrdersModal"  title="拒单理由">
       <div style="text-align:center">
@@ -49,7 +51,7 @@
 
 <script>
 import { getWithdrawAccept,getWithdrawRefuse,getWithdrawGoodsList,getWithdrawItemsList } from "@api/account";
-
+import util from '@/libs/util';
 export default {
   name: 'pendingDisposal',
   data () {
@@ -169,6 +171,14 @@ export default {
       }).catch(err => {
         this.$Message.error(err.response.data.message)
       })
+    },
+    pdfClick(key){
+      if (key==1) {
+        window.open("http://cuncun.admin.iisu.cn/export/takeSingle.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
+      }else{
+        window.open("http://cuncun.admin.iisu.cn/export/picking.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
+      }
+      
     },
     refusalOfOrders(){
       this.refusalOfOrdersModal = true

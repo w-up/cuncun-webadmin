@@ -24,6 +24,7 @@
           </FormItem>
           <FormItem >
             <Button type="warning" icon="ios-search" style="" @click="getList">搜索</Button>
+            <Button style="margin-left:10px" @click="emptySearchList">清空</Button>
           </FormItem>
       </Form>
       <div style="margin-top:20px">
@@ -301,7 +302,15 @@ export default {
           columns: this.columnsList1,
           data:this.dataList
       });
-    }
+    },
+    //清空搜索列表
+    emptySearchList(){
+      this.list.status=''
+      this.list.userName=''
+      this.list.userCode=''
+      this.list.orderNo=''
+      this.list.time=[]
+    },
   }
 }
 </script>

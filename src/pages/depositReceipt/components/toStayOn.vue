@@ -113,7 +113,7 @@
     <Modal v-model="refusalOfOrdersModal"  title="照片上传" @on-visible-change="visibleChange">
       <div style="text-align: center">
         <img :src="img" alt="" style="width:100px">
-        <p style="color:red">注：建议添加 100*100px的照片；</p>
+        <!-- <p style="color:red">注：建议添加 100*100px的照片；</p>
         <Upload
           :before-upload="handleUpload"
           :headers="headers"
@@ -124,13 +124,13 @@
           name='file'
           action="/server/data/admin/goods/pic/upload">
           <Button icon="ios-cloud-upload-outline">上传照片</Button>
-        </Upload>
+        </Upload> -->
       </div>
       
       <div slot="footer">
         <div style="">
           <Button type="text" style="margin-right:10px;" @click="cancel">取消</Button>
-          <Button type="primary" style="margin-right:10px" @click="upload1">保存</Button>
+          <Button type="primary" style="margin-right:10px" @click="upload1">确定</Button>
         </div>
       </div>
     </Modal>
@@ -310,7 +310,7 @@ export default {
         {
           title: '纸箱编号',
           align:'center',
-          width:100,
+          width:180,
           key: 'code'
         },
         {
@@ -340,8 +340,8 @@ export default {
         {
           title: '操作',
           align:'center',
-          fixed: 'right',
-          width:100,
+          fixed: 'left',
+          width:80,
           slot: 'operation1'
         },
       ],
@@ -572,7 +572,8 @@ export default {
     },
     //调用上传
     upload1(){
-      this.$refs.upload.post(this.file);
+      // this.$refs.upload.post(this.file);
+      this.cancel()
     },
     //弹窗关闭
     cancel(){

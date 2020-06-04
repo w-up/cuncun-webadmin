@@ -3,17 +3,20 @@
     <Card>
       <p slot="title">仓储物品列表</p>
       <Form inline :label-width="80" >
-          <!-- <FormItem label="用户ID" >
-            <Input  placeholder="请输入" style="width:200px" v-model="searchList.orderNo"></Input>
-          </FormItem> -->
-          <FormItem label="存单编号" >
+          <FormItem label="用户ID" >
+            <Input  placeholder="请输入" style="width:200px"></Input>
+          </FormItem>
+          <FormItem label="用户姓名" >
+            <Input  placeholder="请输入" style="width:200px"></Input>
+          </FormItem>
+          <FormItem label="联系电话" >
+            <Input  placeholder="请输入" style="width:200px"></Input>
+          </FormItem>
+          <FormItem label="订单号" >
             <Input  placeholder="请输入" style="width:200px" v-model="searchList.orderNo"></Input>
           </FormItem>
           <FormItem label="库位号" >
             <Input  placeholder="请输入" style="width:200px" v-model="searchList.storeCode"></Input>
-          </FormItem>
-          <FormItem label="箱子编号" >
-            <Input  placeholder="请输入" style="width:200px" v-model="searchList.packCode"></Input>
           </FormItem>
           <FormItem label="流转状态" >
             <Select clearable style="width:200px" v-model="searchList.storeStatus">
@@ -22,20 +25,33 @@
                 <Option  value="fetch">取回中</Option>
             </Select>
           </FormItem>
-          <!-- <FormItem label="取单编号" >
+          <FormItem label="取单号码" >
             <Input  placeholder="请输入" style="width:200px" ></Input>
-          </FormItem> -->
-          <!-- <FormItem label="箱子类型" >
+          </FormItem>
+          <FormItem label="箱子类型" >
             <Select  style="width:200px" v-model="searchList.storeStatus">
                 <Option  value="A">拍照</Option>
                 <Option  value="B">不拍照</Option>
             </Select>
-          </FormItem> -->
-          <!-- <FormItem label="物品归类" >
+          </FormItem>
+          <FormItem label="箱子编号" >
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.packCode"></Input>
+          </FormItem>
+          <FormItem label="物品编号" >
+            <Input  placeholder="请输入" style="width:200px"></Input>
+          </FormItem>
+          <FormItem label="物品名称" >
+            <Input  placeholder="请输入" style="width:200px"></Input>
+          </FormItem>
+          <FormItem label="物品归类" >
             <Input  placeholder="请输入" style="width:200px" ></Input>
-          </FormItem> -->
+          </FormItem>
+          <FormItem label="标签" >
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.packCode"></Input>
+          </FormItem>
           <FormItem >
             <Button type="warning" icon="ios-search" style="" @click="getList()">搜索</Button>
+            <Button style="margin-left:10px" @click="emptySearchList">清空</Button>
           </FormItem>
       </Form>
       <div style="margin-top:20px">
@@ -327,7 +343,6 @@ export default {
         orderNo:this.searchList.orderNo,
         boxType:this.searchList.boxType,
         storeCode:this.searchList.storeCode,
-        storeStatus:this.searchList.storeStatus,
       }
       getInventoryItemsList(data).then(res=>{
         var num = 0
@@ -354,6 +369,13 @@ export default {
         this.dataList = arr
         
       })
+    },
+    //清空搜索列表
+    emptySearchList(){
+      this.searchList.storeStatus=''
+      this.searchList.orderNo=''
+      this.searchList.boxType=''
+      this.searchList.storeCode=''
     },
     //选择状态
     tabsClick(name){

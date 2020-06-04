@@ -8,28 +8,19 @@
     <div style="margin:12px 0">
       <Table border :columns="columns" :data="data">
         <template slot-scope="{ row, index }" slot="caseNum">
-          <Input :disabled='adjustPayStatus' placeholder="请输入" v-model="row.code" @on-change="data[index].code= row.code"></Input>
+          <Input :disabled='adjustPayStatus' placeholder="请输入" v-model="row.code" @on-change="data[index].code= row.code;boxCodeChange(row)"></Input>
         </template>
         <template slot-scope="{ row, index }" slot="caseType">
-          <Select :disabled='adjustPayStatus' transfer @on-change="data[index].type= row.type;boxTypeChange(row)" v-model="row.type">
+          <Select :disabled='adjustPayStatus' transfer @on-change="data[index].type= row.type;boxTypeChange(row)" v-model="row.type" class="select">
             <Option  value="A" >拍照</Option>
             <Option  value="B" >不拍照</Option>
           </Select>
         </template>
         <template slot-scope="{ row, index }" slot="caseName">
-          <Select :disabled='adjustPayStatus' transfer v-model="row.boxId" @on-change="data[index].boxId= row.boxId">
+          <Select :disabled='adjustPayStatus' transfer v-model="row.boxId" @on-change="data[index].boxId= row.boxId" class="select">
             <Option v-for="item in row.boxList" :value="item.id" :key="item.value">{{ item.name }}</Option>
           </Select>
         </template>
-        <template slot-scope="{ row, index }" slot="caseKg">
-          <Input  placeholder="请输入" v-model="row.weight" @on-change="data[index].weight= row.weight"></Input>
-        </template>
-        <!-- <template slot-scope="{ row, index }" slot="securityType">
-          <Select transfer v-model="row.auditStatus" @on-change="data[index].auditStatus= row.auditStatus">
-            <Option  value="pass" >已通过</Option>
-            <Option  value="fail" >未通过</Option>
-          </Select>
-        </template> -->
         <template slot-scope="{ row, index }" slot="operation">
          <Poptip
             confirm
@@ -88,13 +79,15 @@ export default {
           title: '纸箱类型',
           align:'center',
           minWidth:160,
-          slot: 'caseType'
+          slot: 'caseType',
+          key:'corol1'
         },
         {
           title: '纸箱名称',
           align:'center',
           minWidth:160,
-          slot: 'caseName'
+          slot: 'caseName',
+          key:'corol2'
         },
         // {
         //   title: '纸箱重量(KG)',
@@ -150,7 +143,9 @@ export default {
         var arr = res.data
         arr.forEach(v => {
           v.cellClassName={
-            corol: ''
+            corol: '',
+            corol1: '',
+            corol2: '',
           }
           if (v.auditStatus) {
             v.auditStatus=v.auditStatus.code
@@ -173,6 +168,7 @@ export default {
       this.num++
       this.data.push({
         id:this.num+'',
+        type:'',
         boxList:[]
       })
     },
@@ -231,7 +227,9 @@ export default {
         getPackAdd(arr).then(res=>{
           data[i].id = res.data.id
           this.data[i].cellClassName={
-            corol: ''
+            corol: '',
+            corol1: '',
+            corol2: '',
           }
           if (this.type ==true) {
             if (i+1==data.length) {
@@ -242,7 +240,9 @@ export default {
           }
         }).catch(err => {
           this.data[i].cellClassName={
-            corol: 'demo-table-info-cell-age'
+            corol: 'demo-table-info-cell-age',
+            corol1: 'demo-table-info-cell-age',
+            corol2: 'demo-table-info-cell-age',
           }
           this.type = false
           this.$Message.error(err.response.data.message)
@@ -284,6 +284,22 @@ export default {
         this.$Message.error(err.response.data.message)
       })
     },
+    boxCodeChange(row){
+      if (row.code.length>=10) {
+        for (const v of this.data) {
+          if (v.id == row.id) {
+            if (row.code.substr(9,9)=='s'||row.code.substr(9,9)=='S') {
+              v.type='A'
+              this.boxTypeChange(v)
+            }else if(row.code.substr(9,9)=='E'||row.code.substr(9,9)=='e'){
+              v.type='B'
+              this.boxTypeChange(v)
+            }
+            break
+          }
+        }
+      }
+    },
     pdfClick(){
       window.open("http://cuncun.admin.iisu.cn/export/depositReceipt.html?id="+this.orderId+'&token='+util.cookies.get('token1'));  
     },
@@ -294,6 +310,9 @@ export default {
 .ivu-table .demo-table-info-cell-age {
   // background-color: #faa2a2;
   input{
+    border: 1px solid red;
+  }
+  .select{
     border: 1px solid red;
   }
 }

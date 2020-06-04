@@ -283,7 +283,7 @@ export default {
         {
           title: '纸箱编号',
           align:'center',
-          width:100,
+          width:180,
           slot: 'num'
         },
         {
@@ -307,7 +307,8 @@ export default {
         {
           title: '操作',
           align:'center',
-          width:100,
+          fixed: 'left',
+          width:80,
           slot: 'operation'
         },
       ],

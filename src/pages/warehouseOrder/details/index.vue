@@ -35,7 +35,7 @@
           </FormItem>
           <FormItem >
             <Form  :label-width="100"  style="">
-              <FormItem label="备注" style="">
+              <FormItem label="给用户的备注" style="">
                 <Input  type="textarea" :rows="4" style="width:400px" placeholder="请输入" v-model="list.remark"/>
               </FormItem>
               <FormItem label=" " style="">
@@ -98,7 +98,7 @@ export default {
           title: '箱子编号',
           key: 'packCode',
           align: 'center',
-          width:120
+          width:180
         },
         {
           title: '箱子名称',
