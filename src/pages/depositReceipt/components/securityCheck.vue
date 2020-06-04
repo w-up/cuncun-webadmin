@@ -225,8 +225,6 @@ export default {
           this.data[i].cellClassName={
             corol: 'demo-table-info-cell-age'
           }
-          console.log(this.data);
-          
           this.type = false
           this.$Message.error(err.response.data.message)
         })

@@ -81,7 +81,8 @@ export default {
           title: '纸箱编号',
           align:'center',
           minWidth:200,
-          slot: 'caseNum'
+          slot: 'caseNum',
+          key:'corol'
         },
         {
           title: '纸箱类型',
@@ -148,6 +149,9 @@ export default {
       getPackPage(data).then(res=>{
         var arr = res.data
         arr.forEach(v => {
+          v.cellClassName={
+            corol: ''
+          }
           if (v.auditStatus) {
             v.auditStatus=v.auditStatus.code
           }
@@ -226,6 +230,9 @@ export default {
         }
         getPackAdd(arr).then(res=>{
           data[i].id = res.data.id
+          this.data[i].cellClassName={
+            corol: ''
+          }
           if (this.type ==true) {
             if (i+1==data.length) {
               // this.dataList()
@@ -234,6 +241,9 @@ export default {
             }
           }
         }).catch(err => {
+          this.data[i].cellClassName={
+            corol: 'demo-table-info-cell-age'
+          }
           this.type = false
           this.$Message.error(err.response.data.message)
         })
@@ -280,7 +290,14 @@ export default {
   }
 }
 </script>
-
+<style lang="less">
+.ivu-table .demo-table-info-cell-age {
+  // background-color: #faa2a2;
+  input{
+    border: 1px solid red;
+  }
+}
+</style>
 <style lang="less">
 
 </style>
