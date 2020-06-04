@@ -230,9 +230,9 @@ export default {
           v.num = num
            
           if (v.packType.code =='B') {
-            v.packType ='经济SML'
+            v.packType ='经济箱'
           } else {
-            v.packType ='标准'
+            v.packType ='标准箱'
           }
           if (v.nowGoodsCount==null) {
             v.nowGoodsCount=0

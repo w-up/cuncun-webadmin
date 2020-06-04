@@ -6,7 +6,7 @@
       </Select>
     </div> -->
     <div style="margin:12px 0">
-      <Table border :columns="columns" :data="data">
+      <Table border :columns="columns" :data="data" >
         <template slot-scope="{ row, index }" slot="caseNum">
           <Input  placeholder="请输入" v-model="row.code" @on-change="data[index].code= row.code"></Input>
         </template>
@@ -75,13 +75,15 @@ export default {
   data () {
     return {
       num:0,
+      index:[],
       orderId:'',
       columns: [
         {
           title: '纸箱编号',
           align:'center',
           minWidth:200,
-          slot: 'caseNum'
+          slot: 'caseNum',
+          key:'corol'
         },
         {
           title: '纸箱类型',
@@ -144,6 +146,9 @@ export default {
       getPackPage(data).then(res=>{
         var arr = res.data
         arr.forEach(v => {
+          v.cellClassName={
+            corol: ''
+          }
           if (v.auditStatus) {
             v.auditStatus=v.auditStatus.code
           }
@@ -154,7 +159,6 @@ export default {
           v.boxList=[]
           this.boxTypeChange(v)
         });
-
         this.data = arr.reverse()
       })
     },
@@ -182,7 +186,7 @@ export default {
             if (v.box) {
               v.boxId=v.box.id
             }
-            console.log(v);
+            // console.log(v);
             
           }
         });
@@ -208,6 +212,9 @@ export default {
         }
         getPackAdd(arr).then(res=>{
           data[i].id = res.data.id
+          this.data[i].cellClassName={
+            corol: ''
+          }
           if (this.type == true) {
             if (i+1==data.length) {
               // this.dataList()
@@ -215,6 +222,11 @@ export default {
             }
           }
         }).catch(err => {
+          this.data[i].cellClassName={
+            corol: 'demo-table-info-cell-age'
+          }
+          console.log(this.data);
+          
           this.type = false
           this.$Message.error(err.response.data.message)
         })
@@ -275,7 +287,14 @@ export default {
   }
 }
 </script>
-
+<style lang="less">
+.ivu-table .demo-table-info-cell-age {
+  // background-color: #faa2a2;
+  input{
+    border: 1px solid red;
+  }
+}
+</style>
 <style lang="less">
 
 </style>
