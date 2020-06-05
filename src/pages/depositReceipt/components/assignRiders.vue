@@ -160,7 +160,16 @@ export default {
             this.assignRidersList.name=''
             this.assignRidersModal=false
           }).catch(err => {
+            if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
             this.$Message.error(err.response.data.message)
+          }
           })
           
         } else {

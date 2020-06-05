@@ -397,7 +397,16 @@ export default {
         this.$Message.success('保存成功');
         
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     //存储费用
@@ -409,7 +418,16 @@ export default {
         this.$Message.success('保存成功');
         
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     //取单物流费
@@ -423,7 +441,16 @@ export default {
         // this.$Message.success('保存成功');
         
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
       var list={
         'wp[startKgPrice]':this.logisticsData[0].num1,
@@ -434,7 +461,16 @@ export default {
         this.$Message.success('保存成功');
         
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     //存单路价格
@@ -448,7 +484,16 @@ export default {
         this.$Message.success('保存成功');
         
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     //时间系数设置
@@ -462,7 +507,16 @@ export default {
         this.$Message.success('保存成功');
         
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     //预约日期限额设置保存
@@ -474,7 +528,16 @@ export default {
         this.$Message.success('保存成功');
         
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     goodsClick(){

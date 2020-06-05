@@ -4,13 +4,13 @@
       <p slot="title">仓储物品列表</p>
       <Form inline :label-width="80" >
           <FormItem label="用户ID" >
-            <Input  placeholder="请输入" style="width:200px"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.userCode"></Input>
           </FormItem>
           <FormItem label="用户姓名" >
-            <Input  placeholder="请输入" style="width:200px"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.userName"></Input>
           </FormItem>
           <FormItem label="联系电话" >
-            <Input  placeholder="请输入" style="width:200px"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.userMobile"></Input>
           </FormItem>
           <FormItem label="订单号" >
             <Input  placeholder="请输入" style="width:200px" v-model="searchList.orderNo"></Input>
@@ -26,28 +26,22 @@
             </Select>
           </FormItem>
           <FormItem label="取单号码" >
-            <Input  placeholder="请输入" style="width:200px" ></Input>
-          </FormItem>
-          <FormItem label="箱子类型" >
-            <Select  style="width:200px" v-model="searchList.storeStatus">
-                <Option  value="A">拍照</Option>
-                <Option  value="B">不拍照</Option>
-            </Select>
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.wOrderNo"></Input>
           </FormItem>
           <FormItem label="箱子编号" >
             <Input  placeholder="请输入" style="width:200px" v-model="searchList.packCode"></Input>
           </FormItem>
           <FormItem label="物品编号" >
-            <Input  placeholder="请输入" style="width:200px"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.code"></Input>
           </FormItem>
           <FormItem label="物品名称" >
-            <Input  placeholder="请输入" style="width:200px"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.name"></Input>
           </FormItem>
           <FormItem label="物品归类" >
-            <Input  placeholder="请输入" style="width:200px" ></Input>
+            <Cascader transfer :data="categoryList" trigger="hover" v-model="searchList.categoryId" ></Cascader>
           </FormItem>
           <FormItem label="标签" >
-            <Input  placeholder="请输入" style="width:200px" v-model="searchList.packCode"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.tag" ></Input>
           </FormItem>
           <FormItem >
             <Button type="warning" icon="ios-search" style="" @click="getList()">搜索</Button>
@@ -140,7 +134,7 @@
 </template>
 
 <script>
-import { getInventoryItemsList } from "@api/account";
+import { getInventoryItemsList,getGoodsTree } from "@api/account";
 export default {
   // name: 'home',
   data () {
@@ -148,6 +142,7 @@ export default {
       img:'',
       imgModal:false,
       modal1:false,
+      categoryList:[],
       total: 0,
       pageSize: 10,
       pageNumber: 0,
@@ -324,25 +319,61 @@ export default {
       searchList:{
         storeStatus:'',
         orderNo:'',
-        boxType:'',
         storeCode:'',
         packCode:'',
+        categoryId:[],
+        tag:'',
+        code:'',
+        name:'',
+        wOrderNo:'',
+        userMobile:'',
+        userCode:'',
+        userName:'',
       }
     }
   },
   mounted () {
     //
     this.getList()
+    this.GoodsTree()
   },
   methods:{
+    //类型列表
+    GoodsTree(){
+      let goods = {
+        parentId:'0'
+      }
+      getGoodsTree(goods).then(res=>{
+        let list = res.data
+        list.forEach(v => {
+          v.value = v.id
+          v.label = v.name
+          if (v.children.length>0) {
+            v.children.forEach(a => {
+              a.value = a.id
+              a.label = a.name
+            });
+          }
+        });
+        this.categoryList = list
+      })
+    },
     getList(){
       let data ={
         pageNumber:this.pageNumber,
         pageSize:this.pageSize,
         storeStatus:this.searchList.storeStatus,
         orderNo:this.searchList.orderNo,
-        boxType:this.searchList.boxType,
         storeCode:this.searchList.storeCode,
+        categoryId:this.searchList.categoryId[1],
+        tag:this.searchList.tag,
+        code:this.searchList.code,
+        name:this.searchList.name,
+        packCode:this.searchList.packCode,
+        wOrderNo:this.searchList.wOrderNo,
+        userMobile:this.searchList.userMobile,
+        userCode:this.searchList.userCode,
+        userName:this.searchList.userName,
       }
       getInventoryItemsList(data).then(res=>{
         var num = 0
@@ -374,8 +405,16 @@ export default {
     emptySearchList(){
       this.searchList.storeStatus=''
       this.searchList.orderNo=''
-      this.searchList.boxType=''
       this.searchList.storeCode=''
+      this.searchList.categoryId=[]
+      this.searchList.tag=''
+      this.searchList.code=''
+      this.searchList.name=''
+      this.searchList.wOrderNo=''
+      this.searchList.userMobile=''
+      this.searchList.userCode=''
+      this.searchList.userName=''
+      this.searchList.packCode=''
     },
     //选择状态
     tabsClick(name){

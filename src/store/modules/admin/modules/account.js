@@ -40,6 +40,7 @@ export default {
                         // util.cookies.set('uuid', res.uuid);
                         util.cookies.set('token1',res.data.token);
                         util.cookies.set('token','Bearer ' +res.data.token);
+                        
                         // 设置 vuex 用户信息
                         // await dispatch('admin/user/set', res.info, { root: true });
                         // 用户登录后从持久化数据加载一系列的设置

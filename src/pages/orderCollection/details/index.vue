@@ -96,12 +96,12 @@
           </Form>
         </Card>
       </div>
-      <!-- <div style="margin:20px 0">
+      <div style="margin:20px 0">
         <div style="margin:20px 0"> 测试切换状态</div>
         <Select  slot="extra"  style="width:200px;" v-model="type">
           <Option v-for="item in stateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
-      </div> -->
+      </div>
       <div style="margin:20px 0">
         <Button :disabled='type=="init"?true:type=="collect"?true:type=="accept"?true:type=="waitsend"?true:type=="waitsign"?true:type=="finish"?true:type=="cancel"?true:false' 
           style="margin:0 8px 5px 0" :type="type=='waitpay'?'primary':'dashed'">待付款<Icon type="ios-arrow-forward" /></Button>
@@ -322,7 +322,16 @@ export default {
           this.$Message.success('成功');
           this.getRemarkList()
         }).catch(err => {
-          this.$Message.error(err.response.data.message)
+          if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
         })
       }else{
         for (var i = 0; i < this.remarkList.length; i++) { 
@@ -344,7 +353,16 @@ export default {
         this.$Message.success('成功');
         this.getRemarkList()
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     adjustmentClick(){
@@ -366,7 +384,17 @@ export default {
         this.cancel()
         this.$Message.success('成功');
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     //关闭弹窗

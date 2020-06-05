@@ -51,36 +51,36 @@ export default {
         {
           title: '箱子名称',
           align:'center',
-          minWidth:160,
+          minWidth:180,
           key: 'packName'
         },
         {
           title: '箱子编号',
           align:'center',
-          minWidth:120,
+          minWidth:220,
           key: 'packCode'
         },
         {
           title: 'Item SKU',
           align:'center',
-          minWidth:120,
+          minWidth:220,
           key: 'goodsCode'
         },
         {
           title: '物品名称',
           align:'center',
-          minWidth:150,
+          minWidth:180,
           key: 'goodsName'
         },
         {
           title: '重量',
           align:'center',
-          minWidth:150,
+          minWidth:100,
           key: 'weight'
         },
         {
           title: '照片',
-          width:150,
+          width:80,
           align:'center',
           slot: 'img1'
         },

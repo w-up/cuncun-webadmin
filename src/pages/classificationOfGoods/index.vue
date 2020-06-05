@@ -237,7 +237,16 @@ export default {
               
               this.cancel()
             }).catch(err => {
-              this.$Message.error(err.response.data.message)
+              if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
             })
             
 
@@ -254,7 +263,16 @@ export default {
             this.oneOnRowClick({id:this.parentId})
             this.cancel()
           }).catch(err => {
+            if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
             this.$Message.error(err.response.data.message)
+          }
           })
         } else {
           this.$Message.error('请全部填写!');
@@ -266,7 +284,16 @@ export default {
         this.$Message.success('删除成功');
         this.getList()
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     cancel(){

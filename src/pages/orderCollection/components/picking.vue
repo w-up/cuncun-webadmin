@@ -72,36 +72,36 @@ export default {
         {
           title: '箱子名称',
           align:'center',
-          minWidth:160,
+          minWidth:180,
           key: 'packName'
         },
         {
           title: '箱子编号',
           align:'center',
-          minWidth:120,
+          minWidth:220,
           key: 'packCode'
         },
         {
           title: 'Item SKU',
           align:'center',
-          minWidth:120,
+          minWidth:220,
           key: 'goodsCode'
         },
         {
           title: '物品名称',
           align:'center',
-          minWidth:150,
+          minWidth:180,
           key: 'goodsName'
         },
         {
           title: '重量',
           align:'center',
-          minWidth:150,
+          minWidth:100,
           key: 'weight'
         },
         {
           title: '照片',
-          width:150,
+          width:80,
           align:'center',
           slot: 'img1'
         },
@@ -175,7 +175,16 @@ export default {
             this.assignRidersList.name=''
             this.assignRidersModal=false
           }).catch(err => {
+            if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
             this.$Message.error(err.response.data.message)
+          }
           })
         } else {
             this.$Message.error('请输入拣货员姓名');
@@ -188,7 +197,16 @@ export default {
         this.$Message.success('成功');
         this.$emit('detailsRefresh','1')
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     pdfClick(key){

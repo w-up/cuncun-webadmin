@@ -24,7 +24,7 @@ const Setting = {
     // 接口请求返回错误时，弹窗的类型，可选值为 Message 或 Notice
     errorModalType: 'Message',
     // Cookies 默认保存时间，单位：天
-    cookiesExpires: 1,
+    cookiesExpires: 30,
     /**
      * 多语言配置
      * */
@@ -47,7 +47,7 @@ const Setting = {
         // 顶栏是否置顶，开启后会覆盖侧边栏，需开启 headerFix
         headerStick: false,
         // 是否开启多 Tabs 页签
-        tabs: true,
+        tabs: false,
         // 多 Tabs 页签是否显示图标，开启 tabs 时有效
         showTabsIcon: true,
         // 是否固定多 Tabs 多页签

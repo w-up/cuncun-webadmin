@@ -81,27 +81,27 @@ export default {
         {
           title: '纸箱编号',
           align:'center',
-          minWidth:200,
+          minWidth:220,
           slot: 'caseNum',
           key:'corol'
         },
         {
           title: '纸箱类型',
           align:'center',
-          minWidth:160,
+          width:140,
           key:'corol1',
           slot: 'caseType'
         },
         {
           title: '纸箱名称',
           align:'center',
-          minWidth:160,
+          minWidth:190,
           key:'corol2',
           slot: 'caseName'
         },
         {
-          title: '纸箱重量(KG)',
-          minWidth:150,
+          title: '纸箱重量',
+          width:100,
           key:'corol3',
           slot: 'caseKg'
         },
@@ -109,19 +109,19 @@ export default {
           title: '安检状态',
           align:'center',
           key:'corol4',
-          minWidth:150,
+          width:130,
           slot: 'securityType'
         },
         {
           title: '管理员备注',
           align:'center',
-          minWidth:200,
+          minWidth:250,
           slot: 'remark'
         },
         {
           title: '操作',
           align:'center',
-          width:100,
+          width:140,
           slot: 'operation'
         },
       ],
@@ -239,7 +239,16 @@ export default {
             corol4: 'demo-table-info-cell-age',
           }
           this.type = false
-          this.$Message.error(err.response.data.message)
+          if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
         })
       }
     },
@@ -250,7 +259,16 @@ export default {
           this.$Message.success('删除成功');
           this.dataList()
         }).catch(err => {
-          this.$Message.error(err.response.data.message)
+          if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
         })
       }else{
         for (let i = 0; i < this.data.length; i++) {
@@ -270,7 +288,16 @@ export default {
         this.$emit('detailsRefresh','1')
         this.$Message.success('成功');
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     pdfClick(){

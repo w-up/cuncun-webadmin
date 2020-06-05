@@ -209,7 +209,7 @@ export default {
 
       //     this.$Message.success('成功');
       //   }).catch(err => {
-      //     this.$Message.error(err.response.data.message)
+      //     if (err.response.data.code =='error_param') {
       //   })
       // }
       var data = this.data
@@ -245,7 +245,18 @@ export default {
             corol2: 'demo-table-info-cell-age',
           }
           this.type = false
-          this.$Message.error(err.response.data.message)
+          if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
+          
+          
         })
       }
     },
@@ -261,7 +272,16 @@ export default {
             
           }
         }).catch(err => {
-          this.$Message.error(err.response.data.message)
+          if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
         })
       }else{
         for (let i = 0; i < this.data.length; i++) {
@@ -281,7 +301,16 @@ export default {
         this.$emit('detailsRefresh','1')
         this.$Message.success('成功');
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     boxCodeChange(row){

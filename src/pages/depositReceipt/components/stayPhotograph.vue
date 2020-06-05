@@ -221,19 +221,19 @@ export default {
         {
           title: '物品编号',
           align:'center',
-          width:140,
+          width:220,
           slot: 'num'
         },
         {
           title: '名称',
           align:'center',
-          width:140,
+          width:200,
           slot: 'name'
         },
         {
           title: '展示区域',
           align:'center',
-          width:140,
+          width:130,
           slot: 'exhibition'
         },
         {
@@ -245,19 +245,19 @@ export default {
         {
           title: '标签',
           align:'center',
-          width:140,
+          width:180,
           slot: 'label'
         },
         {
           title: '照片',
           align:'center',
-          width:90,
+          width:80,
           slot: 'img'
         },
         {
           title: '重量',
           align:'center',
-          width:120,
+          width:100,
           slot: 'kg'
         },
         {
@@ -283,7 +283,7 @@ export default {
         {
           title: '纸箱编号',
           align:'center',
-          width:180,
+          width:230,
           slot: 'num'
         },
         {
@@ -295,7 +295,7 @@ export default {
         {
           title: '备注',
           align:'center',
-          width:100,
+          width:80,
           slot: 'remarks'
         },
         {
@@ -409,7 +409,16 @@ export default {
               this.dataList()
             }
           }).catch(err => {
+            if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
             this.$Message.error(err.response.data.message)
+          }
           })
         }
       }else if(num=='2'){
@@ -421,7 +430,16 @@ export default {
           this.dataList()
           this.$Message.success('保存成功')
         }).catch(err => {
-          this.$Message.error(err.response.data.message)
+          if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
         })
       }
       
@@ -447,7 +465,16 @@ export default {
             }
             
           }).catch(err => {
+            if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
             this.$Message.error(err.response.data.message)
+          }
           })
         }
       }else{
@@ -470,7 +497,16 @@ export default {
           })
           // this.goodsList()
         }).catch(err => {
-          this.$Message.error(err.response.data.message)
+          if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
         })
       }else{
         this.$Message.warning('请双击纸箱列表某一行选择纸箱');
@@ -513,7 +549,16 @@ export default {
         this.$Message.success('删除成功');
         this.dataList()
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     //物品列表
@@ -571,7 +616,16 @@ export default {
             this.goodsList()
             this.$Message.success('成功');
         }).catch(err => {
-          this.$Message.error(err.response.data.message)
+          if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
           
         })
       }else{
@@ -602,10 +656,23 @@ export default {
     },
     okGoodsDel(id){
       getDepositGoodsDel({id:id}).then(res=>{
-        this.goodsList()
+        for (let i = 0; i < this.data.length; i++) {
+          if (id == this.data[i].id) {
+            this.data.splice(i,1)
+          }
+        }
         this.$Message.success('成功');
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     //此步骤已完成
@@ -617,7 +684,16 @@ export default {
         this.$emit('detailsRefresh','1')
         this.$Message.success('成功');
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     //箱子类型选择
@@ -654,7 +730,16 @@ export default {
               this.dataList()
               this.$Message.success('成功');
             }).catch(err => {
-              this.$Message.error(err.response.data.message)
+              if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
             })
           } else {
               this.$Message.error('请检查内容必填项是否全部填写!');

@@ -11,7 +11,7 @@
             <Input  placeholder="请输入" style="width:200px" v-model="searchList.linkman"></Input>
           </FormItem>
           <FormItem label="用户ID" >
-            <Input  placeholder="请输入" style="width:200px" v-model="searchList.userAccountId"></Input>
+            <Input  placeholder="请输入" style="width:200px" v-model="searchList.userCode"></Input>
           </FormItem>
           <FormItem label="用户姓名" >
             <Input  placeholder="请输入" style="width:200px" ></Input>
@@ -131,7 +131,7 @@ export default {
         orderNo:'',
         linkman:'',
         linktel:'',
-        userAccountId:'',
+        userCode:'',
         pickmanName:'',
         waybillNo:'',
       },
@@ -377,7 +377,7 @@ export default {
         orderNo:this.searchList.orderNo,
         linkman:this.searchList.linkman,
         linktel:this.searchList.linktel,
-        userAccountId:this.searchList.userAccountId,
+        userCode:this.searchList.userCode,
         pickmanName:this.searchList.pickmanName,
         waybillNo:this.searchList.waybillNo,
       }
@@ -423,7 +423,16 @@ export default {
             this.assignRidersList.name=''
             this.assignRidersModal=false
           }).catch(err => {
+            if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
             this.$Message.error(err.response.data.message)
+          }
           })
         } else {
             this.$Message.error('请输入拣货员姓名');
@@ -486,7 +495,16 @@ export default {
           this.getList()
           this.typeModal=false
         }).catch(err => {
-          this.$Message.error(err.response.data.message)
+          if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
         })
       }else{
         getWithdrawRefuse(data).then(res=>{
@@ -494,7 +512,16 @@ export default {
           this.getList()
           this.typeModal=false
         }).catch(err => {
-          this.$Message.error(err.response.data.message)
+          if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
         })
       }
       
@@ -517,7 +544,7 @@ export default {
       this.searchList.orderNo=''
       this.searchList.linkman=''
       this.searchList.linktel=''
-      this.searchList.userAccountId=''
+      this.searchList.userCode=''
       this.searchList.pickmanName=''
       this.searchList.waybillNo=''
       this.$store.commit('getOrderCollectionSearchList',this.searchList)

@@ -241,13 +241,13 @@ export default {
         {
           title: '物品编号',
           align:'center',
-          width:140,
+          width:220,
           slot: 'num'
         },
         {
           title: '物品名称',
           align:'center',
-          width:140,
+          width:200,
           slot: 'name'
         },
         {
@@ -265,7 +265,7 @@ export default {
         {
           title: '展示区域',
           align:'center',
-          width:140,
+          width:130,
           slot: 'exhibition'
         },
         {
@@ -277,25 +277,25 @@ export default {
         {
           title: '标签',
           align:'center',
-          width:140,
+          width:180,
           slot: 'label'
         },
         {
           title: '照片',
           align:'center',
-          width:90,
+          width:80,
           slot: 'img'
         },
         {
           title: '重量',
           align:'center',
-          width:120,
+          width:100,
           slot: 'kg'
         },
         {
           title: '备注',
           align:'center',
-          minWidth:140,
+          minWidth:160,
           slot: 'imgRemarks'
         },
         {
@@ -310,7 +310,7 @@ export default {
         {
           title: '纸箱编号',
           align:'center',
-          width:180,
+          width:230,
           key: 'code'
         },
         {
@@ -334,7 +334,7 @@ export default {
         { 
           title: '备注',
           align:'center',
-          minWidth:100,
+          minWidth:80,
           slot: 'remarks'
         },
         {
@@ -429,7 +429,16 @@ export default {
                 this.goodsInformation=!this.goodsInformation
               }
             }).catch(err => {
-              this.$Message.error(err.response.data.message)
+              if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
             })
           }
         }else{
@@ -443,7 +452,16 @@ export default {
         getUpdateRemark(data).then(res=>{
           this.$Message.success('保存成功')
         }).catch(err => {
-          this.$Message.error(err.response.data.message)
+          if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
         })
       }
       
@@ -468,7 +486,16 @@ export default {
               this.$Message.success('成功');
             }
           }).catch(err => {
+            if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
             this.$Message.error(err.response.data.message)
+          }
           })
         }
       }else{
@@ -493,7 +520,16 @@ export default {
               this.$Message.success('成功');
             }
           }).catch(err => {
+            if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
             this.$Message.error(err.response.data.message)
+          }
           })
         }
       }else{
@@ -597,7 +633,16 @@ export default {
         this.goodsList()
         this.$Message.success('成功');
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     //纸箱编辑
@@ -621,7 +666,16 @@ export default {
               this.dataList()
               this.$Message.success('成功');
             }).catch(err => {
-              this.$Message.error(err.response.data.message)
+              if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
             })
           } else {
               this.$Message.error('请检查内容必填项是否全部填写!');
@@ -637,7 +691,16 @@ export default {
         this.$Message.success('成功');
         this.goodsList()
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     //箱子添加编辑取消
@@ -679,7 +742,16 @@ export default {
         this.$emit('detailsRefresh','1')
         this.$Message.success('成功');
       }).catch(err => {
-        this.$Message.error(err.response.data.message)
+        if (err.response.data.code =='error_param') {
+            var json =err.response.data.data
+            var title = ''
+            for (var key in json){
+              title +=`${json[key]},`
+            }
+            this.$Message.error(title)
+          }else{
+            this.$Message.error(err.response.data.message)
+          }
       })
     },
     rowClassName (row, index) {
